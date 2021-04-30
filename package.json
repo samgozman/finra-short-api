@@ -1,0 +1,30 @@
+{
+  "name": "finra-short-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.mjs",
+    "dev": "nodemon -r src/index.mjs -e js,mjs,hbs,css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samgozman/finra-short-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/samgozman/finra-short-api/issues"
+  },
+  "homepage": "https://github.com/samgozman/finra-short-api#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.7"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "eslint": "^7.25.0",
+    "nodemon": "^2.0.7"
+  }
+}
