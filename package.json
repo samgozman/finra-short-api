@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/samgozman/finra-short-api#readme",
   "dependencies": {
+    "cheerio": "*",
     "express": "^4.17.1",
+    "got": "^9.6.0",
     "mongoose": "^5.12.7"
   },
   "devDependencies": {
