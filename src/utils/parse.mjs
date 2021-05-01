@@ -64,9 +64,9 @@ const getDataFromFile = async (url) => {
         const strArr = str.split('|')
         obj[strArr[1]] = {
             date: strArr[0],
-            shortVolume: strArr[2],
-            shortExemptVolume: strArr[3],
-            totalVolume: strArr[4],
+            shortVolume: +strArr[2],
+            shortExemptVolume: +strArr[3],
+            totalVolume: +strArr[4],
             nyse: /N/g.test(strArr[5]),
             nasdaqCarteret: /Q/g.test(strArr[5]),
             nasdaqChicago: /B/g.test(strArr[5]),
