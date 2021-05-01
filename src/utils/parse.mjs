@@ -1,5 +1,7 @@
 import got from 'got'
 import cheerio from 'cheerio'
+import moment from 'moment-timezone'
+moment.tz.setDefault('America/New_York')
 
 const getMonthlyPages = async () => {
     try {
@@ -63,7 +65,7 @@ const getDataFromFile = async (url) => {
         // String format: Date|Symbol|ShortVolume|ShortExemptVolume|TotalVolume|Market
         const strArr = str.split('|')
         obj[strArr[1]] = {
-            date: strArr[0],
+            date: new Date(moment(strArr[0],'YYYYMMDD')),
             shortVolume: +strArr[2],
             shortExemptVolume: +strArr[3],
             totalVolume: +strArr[4],
