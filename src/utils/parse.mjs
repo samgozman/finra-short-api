@@ -1,9 +1,10 @@
 import got from 'got'
 import cheerio from 'cheerio'
 import moment from 'moment-timezone'
+
 moment.tz.setDefault('America/New_York')
 
-const getMonthlyPages = async () => {
+export const getMonthlyPages = async () => {
     try {
         const baseUrl = 'http://regsho.finra.org/regsho-Index.html'
         const response = await got(baseUrl)
@@ -30,7 +31,7 @@ const getMonthlyPages = async () => {
     }
 }
 
-const getLinksToFiles = async (url) => {
+export const getLinksToFiles = async (url) => {
     try {
         const response = await got(url)
         const $ = cheerio.load(response.body)
@@ -50,7 +51,7 @@ const getLinksToFiles = async (url) => {
     }
 }
 
-const getDataFromFile = async (url) => {
+export const getDataFromFile = async (url) => {
     const response = await got(url)
     const text = response.body.toString()
     let textArray = text.split(/\r?\n/)
@@ -79,11 +80,11 @@ const getDataFromFile = async (url) => {
     return obj
 }
 
-const main = async () => {
-    console.log(await getMonthlyPages())
-    console.log('')
-    console.log(await getLinksToFiles('http://regsho.finra.org/regsho-Index.html'))
-    console.log(await getDataFromFile('http://regsho.finra.org/CNMSshvol20210401.txt'))
-}
+// const main = async () => {
+//     console.log(await getMonthlyPages())
+//     console.log('')
+//     console.log(await getLinksToFiles('http://regsho.finra.org/regsho-Index.html'))
+//     console.log(await getDataFromFile('http://regsho.finra.org/CNMSshvol20210401.txt'))
+// }
 
-main()
+// main()
