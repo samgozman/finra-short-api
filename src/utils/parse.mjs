@@ -56,7 +56,7 @@ export const getDataFromFile = async (url) => {
     const text = response.body.toString()
     let textArray = text.split(/\r?\n/)
 
-    // Remove first and last line of the array
+    // Remove first and last 2 lines of the array
     textArray.shift()
     textArray.pop()
     textArray.pop()
