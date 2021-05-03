@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.mjs",
-    "dev": "nodemon -r src/index.mjs -e js,mjs,hbs,css"
+    "dev": "nodemon -r dotenv/config src/index.mjs -e js,mjs,hbs,css dotenv_config_path=config/dev.env"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/samgozman/finra-short-api#readme",
   "dependencies": {
     "cheerio": "*",
+    "compression": "^1.7.4",
     "express": "^4.17.1",
     "got": "^9.6.0",
     "moment": "^2.29.1",
