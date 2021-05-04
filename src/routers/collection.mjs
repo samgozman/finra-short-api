@@ -18,35 +18,38 @@ const collectionRouter = new Router()
 collectionRouter.get('/collection/create', async (req, res) => {
     try {
         const pages = await getMonthlyPages()
+        const files = []
         for (const page in pages) {
-            const files = await getLinksToFiles(pages[page])
-            for (const file in files) {
-                let mongoArr = []
-                const reports = await getDataFromFile(files[file])
-                for (const report in reports) {
+            const links = await getLinksToFiles(pages[page])
+            files.push(...Object.values(links))
+        }
 
-                    // Try to find existing
-                    let stock = await Stock.findOne({
+        for (const file in files) {
+            const reports = await getDataFromFile(files[file])
+            let mongoArr = []
+            for (const report in reports) {
+
+                // Try to find existing
+                let stock = await Stock.findOne({
+                    ticker: report
+                })
+
+                // If not - create
+                if (!stock) {
+                    stock = new Stock({
                         ticker: report
                     })
-
-                    // If not - create
-                    if (!stock) {
-                        stock = new Stock({
-                            ticker: report
-                        })
-                        await stock.save()
-                    }
-
-                    mongoArr.push({
-                        _stock_id: stock._id,
-                        ...reports[report]
-                    })
+                    await stock.save()
                 }
 
-                await Volume.insertMany(mongoArr)
+                mongoArr.push({
+                    _stock_id: stock._id,
+                    ...reports[report]
+                })
             }
+            await Volume.insertMany(mongoArr)
         }
+        
 
         res.status(201).send()
     } catch (error) {
