@@ -28,6 +28,30 @@ const volumeSchema = mongoose.Schema({
     }
 })
 
+/**
+ * Get obj by _stock_id
+ * @async
+ * @param {String} _stock_id ID of the parent stock to which this data belongs
+ * @return {Object} MongoDB saved model
+ */
+volumeSchema.statics.findByStockId = async function (_stock_id) {
+    try {
+        let instance = await this.findOne({
+            _stock_id
+        })
+
+        if (!instance) {
+            throw new Error()
+        }
+
+        return instance
+    } catch (error) {
+        return {
+            error: 'Error in static findByStockId()'
+        }
+    }
+}
+
 // TODO: Нужно под каждую дату создавать строчку для каждой акции. 
 // TODO: Тк в день N может не быть данных по некоторым акциям, то заполняем пустые места нулями. 
 
