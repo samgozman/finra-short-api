@@ -4,7 +4,6 @@ const volumeSchema = mongoose.Schema({
     _stock_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        unique: true,
         ref: 'Stock'
     },
     date: {
@@ -55,4 +54,4 @@ volumeSchema.statics.findByStockId = async function (_stock_id) {
 // TODO: Нужно под каждую дату создавать строчку для каждой акции. 
 // TODO: Тк в день N может не быть данных по некоторым акциям, то заполняем пустые места нулями. 
 
-export const Volume = mongoose.model('Stock', volumeSchema)
+export const Volume = mongoose.model('Volume', volumeSchema)

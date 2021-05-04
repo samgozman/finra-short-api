@@ -4,6 +4,11 @@ import moment from 'moment-timezone'
 
 moment.tz.setDefault('America/New_York')
 
+/**
+ * Get pages with monthly data
+ * @async
+ * @return {Object.<string, string>} Object: 'Mounth Year': 'Link'
+ */
 export const getMonthlyPages = async () => {
     try {
         const baseUrl = 'http://regsho.finra.org/regsho-Index.html'
@@ -31,6 +36,12 @@ export const getMonthlyPages = async () => {
     }
 }
 
+/**
+ * Get links to the monthly reports
+ * @async
+ * @param url Link to the monthly page
+ * @return {Object.<string, string>} Object: 'DayOfTheWeek Day': 'Link'
+ */
 export const getLinksToFiles = async (url) => {
     try {
         const response = await got(url)
@@ -51,6 +62,20 @@ export const getLinksToFiles = async (url) => {
     }
 }
 
+/**
+ * @typedef {Object} FinraReport
+ * @property {Date} date Date of record
+ * @property {Number} shortVolume Short volume
+ * @property {Number} shortExemptVolume Short exempt volume
+ * @property {Number} totalVolume Total volume
+ */
+
+/**
+ * Get Finra short report for each stock
+ * @async
+ * @param url Link to the report file (.txt)
+ * @return {Object.<string, FinraReport>} Object: ticker: FinraReport
+ */
 export const getDataFromFile = async (url) => {
     const response = await got(url)
     const text = response.body.toString()
@@ -69,11 +94,11 @@ export const getDataFromFile = async (url) => {
             date: new Date(moment(strArr[0],'YYYYMMDD')),
             shortVolume: +strArr[2],
             shortExemptVolume: +strArr[3],
-            totalVolume: +strArr[4],
-            nyse: /N/g.test(strArr[5]),
-            nasdaqCarteret: /Q/g.test(strArr[5]),
-            nasdaqChicago: /B/g.test(strArr[5]),
-            adf: /D/g.test(strArr[5])
+            totalVolume: +strArr[4]
+            // nyse: /N/g.test(strArr[5]),
+            // nasdaqCarteret: /Q/g.test(strArr[5]),
+            // nasdaqChicago: /B/g.test(strArr[5]),
+            // adf: /D/g.test(strArr[5])
         }
     })
     

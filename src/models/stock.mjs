@@ -6,6 +6,7 @@ const stockSchema = mongoose.Schema({
         required: true,
         unique: true,
         uppercase: true,
+        maxLength: 14,
         trim: true
     }
 })
