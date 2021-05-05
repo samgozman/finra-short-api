@@ -15,15 +15,18 @@ import {
 
 const collectionRouter = new Router()
 
-collectionRouter.get('/collection/create', async (req, res) => {
+collectionRouter.get('/collection/recreate', async (req, res) => {
     try {
         const pages = await getMonthlyPages()
         const files = []
+
+        // Get links to reports
         for (const page in pages) {
             const links = await getLinksToFiles(pages[page])
             files.push(...Object.values(links))
         }
 
+        // Process files
         for (const file in files) {
             const reports = await getDataFromFile(files[file])
             let mongoArr = []
@@ -50,7 +53,6 @@ collectionRouter.get('/collection/create', async (req, res) => {
             await Volume.insertMany(mongoArr)
         }
         
-
         res.status(201).send()
     } catch (error) {
         res.status(500).send(error)
