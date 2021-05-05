@@ -47,7 +47,7 @@ export const getLinksToFiles = async (url) => {
         const response = await got(url)
         const $ = cheerio.load(response.body)
 
-        const filePathsNode = $('ul').first().find('li > a')
+        const filePathsNode = $('ul').first().find('li > a').toArray().reverse()
         let filePaths = {}
         Array.prototype.map.call(filePathsNode, (a) => {
             const link = $(a)
@@ -105,11 +105,20 @@ export const getDataFromFile = async (url) => {
     return obj
 }
 
-// const main = async () => {
-//     console.log(await getMonthlyPages())
-//     console.log('')
-//     console.log(await getLinksToFiles('http://regsho.finra.org/regsho-Index.html'))
-//     console.log(await getDataFromFile('http://regsho.finra.org/CNMSshvol20210401.txt'))
-// }
+/**
+ * @async
+ * @return {Array} Array of dates
+ */
+export const getTradingDays = async () => {
+    const pages = await getMonthlyPages()
+    const fullDateObj = []
+    for (const page in pages) {
+        const daysObj = await getLinksToFiles(pages[page])
+        Object.keys(daysObj).forEach((el) => {
+            const date = moment(+el.replace(/[A-z ]/g, '') + ' ' + page,'DD MMM YYYY')
+            fullDateObj.push(date)
+        })
+    }
 
-// main()
+    return fullDateObj
+}
