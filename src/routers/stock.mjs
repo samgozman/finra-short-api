@@ -18,6 +18,9 @@ stockRouter.get('/stock', async (req, res) => {
             virtuals: true
         })
 
+        delete stock._id
+        delete stock.__v
+        
         res.send(stock)
     } catch (error) {
         res.status(500).send(error.message)

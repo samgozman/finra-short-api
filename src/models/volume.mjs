@@ -58,6 +58,18 @@ volumeSchema.statics.findByStockId = async function (_stock_id) {
     }
 }
 
+volumeSchema.methods.toJSON = function () {
+    const data = this
+    const dataObj = data.toObject()
+
+    delete dataObj._stock_id
+    delete dataObj._id
+    delete dataObj.id
+    delete dataObj.__v
+
+    return dataObj
+}
+
 // TODO: Нужно под каждую дату создавать строчку для каждой акции. 
 // TODO: Тк в день N может не быть данных по некоторым акциям, то заполняем пустые места нулями. 
 
