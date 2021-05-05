@@ -27,6 +27,13 @@ const volumeSchema = mongoose.Schema({
     }
 })
 
+volumeSchema.index({
+    _stock_id: 1,
+    date: 1
+}, {
+    unique: true
+})
+
 /**
  * Get obj by _stock_id
  * @async
