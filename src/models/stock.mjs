@@ -14,8 +14,7 @@ const stockSchema = mongoose.Schema({
 stockSchema.virtual('volume', {
     ref: 'Volume',
     localField: '_id',
-    foreignField: '_stock_id',
-    justOne: true
+    foreignField: '_stock_id'
 })
 
 export const Stock = mongoose.model('Stock', stockSchema)

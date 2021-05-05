@@ -13,7 +13,7 @@ stockRouter.get('/stock', async (req, res) => {
         let stock = await Stock.findOne({
             ticker
         })
-        await stock.populate(['volume'])
+        await stock.populate(['volume']).execPopulate()
         stock = stock.toJSON({
             virtuals: true
         })
