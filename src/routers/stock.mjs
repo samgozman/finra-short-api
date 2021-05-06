@@ -19,6 +19,7 @@ stockRouter.get('/stock', async (req, res) => {
         })
 
         delete stock._id
+        delete stock.id
         delete stock.__v
         
         res.send(stock)
