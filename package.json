@@ -25,7 +25,8 @@
     "got": "^9.6.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
-    "mongoose": "^5.12.7"
+    "mongoose": "^5.12.7",
+    "node-cron": "^3.0.0"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",

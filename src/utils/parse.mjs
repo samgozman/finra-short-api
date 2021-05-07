@@ -2,6 +2,10 @@ import got from 'got'
 import cheerio from 'cheerio'
 import moment from 'moment-timezone'
 
+import {
+    Stock
+} from '../models/stock.mjs'
+
 moment.tz.setDefault('America/New_York')
 
 /**
@@ -91,7 +95,7 @@ export const getDataFromFile = async (url) => {
         // String format: Date|Symbol|ShortVolume|ShortExemptVolume|TotalVolume|Market
         const strArr = str.split('|')
         obj[strArr[1]] = {
-            date: new Date(moment(strArr[0],'YYYYMMDD')),
+            date: new Date(moment(strArr[0], 'YYYYMMDD')),
             shortVolume: +strArr[2],
             shortExemptVolume: +strArr[3],
             totalVolume: +strArr[4]
@@ -101,7 +105,7 @@ export const getDataFromFile = async (url) => {
             // adf: /D/g.test(strArr[5])
         }
     })
-    
+
     return obj
 }
 
@@ -115,10 +119,40 @@ export const getTradingDays = async () => {
     for (const page in pages) {
         const daysObj = await getLinksToFiles(pages[page])
         Object.keys(daysObj).forEach((el) => {
-            const date = moment(+el.replace(/[A-z ]/g, '') + ' ' + page,'DD MMM YYYY')
+            const date = moment(+el.replace(/[A-z ]/g, '') + ' ' + page, 'DD MMM YYYY')
             fullDateObj.push(date)
         })
     }
 
     return fullDateObj
+}
+
+/**
+ * @async
+ * @return {Array.<FinraReport>} Array of FinraReport objects
+ */
+export const processLines = async (reports = []) => {
+    let mongoArr = []
+    for (const report in reports) {
+
+        // Try to find existing
+        let stock = await Stock.findOne({
+            ticker: report
+        })
+
+        // If not - create
+        if (!stock) {
+            stock = new Stock({
+                ticker: report
+            })
+            await stock.save()
+        }
+
+        mongoArr.push({
+            _stock_id: stock._id,
+            ...reports[report]
+        })
+    }
+
+    return mongoArr
 }

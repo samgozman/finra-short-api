@@ -2,15 +2,13 @@ import {
     Router
 } from 'express'
 import {
-    Stock
-} from '../models/stock.mjs'
-import {
     Volume
 } from '../models/volume.mjs'
 import {
     getMonthlyPages,
     getLinksToFiles,
-    getDataFromFile
+    getDataFromFile,
+    processLines
 } from '../utils/parse.mjs'
 
 const collectionRouter = new Router()
@@ -29,27 +27,7 @@ collectionRouter.get('/collection/recreate', async (req, res) => {
         // Process files
         for (const file in files) {
             const reports = await getDataFromFile(files[file])
-            let mongoArr = []
-            for (const report in reports) {
-
-                // Try to find existing
-                let stock = await Stock.findOne({
-                    ticker: report
-                })
-
-                // If not - create
-                if (!stock) {
-                    stock = new Stock({
-                        ticker: report
-                    })
-                    await stock.save()
-                }
-
-                mongoArr.push({
-                    _stock_id: stock._id,
-                    ...reports[report]
-                })
-            }
+            let mongoArr = await processLines(reports)
             await Volume.insertMany(mongoArr)
         }
         
@@ -57,7 +35,6 @@ collectionRouter.get('/collection/recreate', async (req, res) => {
     } catch (error) {
         res.status(500).send(error)
     }
-
 })
 
 export default collectionRouter

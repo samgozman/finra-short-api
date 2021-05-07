@@ -24,7 +24,7 @@ stockRouter.get('/stock', async (req, res) => {
         
         res.send(stock)
     } catch (error) {
-        res.status(500).send(error.message)
+        res.status(404).send('Stock is not found!')
     }
 })
 
