@@ -6,7 +6,8 @@ const stockSchema = mongoose.Schema({
         required: true,
         unique: true,
         maxLength: 14,
-        trim: true
+        trim: true,
+        set: v => v.replace(/p/g,'-').replace(/\//g, '.')
     }
 })
 
