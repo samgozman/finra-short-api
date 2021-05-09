@@ -1,8 +1,6 @@
 import cron from 'node-cron'
 
-import {
-    Volume
-} from '../models/volume.mjs'
+import Volume from '../models/volume.mjs'
 import {
     getLinksToFiles,
     getDataFromFile,

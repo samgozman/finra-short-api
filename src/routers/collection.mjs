@@ -1,9 +1,5 @@
-import {
-    Router
-} from 'express'
-import {
-    Volume
-} from '../models/volume.mjs'
+import Router from 'express'
+import Volume from '../models/volume.mjs'
 import {
     getMonthlyPages,
     getLinksToFiles,

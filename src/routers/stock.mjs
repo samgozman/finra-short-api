@@ -1,13 +1,12 @@
 import {
     Router
 } from 'express'
-import {
-    Stock
-} from '../models/stock.mjs'
+import Stock from '../models/stock.mjs'
+import auth from '../middleware/auth.mjs'
 
 const stockRouter = new Router()
 
-stockRouter.get('/stock', async (req, res) => {
+stockRouter.get('/stock', auth, async (req, res) => {
     try {
         let ticker = req.query.ticker
         let stock = await Stock.findOne({

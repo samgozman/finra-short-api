@@ -70,7 +70,5 @@ volumeSchema.methods.toJSON = function () {
     return dataObj
 }
 
-// TODO: Нужно под каждую дату создавать строчку для каждой акции. 
-// TODO: Тк в день N может не быть данных по некоторым акциям, то заполняем пустые места нулями. 
-
-export const Volume = mongoose.model('Volume', volumeSchema)
+const Volume = mongoose.model('Volume', volumeSchema)
+export default Volume

@@ -2,9 +2,7 @@ import got from 'got'
 import cheerio from 'cheerio'
 import moment from 'moment-timezone'
 
-import {
-    Stock
-} from '../models/stock.mjs'
+import Stock from '../models/stock.mjs'
 
 moment.tz.setDefault('America/New_York')
 

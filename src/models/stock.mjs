@@ -27,4 +27,5 @@ stockSchema.virtual('volume', {
     foreignField: '_stock_id'
 })
 
-export const Stock = mongoose.model('Stock', stockSchema)
+const Stock = mongoose.model('Stock', stockSchema)
+export default Stock
