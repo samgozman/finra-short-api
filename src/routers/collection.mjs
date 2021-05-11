@@ -6,10 +6,11 @@ import {
     getDataFromFile,
     processLines
 } from '../utils/parse.mjs'
+import admin from '../middleware/admin.mjs'
 
 const collectionRouter = new Router()
 
-collectionRouter.get('/collection/recreate', async (req, res) => {
+collectionRouter.get('/collection/recreate', admin, async (req, res) => {
     try {
         const pages = await getMonthlyPages()
         const files = []
