@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.mjs",
+    "start": "node -r dotenv/config src/index.mjs dotenv_config_path=config/prod.env ",
     "dev": "nodemon -r dotenv/config src/index.mjs -e js,mjs,hbs,css dotenv_config_path=config/dev.env"
   },
   "repository": {
