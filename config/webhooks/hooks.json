@@ -1,0 +1,16 @@
+[{
+    "id": "finra-short-api",
+    "execute-command": "/root/webhooks/finra-short-api/deploy.sh",
+    "command-working-directory": "/root/finra-short-api/",
+    "response-message": "Executing deploy finra-short-api script...",
+    "trigger-rule": {
+        "match": {
+            "type": "payload-hash-sha1",
+            "secret": "SECRET_KEY",
+            "parameter": {
+                "source": "header",
+                "name": "X-Hub-Signature"
+            }
+        }
+    }
+}]
