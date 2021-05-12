@@ -21,6 +21,8 @@ stockRouter.get('/stock', auth, async (req, res) => {
         delete stock.id
         delete stock.__v
         
+        stock.version = process.env.npm_package_version
+
         res.send(stock)
     } catch (error) {
         res.status(404).send('Stock is not found!')
