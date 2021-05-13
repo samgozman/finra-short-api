@@ -1,5 +1,6 @@
 import express from 'express'
 import compression from 'compression'
+import helmet from 'helmet'
 import './db/connection.mjs'
 
 import stockRouter from './routers/stock.mjs'
@@ -9,6 +10,7 @@ import userRouter from './routers/user.mjs'
 const app = express()
 
 app.set('trust proxy', 1)
+app.use(helmet())
 app.use(compression())
 
 app.use(express.json())
