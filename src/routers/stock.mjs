@@ -8,11 +8,24 @@ const stockRouter = new Router()
 
 stockRouter.get('/stock', auth, async (req, res) => {
     try {
-        let ticker = req.query.ticker
+        const ticker = req.query.ticker
+        const limit = req.query.limit
+        const sort = req.query.sort
+
         let stock = await Stock.findOne({
             ticker
         })
-        await stock.populate(['volume']).execPopulate()
+
+        await stock.populate({
+            path: 'volume',
+            options: {
+                limit,
+                sort: {
+                    date: sort || 'asc'
+                }
+            }
+        }).execPopulate()
+
         stock = stock.toJSON({
             virtuals: true
         })
@@ -20,7 +33,7 @@ stockRouter.get('/stock', auth, async (req, res) => {
         delete stock._id
         delete stock.id
         delete stock.__v
-        
+
         stock.version = process.env.npm_package_version
 
         res.send(stock)
