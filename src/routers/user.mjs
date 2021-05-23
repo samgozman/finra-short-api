@@ -28,4 +28,20 @@ userRouter.post('/user/add', admin, async (req, res) => {
     }
 })
 
+// List users
+userRouter.get('/user/list', admin, async (req, res) => {
+    try {
+        const users = await User.find({}, {
+            login: 1,
+            _id: 0
+        })
+
+        res.send(users)
+    } catch (error) {
+        res.status(404).send({
+            error: error.message
+        })
+    }
+})
+
 export default userRouter
