@@ -7,7 +7,11 @@ const stockSchema = mongoose.Schema({
         unique: true,
         maxLength: 14,
         trim: true,
-        set: v => v.replace(/p/g,'-').replace(/\//g, '.')
+        set: v => v.replace(/p/g, '-').replace(/\//g, '.')
+    }
+}, {
+    toJSON: {
+        virtuals: true
     }
 })
 
