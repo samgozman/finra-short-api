@@ -4,7 +4,8 @@ import {
     getMonthlyPages,
     getLinksToFiles,
     getDataFromFile,
-    processLines
+    processLines,
+    updateLastTradingDay
 } from '../utils/parse.mjs'
 import admin from '../middleware/admin.mjs'
 
@@ -27,7 +28,17 @@ collectionRouter.get('/collection/recreate', admin, async (req, res) => {
             let mongoArr = await processLines(reports)
             await Volume.insertMany(mongoArr)
         }
-        
+
+        res.status(201).send()
+    } catch (error) {
+        res.status(500).send(error)
+    }
+})
+
+collectionRouter.get('/collection/updatelastday', admin, async (req, res) => {
+    try {
+        await updateLastTradingDay()
+
         res.status(201).send()
     } catch (error) {
         res.status(500).send(error)

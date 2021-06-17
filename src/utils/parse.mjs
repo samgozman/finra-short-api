@@ -3,6 +3,7 @@ import cheerio from 'cheerio'
 import moment from 'moment-timezone'
 
 import Stock from '../models/stock.mjs'
+import Volume from '../models/volume.mjs'
 
 moment.tz.setDefault('America/New_York')
 
@@ -153,4 +154,14 @@ export const processLines = async (reports = []) => {
     }
 
     return mongoArr
+}
+
+export const updateLastTradingDay = async () => {
+    const files = await getLinksToFiles('http://regsho.finra.org/regsho-Index.html')
+    const {
+        [Object.keys(files).pop()]: currentDay
+    } = files
+    const reports = await getDataFromFile(currentDay)
+    let mongoArr = await processLines(reports)
+    await Volume.insertMany(mongoArr)
 }
