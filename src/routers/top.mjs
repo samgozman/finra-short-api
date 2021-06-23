@@ -13,7 +13,8 @@ topRouter.get('/top', auth, async (req, res) => {
     try {
 
         const limit = req.query.limit || 5
-        const tinkoffOnly = req.query.tinkoffOnly || 'true'
+        const tinkoffOnly = req.query.tinkoffOnly
+        const minvol = req.query.minvol
 
         const allIds = await Stock.avalibleTickers()
         let top = []
@@ -42,6 +43,7 @@ topRouter.get('/top', auth, async (req, res) => {
 
             top.push({
                 shortVol: avgShortVol(stock.volume),
+                totalVol: stock.volume.totalVolume,
                 ticker: stock.ticker
             })
         }
@@ -56,11 +58,28 @@ topRouter.get('/top', auth, async (req, res) => {
                 if (obj) {
                     tinkedArr.push({
                         shortVol: obj.shortVol,
+                        totalVol: obj.totalVol,
                         ticker: tink.ticker
                     })
                 }
             }
             top = tinkedArr
+        }
+        
+        // Filter by min volume
+        if (minvol === 'true') {
+            const min = 2000
+            const minArr = []
+            for (const el of top) {
+                if (el.totalVol > min) {
+                    minArr.push({
+                        shortVol: el.shortVol,
+                        totalVol: el.totalVol,
+                        ticker: el.ticker
+                    })
+                }
+            }
+            top = minArr
         }
 
         // Sort from high to low
