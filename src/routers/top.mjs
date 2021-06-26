@@ -40,10 +40,9 @@ topRouter.get('/top', auth, async (req, res) => {
                     }
                 }
             }).execPopulate()
-
             top.push({
                 shortVol: avgShortVol(stock.volume),
-                totalVol: stock.volume.totalVolume,
+                totalVol: stock.volume[0].totalVolume,
                 ticker: stock.ticker
             })
         }
