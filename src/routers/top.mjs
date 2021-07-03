@@ -6,6 +6,7 @@ import {
 } from 'tinkoff-api-securities'
 import Stock from '../models/stock.mjs'
 import auth from '../middleware/auth.mjs'
+import round from '../utils/round.mjs'
 
 const topRouter = new Router()
 
@@ -25,7 +26,7 @@ topRouter.get('/top', auth, async (req, res) => {
             for (const i in arr) {
                 sum += arr[i].shortVolume / arr[i].totalVolume * 100
             }
-            return (sum / arr.length)
+            return round(sum / arr.length)
         }
 
         // Find populate all stocks volumes
@@ -67,7 +68,7 @@ topRouter.get('/top', auth, async (req, res) => {
         
         // Filter by min volume
         if (minvol === 'true') {
-            const min = 2000
+            const min = 5000
             const minArr = []
             for (const el of top) {
                 if (el.totalVol > min) {
