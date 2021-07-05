@@ -1,6 +1,5 @@
 import { Schema, model, Document } from 'mongoose';
-
-// ! Finra - refactor name
+import { toJSON } from '../utils/toJSON';
 
 export interface FinraReport {
     date: Date;
@@ -83,16 +82,7 @@ volumeSchema.statics.findByStockId = async function (_stock_id) {
 };
 
 // ! Remove duplications!
-volumeSchema.methods.toJSON = function () {
-    const data: IFinraDocument = this;
-    const dataObj = data.toObject();
 
-    delete dataObj._stock_id;
-    delete dataObj._id;
-    delete dataObj.id;
-    delete dataObj.__v;
-
-    return dataObj;
-};
+volumeSchema.methods.toJSON = toJSON;
 
 export const Volume = model('Volume', volumeSchema);

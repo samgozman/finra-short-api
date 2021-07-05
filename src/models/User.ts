@@ -1,6 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
 import { sign } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { toJSON } from '../utils/toJSON';
 
 export interface IUser {
     login: string;
@@ -54,13 +55,6 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
-userSchema.methods.toJSON = function () {
-    const data: IUserDocument = this;
-    const dataObj = data.toObject();
-
-    delete dataObj.token;
-
-    return dataObj;
-};
+userSchema.methods.toJSON = toJSON;
 
 export const User = model('User', userSchema);
