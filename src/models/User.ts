@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Model } from 'mongoose';
 import { sign } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { toJSON } from '../utils/toJSON';
@@ -13,7 +13,9 @@ export interface IUserDocument extends IUser, Document {
     generateAuthToken(): Promise<string>;
 }
 
-const userSchema = new Schema<IUserDocument>({
+export interface IUserModel extends Model<IUserDocument> {}
+
+const userSchema = new Schema<IUserDocument, IUserModel>({
     login: {
         type: String,
         required: true,
@@ -57,4 +59,4 @@ userSchema.pre('save', async function (next) {
 
 userSchema.methods.toJSON = toJSON;
 
-export const User = model('User', userSchema);
+export const User = model<IUserDocument, IUserModel>('User', userSchema);

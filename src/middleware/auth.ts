@@ -7,7 +7,7 @@ const auth = async (req: RequestAuth, res: Response, next: NextFunction) => {
     try {
         const token = req.header('Authorization')!.replace('Bearer ', '');
         const decoded = <any>verify(token, process.env.JWT_SECRET as string);
-        const user: IUserDocument = await User.findOne({
+        const user: IUserDocument | null = await User.findOne({
             _id: decoded._id,
             token,
         });

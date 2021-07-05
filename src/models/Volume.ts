@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Model } from 'mongoose';
 import { toJSON } from '../utils/toJSON';
 
 export interface FinraReport {
@@ -19,8 +19,9 @@ export interface FinraMongo extends FinraReport {
 
 // Finra volumes with mongoose Document properties
 export interface IFinraDocument extends FinraMongo, Document {}
+export interface IFinraModel extends Model<IFinraDocument> {}
 
-const volumeSchema = new Schema<IFinraDocument>({
+const volumeSchema = new Schema<IFinraDocument, IFinraModel>({
     _stock_id: {
         type: Schema.Types.ObjectId,
         required: true,
@@ -65,7 +66,7 @@ volumeSchema.index(
  */
 volumeSchema.statics.findByStockId = async function (_stock_id) {
     try {
-        let instance: IFinraDocument = await this.findOne({
+        let instance: IFinraDocument | null = await this.findOne({
             _stock_id,
         });
 
@@ -81,8 +82,6 @@ volumeSchema.statics.findByStockId = async function (_stock_id) {
     }
 };
 
-// ! Remove duplications!
-
 volumeSchema.methods.toJSON = toJSON;
 
-export const Volume = model('Volume', volumeSchema);
+export const Volume = model<IFinraDocument, IFinraModel>('Volume', volumeSchema);
