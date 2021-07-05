@@ -1,6 +1,6 @@
 import { Router, Response } from 'express';
 import { RequestAuth } from '../middleware/RequestAuth';
-import Volume from '../models/volume';
+import { Volume } from '../models/Volume';
 import {
     getMonthlyPages,
     getLinksToFiles,

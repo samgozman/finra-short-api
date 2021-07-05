@@ -1,5 +1,5 @@
-import { IStockDocument } from './stock';
-import { FinraReport } from './volume';
+import { IStockDocument } from './Stock';
+import { FinraReport } from './Volume';
 
 export interface PopulatedVolume {
     volume: FinraReport[];

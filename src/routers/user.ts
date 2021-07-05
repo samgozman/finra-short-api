@@ -1,5 +1,5 @@
 import { Router, Response } from 'express';
-import User, { IUserDocument } from '../models/user';
+import { User, IUserDocument } from '../models/User';
 import admin from '../middleware/admin';
 import { RequestAuth } from '../middleware/RequestAuth';
 

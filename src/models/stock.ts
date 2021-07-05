@@ -46,5 +46,4 @@ stockSchema.virtual('volume', {
     foreignField: '_stock_id',
 });
 
-const Stock = model<IStockDocument, IStockModel>('Stock', stockSchema);
-export default Stock;
+export const Stock = model<IStockDocument, IStockModel>('Stock', stockSchema);

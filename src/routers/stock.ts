@@ -1,6 +1,6 @@
 import { Router, Response } from 'express';
 import { RequestAuth } from '../middleware/RequestAuth';
-import Stock from '../models/stock';
+import { Stock } from '../models/Stock';
 import auth from '../middleware/auth';
 
 const stockRouter = Router();

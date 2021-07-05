@@ -1,5 +1,5 @@
 import { verify } from 'jsonwebtoken';
-import User, { IUserDocument } from '../models/user';
+import { User, IUserDocument } from '../models/User';
 import { Response, NextFunction } from 'express';
 import { RequestAuth } from './RequestAuth';
 

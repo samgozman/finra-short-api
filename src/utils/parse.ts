@@ -2,8 +2,8 @@ import got from 'got';
 import cheerio from 'cheerio';
 import moment from 'moment-timezone';
 
-import Stock, { IStockDocument } from '../models/stock';
-import Volume, { FinraAssignedReports, FinraMongo } from '../models/volume';
+import { Stock, IStockDocument } from '../models/Stock';
+import { Volume, FinraAssignedReports, FinraMongo } from '../models/Volume';
 
 moment.tz.setDefault('America/New_York');
 

@@ -95,5 +95,4 @@ volumeSchema.methods.toJSON = function () {
     return dataObj;
 };
 
-const Volume = model('Volume', volumeSchema);
-export default Volume;
+export const Volume = model('Volume', volumeSchema);

@@ -63,6 +63,4 @@ userSchema.methods.toJSON = function () {
     return dataObj;
 };
 
-const User = model('User', userSchema);
-
-export default User;
+export const User = model('User', userSchema);
