@@ -1,44 +1,59 @@
 {
-  "name": "finra-short-api",
-  "version": "1.0.6",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node -r dotenv/config src/index.mjs dotenv_config_path=config/prod.env ",
-    "dev": "nodemon -r dotenv/config src/index.mjs -e js,mjs,hbs,css dotenv_config_path=config/dev.env"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/samgozman/finra-short-api.git"
-  },
-  "keywords": [],
-  "author": "Sam Gozman <sam@gozman.space>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/samgozman/finra-short-api/issues"
-  },
-  "homepage": "https://github.com/samgozman/finra-short-api#readme",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cheerio": "*",
-    "compression": "^1.7.4",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "got": "^11.8.2",
-    "helmet": "^4.6.0",
-    "jsonwebtoken": "^8.5.1",
-    "moment": "^2.29.1",
-    "moment-timezone": "^0.5.33",
-    "mongoose": "^5.13.0",
-    "node-cron": "^3.0.0",
-    "tinkoff-api-securities": "^1.0.2"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.11",
-    "eslint": "^7.29.0",
-    "nodemon": "^2.0.9"
-  },
-  "engines": {
-    "node": ">=16.0.0"
-  }
+    "name": "finra-short-api",
+    "version": "1.0.6",
+    "description": "",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "scripts": {
+        "build": "tsc --build",
+        "start": "node -r dotenv/config lib/index.js dotenv_config_path=config/prod.env ",
+        "dev:build": "tsc -w",
+        "dev:start": "nodemon -r dotenv/config lib/index.js -e js,mjs dotenv_config_path=config/dev.env",
+        "dev": "concurrently npm:dev:*"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/samgozman/finra-short-api.git"
+    },
+    "keywords": [],
+    "author": "Sam Gozman <sam@gozman.space>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/samgozman/finra-short-api/issues"
+    },
+    "homepage": "https://github.com/samgozman/finra-short-api#readme",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "cheerio": "*",
+        "compression": "^1.7.4",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "got": "^11.8.2",
+        "helmet": "^4.6.0",
+        "jsonwebtoken": "^8.5.1",
+        "moment": "^2.29.1",
+        "moment-timezone": "^0.5.33",
+        "mongoose": "^5.13.0",
+        "node-cron": "^3.0.0",
+        "tinkoff-api-securities": "^1.0.2"
+    },
+    "devDependencies": {
+        "@types/bcryptjs": "^2.4.2",
+        "@types/compression": "^1.7.0",
+        "@types/express": "^4.17.12",
+        "@types/jsonwebtoken": "^8.5.3",
+        "@types/node": "^16.0.0",
+        "@types/node-cron": "^2.0.3",
+        "concurrently": "^6.2.0",
+        "eslint": "^7.29.0",
+        "nodemon": "^2.0.9",
+        "ts-node": "^10.0.0",
+        "typescript": "^4.3.5"
+    },
+    "engines": {
+        "node": ">=16.0.0"
+    },
+    "files": [
+        "lib/**/*"
+    ]
 }
