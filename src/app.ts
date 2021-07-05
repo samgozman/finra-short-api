@@ -3,10 +3,10 @@ import compression from 'compression';
 import helmet from 'helmet';
 import './db/connection';
 
-import stockRouter from './routers/stock';
-import collectionRouter from './routers/collection';
-import userRouter from './routers/user';
-import topRouter from './routers/top';
+import stockRouter from './routers/stockRouter';
+import collectionRouter from './routers/collectionRouter';
+import userRouter from './routers/userRouter';
+import topRouter from './routers/topRouter';
 
 const app = express();
 
