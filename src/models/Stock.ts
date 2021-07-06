@@ -46,4 +46,10 @@ stockSchema.virtual('volume', {
     foreignField: '_stock_id',
 });
 
+stockSchema.virtual('filter', {
+    ref: 'Filter',
+    localField: '_id',
+    foreignField: '_stock_id',
+});
+
 export const Stock = model<IStockDocument, IStockModel>('Stock', stockSchema);

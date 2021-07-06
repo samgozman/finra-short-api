@@ -7,10 +7,6 @@ import { Volume, FinraAssignedReports, FinraMongo } from '../models/Volume';
 
 moment.tz.setDefault('America/New_York');
 
-// interface TempObj {
-//     [key: string]: any;
-// }
-
 interface Links {
     /** Key: 'Date of report', Value: url*/
     [key: string]: string;
@@ -19,7 +15,7 @@ interface Links {
 /**
  * Get pages with monthly data
  * @async
- * @return {Links} Object: 'Mounth Year': 'Link'
+ * @return Object promise: 'Mounth Year': 'Link'
  */
 export const getMonthlyPages = async (): Promise<Links> => {
     try {
@@ -53,7 +49,7 @@ export const getMonthlyPages = async (): Promise<Links> => {
  * Get links to the monthly reports
  * @async
  * @param url Link to the monthly page
- * @return {Links} Object: 'DayOfTheWeek Day': 'Link'
+ * @return Object promise: 'DayOfTheWeek Day': 'Link'
  */
 export const getLinksToFiles = async (url: string): Promise<Links> => {
     try {
@@ -80,7 +76,7 @@ export const getLinksToFiles = async (url: string): Promise<Links> => {
  * Get Finra short report for each stock
  * @async
  * @param url Link to the report file (.txt)
- * @return {FinraAssignedReports} Object: ticker: FinraReport
+ * @return Object promise: ticker: FinraReport
  */
 export const getDataFromFile = async (url: string): Promise<FinraAssignedReports> => {
     const response = await got(url);
@@ -101,10 +97,6 @@ export const getDataFromFile = async (url: string): Promise<FinraAssignedReports
             shortVolume: +strArr[2],
             shortExemptVolume: +strArr[3],
             totalVolume: +strArr[4],
-            // nyse: /N/g.test(strArr[5]),
-            // nasdaqCarteret: /Q/g.test(strArr[5]),
-            // nasdaqChicago: /B/g.test(strArr[5]),
-            // adf: /D/g.test(strArr[5])
         };
     });
 
@@ -113,7 +105,7 @@ export const getDataFromFile = async (url: string): Promise<FinraAssignedReports
 
 /**
  * @async
- * @return {Array} Array of dates
+ * @return Promise of array of dates
  */
 export const getTradingDays = async (): Promise<moment.Moment[]> => {
     const pages = await getMonthlyPages();
@@ -131,8 +123,8 @@ export const getTradingDays = async (): Promise<moment.Moment[]> => {
 
 /**
  * @async
- * @param {FinraAssignedReports} reports
- * @return {Array<FinraMongo>} Array of FinraReport objects
+ * @param reports
+ * @return Array of FinraReport objects
  */
 export const processLines = async (reports: FinraAssignedReports): Promise<FinraMongo[]> => {
     let mongoArr: FinraMongo[] = [];
