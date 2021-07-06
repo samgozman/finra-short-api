@@ -1,4 +1,8 @@
 import { Schema, model, Document, Model, ObjectId } from 'mongoose';
+import { StockPopulatedDocument } from './PopulatedVolume';
+
+type Paths = 'volume' | 'filter';
+type SortDirs = 'desc' | 'acs';
 
 export interface IStock {
     ticker: string;
@@ -6,9 +10,24 @@ export interface IStock {
 
 export interface IStockDocument extends IStock, Document {
     version?: string;
+    // Methods
+    /**
+     * Populate virtual with sorting options
+     * @param path virtual path ('volume' etc.)
+     * @param limit max number of strokes to populate
+     * @param sortDir sort direction (by date)
+     * @returns
+     */
+    getVirtual(path: Paths, limit: number, sortDir?: SortDirs): Promise<StockPopulatedDocument>;
 }
 
 export interface IStockModel extends Model<IStockDocument> {
+    // Statics
+    /**
+     * Get array of all available stocks
+     * @async
+     * @returns Promise array of stocks ObjectId's
+     */
     avalibleTickers(): Promise<ObjectId[]>;
 }
 
@@ -30,11 +49,24 @@ const stockSchema = new Schema<IStockDocument, IStockModel>(
     }
 );
 
-/**
- * Get array of all available stocks
- * @async
- * @return {Array} Array of stocks
- */
+stockSchema.methods.getVirtual = async function (
+    path: Paths = 'volume',
+    limit: number,
+    sortDir: SortDirs = 'desc'
+): Promise<StockPopulatedDocument> {
+    await this.populate({
+        path,
+        options: {
+            limit,
+            sort: {
+                date: sortDir,
+            },
+        },
+    }).execPopulate();
+
+    return this as StockPopulatedDocument;
+};
+
 stockSchema.statics.avalibleTickers = async function (): Promise<ObjectId[]> {
     const stocks: IStockDocument[] = await Stock.find({});
     return stocks.map((a: IStockDocument) => a._id as ObjectId);

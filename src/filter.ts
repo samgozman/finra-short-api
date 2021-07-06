@@ -84,22 +84,12 @@ export async function shortVolGrowsFilter(limit: number = 5) {
     limit++;
     const allIds = await Stock.avalibleTickers();
     for (const _id of allIds) {
-        const stock: StockPopulatedDocument = (await Stock.findById(_id)) as StockPopulatedDocument;
-        await stock
-            .populate({
-                path: 'volume',
-                options: {
-                    limit,
-                    sort: {
-                        date: 'desc',
-                    },
-                },
-            })
-            .execPopulate();
+        const stock = (await Stock.findById(_id))!;
+        const volume = (await stock.getVirtual('volume', limit, 'desc')).volume;
 
         // Check if populated volume exists
-        if (stock.volume.length === limit) {
-            const shortVolArr = stock.volume.map((e) => e.shortVolume).reverse();
+        if (volume.length === limit) {
+            const shortVolArr = volume.map((e) => e.shortVolume).reverse();
             // each value is greater than previous
             const validation: boolean[] = shortVolArr.map((e, i) => shortVolArr[i] > shortVolArr[i - 1]);
             // Remove first element of the array (it was used for comparing only)
