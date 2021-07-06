@@ -11,7 +11,9 @@ const topRouter = Router();
 
 topRouter.get('/top', auth, async (req: RequestAuth, res: Response) => {
     try {
-        const limit = req.query.limit || 5;
+        // ! Need to change logic! First - create array of filtred unions
+        // ! Next - populate and calculate
+        const limit: number = +(req.query.limit || 5);
         const tinkoffOnly = req.query.tinkoffOnly;
         const minvol = req.query.minvol;
 
@@ -29,23 +31,13 @@ topRouter.get('/top', auth, async (req: RequestAuth, res: Response) => {
 
         // Find populate all stocks volumes
         for (const _id of allIds) {
-            let stock: StockPopulatedDocument = (await Stock.findById(_id)) as StockPopulatedDocument;
-            await stock
-                .populate({
-                    path: 'volume',
-                    options: {
-                        limit,
-                        sort: {
-                            date: 'desc',
-                        },
-                    },
-                })
-                .execPopulate();
+            const stock = (await Stock.findById(_id))!;
+            const volume = (await stock.getVirtual('volume', limit, 'desc')).volume;
 
-            if (stock.volume && stock.volume[0]) {
+            if (volume && volume.length > 1) {
                 top.push({
-                    shortVol: avgShortVol(stock.volume),
-                    totalVol: stock.volume[0].totalVolume,
+                    shortVol: avgShortVol(volume),
+                    totalVol: volume[0].totalVolume,
                     ticker: stock.ticker,
                 });
             }

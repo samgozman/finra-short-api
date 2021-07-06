@@ -88,7 +88,7 @@ export async function shortVolGrowsFilter(limit: number = 5) {
         const volume = (await stock.getVirtual('volume', limit, 'desc')).volume;
 
         // Check if populated volume exists
-        if (volume.length === limit) {
+        if (volume && volume.length > 1) {
             const shortVolArr = volume.map((e) => e.shortVolume).reverse();
             // each value is greater than previous
             const validation: boolean[] = shortVolArr.map((e, i) => shortVolArr[i] > shortVolArr[i - 1]);

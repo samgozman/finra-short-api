@@ -1,13 +1,12 @@
 import { Schema, model, Document, Model, ObjectId } from 'mongoose';
 import { StockPopulatedDocument } from './PopulatedVolume';
 
-type Paths = 'volume' | 'filter';
+type Virtuals = 'volume' | 'filter';
 type SortDirs = 'desc' | 'acs';
 
 export interface IStock {
     ticker: string;
 }
-
 export interface IStockDocument extends IStock, Document {
     version?: string;
     // Methods
@@ -16,9 +15,9 @@ export interface IStockDocument extends IStock, Document {
      * @param path virtual path ('volume' etc.)
      * @param limit max number of strokes to populate
      * @param sortDir sort direction (by date)
-     * @returns
+     * @returns Mongoose object with populated virtuals
      */
-    getVirtual(path: Paths, limit: number, sortDir?: SortDirs): Promise<StockPopulatedDocument>;
+    getVirtual(path: Virtuals, limit: number, sortDir?: SortDirs): Promise<StockPopulatedDocument>;
 }
 
 export interface IStockModel extends Model<IStockDocument> {
@@ -50,7 +49,7 @@ const stockSchema = new Schema<IStockDocument, IStockModel>(
 );
 
 stockSchema.methods.getVirtual = async function (
-    path: Paths = 'volume',
+    path: Virtuals = 'volume',
     limit: number,
     sortDir: SortDirs = 'desc'
 ): Promise<StockPopulatedDocument> {
