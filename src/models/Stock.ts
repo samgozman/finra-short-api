@@ -1,4 +1,4 @@
-import { Schema, model, Document, Model } from 'mongoose';
+import { Schema, model, Document, Model, ObjectId } from 'mongoose';
 
 export interface IStock {
     ticker: string;
@@ -9,7 +9,7 @@ export interface IStockDocument extends IStock, Document {
 }
 
 export interface IStockModel extends Model<IStockDocument> {
-    avalibleTickers(): Promise<any[]>;
+    avalibleTickers(): Promise<ObjectId[]>;
 }
 
 const stockSchema = new Schema<IStockDocument, IStockModel>(
@@ -35,9 +35,9 @@ const stockSchema = new Schema<IStockDocument, IStockModel>(
  * @async
  * @return {Array} Array of stocks
  */
-stockSchema.statics.avalibleTickers = async function (): Promise<any[]> {
+stockSchema.statics.avalibleTickers = async function (): Promise<ObjectId[]> {
     const stocks: IStockDocument[] = await Stock.find({});
-    return stocks.map((a: IStockDocument) => a._id);
+    return stocks.map((a: IStockDocument) => a._id as ObjectId);
 };
 
 stockSchema.virtual('volume', {

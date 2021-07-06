@@ -14,7 +14,7 @@ export interface FinraAssignedReports {
 }
 
 export interface FinraMongo extends FinraReport {
-    _stock_id?: string;
+    _stock_id?: Schema.Types.ObjectId;
 }
 
 // Finra volumes with mongoose Document properties

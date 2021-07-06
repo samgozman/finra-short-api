@@ -18,7 +18,7 @@ export interface IFilter {
 }
 
 export interface IFilterDocument extends IFilter, Document {
-    _stock_id: string;
+    _stock_id: Schema.Types.ObjectId;
 }
 export interface IFilterModel extends Model<IFilterDocument> {}
 
