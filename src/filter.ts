@@ -14,7 +14,7 @@ type Filters = keyof IFilter & string;
  * @param key Filtering key name
  * @param value Filtering value (true or false)
  */
-const updateFilter = async (_stock_id: ObjectId, key: Filters, value: boolean = true) => {
+async function updateFilter(_stock_id: ObjectId, key: Filters, value: boolean = true) {
     // Find filter for _stock_id
     const filter = await Filter.findOne({ _stock_id });
     if (filter) {
@@ -31,23 +31,25 @@ const updateFilter = async (_stock_id: ObjectId, key: Filters, value: boolean = 
 
         await newFilter.save();
     }
-};
+}
 
 /**
  * Reset filter (change all 'true' values on 'false')
  * @param key Filtering key name
  */
-const resetFilter = async (key: Filters) => {
+async function resetFilter(key: Filters) {
     await Filter.updateMany({ [key]: true }, { [key]: false });
-};
+}
 
 /**
- * Get an array of Stocks ObjectId's matching the filtering condition
- * @param key Filtering key name
+ * Get an array of Stocks ObjectId's matching the filtering condition's.
+ * @param keys Filtering key names. Multiple names to create union
  * @returns Promise array of ObjectId's
  */
-export const getFilter = async (key: Filters): Promise<ObjectId[]> => {
-    const stocks = await Filter.find({ [key]: true });
+export async function getFilter(...keys: Filters[]): Promise<ObjectId[]> {
+    // Convert filter keys to object like {key: true, ...}
+    const keyPairs = keys.reduce((ac, a) => ({ ...ac, [a]: true }), {});
+    const stocks = await Filter.find(keyPairs);
     const ids: ObjectId[] = [];
 
     for (const stock of stocks) {
@@ -55,11 +57,11 @@ export const getFilter = async (key: Filters): Promise<ObjectId[]> => {
     }
 
     return ids;
-};
+}
 
 /* FILTERS SECTION: START */
 
-export const onTinkoffFIlter = async () => {
+export async function onTinkoffFIlter() {
     await resetFilter('onTinkoff');
     const tinkoff = new Tinkoff(process.env.SANDBOX_TOKEN!);
     const onTinkoff = await tinkoff.stocks('USD');
@@ -74,9 +76,9 @@ export const onTinkoffFIlter = async () => {
             await updateFilter(_stock_id, 'onTinkoff', true);
         }
     }
-};
+}
 
-export const shortVolGrowsFilter = async (limit: number = 5) => {
+export async function shortVolGrowsFilter(limit: number = 5) {
     await resetFilter('shortVolGrows5D');
     // increment limit to be able to compare index 1 to index 0
     limit++;
@@ -107,6 +109,6 @@ export const shortVolGrowsFilter = async (limit: number = 5) => {
             await updateFilter(_id, 'shortVolGrows5D', checker);
         }
     }
-};
+}
 
 /* FILTERS SECTION: END */

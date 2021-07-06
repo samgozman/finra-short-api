@@ -9,4 +9,5 @@ app.listen(port, async () => {
     console.log('Server is up on port ' + port);
     console.log('Tinkoff total', (await getFilter('onTinkoff')).length);
     console.log('shortVolGrows5D total', (await getFilter('shortVolGrows5D')).length);
+    console.log('Union total', (await getFilter('shortVolGrows5D', 'onTinkoff')).length);
 });
