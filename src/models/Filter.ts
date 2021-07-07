@@ -15,6 +15,14 @@ export interface IFilter {
     totalVolGrows5D: boolean;
     /** Total volume is decreasing 5 days in a row */
     totalVolDecreases5D: boolean;
+    /** Short Exempt volume is growing 5 days in a row */
+    shortExemptVolGrows5D: boolean;
+    /** Short Exempt volume is decreasing 5 days in a row */
+    shortExemptVolDecreases5D: boolean;
+    /** Short Exempt volume ratio is growing 5 days in a row */
+    shortExemptVolRatioGrows5D: boolean;
+    /** Short Exempt volume ratio is decreasing 5 days in a row */
+    shortExemptVolRatioDecreases5D: boolean;
 }
 
 export interface IFilterDocument extends IFilter, Document {
@@ -53,6 +61,22 @@ const filterSchema = new Schema<IFilterDocument, IFilterModel>({
         default: false,
     },
     totalVolDecreases5D: {
+        type: Boolean,
+        default: false,
+    },
+    shortExemptVolGrows5D: {
+        type: Boolean,
+        default: false,
+    },
+    shortExemptVolDecreases5D: {
+        type: Boolean,
+        default: false,
+    },
+    shortExemptVolRatioGrows5D: {
+        type: Boolean,
+        default: false,
+    },
+    shortExemptVolRatioDecreases5D: {
         type: Boolean,
         default: false,
     },

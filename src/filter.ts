@@ -104,25 +104,35 @@ class VolumeFilter implements FilterUnit {
     }
 }
 
-/* FILTERS SECTION: START */
+// ! Class inheritance need to be done //
+class TinkoffFilter implements FilterUnit {
+    constructor(public filter: Filters = 'onTinkoff') {}
 
-export async function onTinkoff() {
-    await resetFilter('onTinkoff');
-    const tinkoff = new Tinkoff(process.env.SANDBOX_TOKEN!);
-    const onTinkoff = await tinkoff.stocks('USD');
-    for (const tink of onTinkoff) {
-        // Find Stock
-        const { ticker } = tink;
-        const stock = await Stock.findOne({ ticker });
-        // Get ID
-        const _stock_id: ObjectId = stock?.id;
-        // Create record
-        if (_stock_id) {
-            await updateFilter(_stock_id, 'onTinkoff', true);
+    async update() {
+        await resetFilter(this.filter);
+        const tinkoff = new Tinkoff(process.env.SANDBOX_TOKEN!);
+        const onTinkoff = await tinkoff.stocks('USD');
+        for (const tink of onTinkoff) {
+            // Find Stock
+            const { ticker } = tink;
+            const stock = await Stock.findOne({ ticker });
+            // Get ID
+            const _stock_id: ObjectId = stock?.id;
+            // Create record
+            if (_stock_id) {
+                await updateFilter(_stock_id, this.filter, true);
+            }
         }
+    }
+
+    async get(): Promise<ObjectId[]> {
+        return await getFilter(this.filter);
     }
 }
 
+/* FILTERS SECTION: START */
+
+export const onTinkoff = new TinkoffFilter();
 export const shortVolGrows5D = new VolumeFilter('shortVolGrows5D', 'shortVolume', 'growing', 5);
 export const shortVolDecreases5D = new VolumeFilter('shortVolDecreases5D', 'shortVolume', 'decreasing', 5);
 export const shortVolRatioGrows5D = new VolumeFilter(
@@ -141,5 +151,45 @@ export const shortVoRatiolDecreases5D = new VolumeFilter(
 );
 export const totalVolGrows5D = new VolumeFilter('totalVolGrows5D', 'totalVolume', 'growing', 5);
 export const totalVolDecreases5D = new VolumeFilter('totalVolDecreases5D', 'totalVolume', 'decreasing', 5);
+export const shortExemptVolGrows5D = new VolumeFilter(
+    'shortExemptVolGrows5D',
+    'shortExemptVolume',
+    'growing',
+    5
+);
+export const shortExemptVolDecreases5D = new VolumeFilter(
+    'shortExemptVolDecreases5D',
+    'shortExemptVolume',
+    'decreasing',
+    5
+);
+export const shortExemptVolRatioGrows5D = new VolumeFilter(
+    'shortExemptVolRatioGrows5D',
+    'shortExemptVolume',
+    'growing',
+    5,
+    true
+);
+export const shortExemptVolRatioDecreases5D = new VolumeFilter(
+    'shortExemptVolRatioDecreases5D',
+    'shortExemptVolume',
+    'decreasing',
+    5,
+    true
+);
 
 /* FILTERS SECTION: END */
+
+export async function updateAllFilters() {
+    await onTinkoff.update();
+    await shortVolGrows5D.update();
+    await shortVolDecreases5D.update();
+    await shortVolRatioGrows5D.update();
+    await shortVoRatiolDecreases5D.update();
+    await totalVolGrows5D.update();
+    await totalVolDecreases5D.update();
+    await shortExemptVolGrows5D.update();
+    await shortExemptVolDecreases5D.update();
+    await shortExemptVolRatioGrows5D.update();
+    await shortExemptVolRatioDecreases5D.update();
+}
