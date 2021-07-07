@@ -23,6 +23,26 @@ export interface IFilter {
     shortExemptVolRatioGrows5D: boolean;
     /** Short Exempt volume ratio is decreasing 5 days in a row */
     shortExemptVolRatioDecreases5D: boolean;
+    /** Short volume is growing 3 days in a row */
+    shortVolGrows3D: boolean;
+    /** Short volume is decreasing 3 days in a row */
+    shortVolDecreases3D: boolean;
+    /** Short volume ratio (%) is growing 3 days in a row */
+    shortVolRatioGrows3D: boolean;
+    /** Short volume ratio (%) is decreasing 3 days in a row */
+    shortVoRatiolDecreases3D: boolean;
+    /** Total volume is growing 3 days in a row */
+    totalVolGrows3D: boolean;
+    /** Total volume is decreasing 3 days in a row */
+    totalVolDecreases3D: boolean;
+    /** Short Exempt volume is growing 3 days in a row */
+    shortExemptVolGrows3D: boolean;
+    /** Short Exempt volume is decreasing 3 days in a row */
+    shortExemptVolDecreases3D: boolean;
+    /** Short Exempt volume ratio is growing 3 days in a row */
+    shortExemptVolRatioGrows3D: boolean;
+    /** Short Exempt volume ratio is decreasing 3 days in a row */
+    shortExemptVolRatioDecreases3D: boolean;
 }
 
 export interface IFilterDocument extends IFilter, Document {
@@ -77,6 +97,46 @@ const filterSchema = new Schema<IFilterDocument, IFilterModel>({
         default: false,
     },
     shortExemptVolRatioDecreases5D: {
+        type: Boolean,
+        default: false,
+    },
+    shortVolGrows3D: {
+        type: Boolean,
+        default: false,
+    },
+    shortVolDecreases3D: {
+        type: Boolean,
+        default: false,
+    },
+    shortVolRatioGrows3D: {
+        type: Boolean,
+        default: false,
+    },
+    shortVoRatiolDecreases3D: {
+        type: Boolean,
+        default: false,
+    },
+    totalVolGrows3D: {
+        type: Boolean,
+        default: false,
+    },
+    totalVolDecreases3D: {
+        type: Boolean,
+        default: false,
+    },
+    shortExemptVolGrows3D: {
+        type: Boolean,
+        default: false,
+    },
+    shortExemptVolDecreases3D: {
+        type: Boolean,
+        default: false,
+    },
+    shortExemptVolRatioGrows3D: {
+        type: Boolean,
+        default: false,
+    },
+    shortExemptVolRatioDecreases3D: {
         type: Boolean,
         default: false,
     },

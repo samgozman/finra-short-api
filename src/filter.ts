@@ -133,6 +133,7 @@ class TinkoffFilter implements FilterUnit {
 /* FILTERS SECTION: START */
 
 export const onTinkoff = new TinkoffFilter();
+// 5 days
 export const shortVolGrows5D = new VolumeFilter('shortVolGrows5D', 'shortVolume', 'growing', 5);
 export const shortVolDecreases5D = new VolumeFilter('shortVolDecreases5D', 'shortVolume', 'decreasing', 5);
 export const shortVolRatioGrows5D = new VolumeFilter(
@@ -177,11 +178,57 @@ export const shortExemptVolRatioDecreases5D = new VolumeFilter(
     5,
     true
 );
+// 3 days
+export const shortVolGrows3D = new VolumeFilter('shortVolGrows3D', 'shortVolume', 'growing', 3);
+export const shortVolDecreases3D = new VolumeFilter('shortVolDecreases3D', 'shortVolume', 'decreasing', 3);
+export const shortVolRatioGrows3D = new VolumeFilter(
+    'shortVolRatioGrows3D',
+    'shortVolume',
+    'growing',
+    3,
+    true
+);
+export const shortVoRatiolDecreases3D = new VolumeFilter(
+    'shortVoRatiolDecreases3D',
+    'shortVolume',
+    'decreasing',
+    3,
+    true
+);
+export const totalVolGrows3D = new VolumeFilter('totalVolGrows3D', 'totalVolume', 'growing', 3);
+export const totalVolDecreases3D = new VolumeFilter('totalVolDecreases3D', 'totalVolume', 'decreasing', 3);
+export const shortExemptVolGrows3D = new VolumeFilter(
+    'shortExemptVolGrows3D',
+    'shortExemptVolume',
+    'growing',
+    3
+);
+export const shortExemptVolDecreases3D = new VolumeFilter(
+    'shortExemptVolDecreases3D',
+    'shortExemptVolume',
+    'decreasing',
+    3
+);
+export const shortExemptVolRatioGrows3D = new VolumeFilter(
+    'shortExemptVolRatioGrows3D',
+    'shortExemptVolume',
+    'growing',
+    3,
+    true
+);
+export const shortExemptVolRatioDecreases3D = new VolumeFilter(
+    'shortExemptVolRatioDecreases3D',
+    'shortExemptVolume',
+    'decreasing',
+    3,
+    true
+);
 
 /* FILTERS SECTION: END */
 
 export async function updateAllFilters() {
     await onTinkoff.update();
+    // 5 days
     await shortVolGrows5D.update();
     await shortVolDecreases5D.update();
     await shortVolRatioGrows5D.update();
@@ -192,4 +239,15 @@ export async function updateAllFilters() {
     await shortExemptVolDecreases5D.update();
     await shortExemptVolRatioGrows5D.update();
     await shortExemptVolRatioDecreases5D.update();
+    // 3days
+    await shortVolGrows3D.update();
+    await shortVolDecreases3D.update();
+    await shortVolRatioGrows3D.update();
+    await shortVoRatiolDecreases3D.update();
+    await totalVolGrows3D.update();
+    await totalVolDecreases3D.update();
+    await shortExemptVolGrows3D.update();
+    await shortExemptVolDecreases3D.update();
+    await shortExemptVolRatioGrows3D.update();
+    await shortExemptVolRatioDecreases3D.update();
 }
