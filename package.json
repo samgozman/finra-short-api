@@ -40,7 +40,7 @@
     "devDependencies": {
         "@types/bcryptjs": "^2.4.2",
         "@types/compression": "^1.7.0",
-        "@types/express": "^4.17.12",
+        "@types/express": "^4.17.13",
         "@types/jsonwebtoken": "^8.5.3",
         "@types/node": "^16.0.0",
         "@types/node-cron": "^2.0.3",
