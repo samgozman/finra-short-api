@@ -2,7 +2,6 @@ import { Router, Response } from 'express';
 import { Tinkoff } from 'tinkoff-api-securities';
 import { Stock } from '../models/Stock';
 import { FinraReport } from '../models/Volume';
-import { StockPopulatedDocument } from '../models/PopulatedVolume';
 import auth from '../middleware/auth';
 import { RequestAuth } from '../middleware/RequestAuth';
 import round from '../utils/round';

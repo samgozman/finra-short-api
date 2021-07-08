@@ -4,7 +4,7 @@ import { IFilter, Filter } from './models/Filter';
 import { Stock } from './models/Stock';
 
 /** Filter keys */
-type Filters = keyof IFilter & string;
+export type Filters = keyof IFilter & string;
 
 /**
  * Function to update any filter
