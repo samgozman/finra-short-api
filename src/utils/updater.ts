@@ -1,6 +1,7 @@
 import cron from 'node-cron';
 
 import { updateLastTradingDay } from './parse';
+import { updateAllFilters } from '../filter';
 
 // Run every day except Sunday at 6.30pm ET (01:30 Moscow time) ('30 18 * * 1-6)
 cron.schedule(
@@ -8,6 +9,7 @@ cron.schedule(
     async () => {
         try {
             await updateLastTradingDay();
+            await updateAllFilters();
         } catch (error) {
             console.error('CRON FAILURE!');
         }
