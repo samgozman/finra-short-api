@@ -47,14 +47,27 @@ async function resetFilter(key: Filters) {
 
 /**
  * Get an array of Stocks ObjectId's matching the filtering condition's.
- * @param keys Filtering key names. Multiple names to create union
+ * @param keys Filtering key names array. Multiple names to create union
+ * @param limit Optional. Limit stocks per request
+ * @param skip Optional. Number of stocks to skip
+ * @param sort Optional. Sorting options
  * @returns Promise array of ObjectId's
  */
-export async function getFilter(...keys: Filters[]): Promise<FiltredIds> {
+export async function getFilter(
+    keys: Filters[],
+    limit?: number,
+    skip?: number,
+    sort?: any
+): Promise<FiltredIds> {
     // Convert filter keys to object like {key: true, ...}
     const keyPairs = keys.reduce((ac, a) => ({ ...ac, [a]: true }), {});
+    // Count all documents
     const count = await Filter.countDocuments(keyPairs);
-    const stocks = await Filter.find(keyPairs);
+    const stocks = await Filter.find(keyPairs, null, {
+        limit,
+        skip,
+        sort,
+    });
     const ids: ObjectId[] = [];
 
     for (const stock of stocks) {
@@ -107,7 +120,7 @@ class VolumeFilter implements FilterUnit {
     }
 
     async get(): Promise<FiltredIds> {
-        return await getFilter(this.filter);
+        return await getFilter([this.filter]);
     }
 }
 
@@ -133,7 +146,7 @@ class TinkoffFilter implements FilterUnit {
     }
 
     async get(): Promise<FiltredIds> {
-        return await getFilter(this.filter);
+        return await getFilter([this.filter]);
     }
 }
 

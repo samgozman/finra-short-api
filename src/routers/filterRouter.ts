@@ -21,7 +21,7 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
                 .replace(/[^A-z0-9,]/g, '')
                 .split(',')
                 .map((e) => e as Filters);
-            const ids = await getFilter(...filtersArray);
+            const ids = await getFilter(filtersArray, limit, skip);
             const count = ids.count;
             const stocks = [];
             for (const id of ids.ids) {

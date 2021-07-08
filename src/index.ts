@@ -10,5 +10,5 @@ app.listen(port, async () => {
 
     // await updateAllFilters();
 
-    console.log('totalVolGrows3D', (await getFilter('totalVolGrows3D')).count);
+    console.log('totalVolGrows3D', (await getFilter(['totalVolGrows3D'])).count);
 });
