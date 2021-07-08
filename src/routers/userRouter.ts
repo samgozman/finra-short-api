@@ -15,12 +15,12 @@ userRouter.post('/user/add', admin, async (req: RequestAuth, res: Response) => {
         const token = await user.generateAuthToken();
         user.token = token;
         await user.save();
-        res.status(201).send({
+        return res.status(201).send({
             login,
             token,
         });
     } catch (error) {
-        res.status(404).send({
+        return res.status(404).send({
             error: error.message,
         });
     }
@@ -37,9 +37,9 @@ userRouter.get('/user/list', admin, async (req: RequestAuth, res: Response) => {
             }
         );
 
-        res.send(users);
+        return res.send(users);
     } catch (error) {
-        res.status(404).send({
+        return res.status(404).send({
             error: error.message,
         });
     }

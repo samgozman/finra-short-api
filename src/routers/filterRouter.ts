@@ -27,7 +27,7 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
                 const stock = (await Stock.findById(id))!.ticker;
                 stocks.push(stock);
             }
-            res.send(stocks);
+            return res.send(stocks);
         } else {
             const stocks = (
                 await Stock.find({}, null, {
@@ -35,10 +35,10 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
                     skip,
                 })
             ).map((e) => e.ticker);
-            res.send(stocks);
+            return res.send(stocks);
         }
     } catch (error) {
-        res.status(404).send('Filter request error!');
+        return res.status(404).send('Filter request error!');
     }
 });
 

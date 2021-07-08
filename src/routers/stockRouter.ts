@@ -38,12 +38,12 @@ stockRouter.get('/stock', auth, async (req: RequestAuth, res: Response) => {
 
             stockJson.version = process.env.npm_package_version;
 
-            res.send(stockJson);
+            return res.send(stockJson);
         } else {
             throw new Error();
         }
     } catch (error) {
-        res.status(404).send('Stock is not found!');
+        return res.status(404).send('Stock is not found!');
     }
 });
 

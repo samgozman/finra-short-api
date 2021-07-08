@@ -30,9 +30,9 @@ collectionRouter.get('/collection/recreate', admin, async (req: RequestAuth, res
             await Volume.insertMany(mongoArr);
         }
 
-        res.status(201).send();
+        return res.status(201).send();
     } catch (error) {
-        res.status(500).send(error);
+        return res.status(500).send(error);
     }
 });
 
@@ -40,9 +40,9 @@ collectionRouter.get('/collection/updatelastday', admin, async (req: RequestAuth
     try {
         await updateLastTradingDay();
 
-        res.status(201).send();
+        return res.status(201).send();
     } catch (error) {
-        res.status(500).send(error);
+        return res.status(500).send(error);
     }
 });
 

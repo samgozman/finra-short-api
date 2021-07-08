@@ -81,10 +81,10 @@ topRouter.get('/top', auth, async (req: RequestAuth, res: Response) => {
             return b.shortVol - a.shortVol;
         });
 
-        res.send(top);
+        return res.send(top);
     } catch (error) {
         console.log(error);
-        res.status(404).send(error);
+        return res.status(404).send(error);
     }
 });
 
