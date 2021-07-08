@@ -3,6 +3,12 @@ import { Tinkoff } from 'tinkoff-api-securities';
 import { IFilter, Filter } from './models/Filter';
 import { Stock } from './models/Stock';
 
+/** Filtred ids result object */
+interface FiltredIds {
+    count: number;
+    ids: ObjectId[];
+}
+
 /** Filter keys */
 export type Filters = keyof IFilter & string;
 
@@ -44,9 +50,10 @@ async function resetFilter(key: Filters) {
  * @param keys Filtering key names. Multiple names to create union
  * @returns Promise array of ObjectId's
  */
-export async function getFilter(...keys: Filters[]): Promise<ObjectId[]> {
+export async function getFilter(...keys: Filters[]): Promise<FiltredIds> {
     // Convert filter keys to object like {key: true, ...}
     const keyPairs = keys.reduce((ac, a) => ({ ...ac, [a]: true }), {});
+    const count = await Filter.countDocuments(keyPairs);
     const stocks = await Filter.find(keyPairs);
     const ids: ObjectId[] = [];
 
@@ -54,13 +61,13 @@ export async function getFilter(...keys: Filters[]): Promise<ObjectId[]> {
         ids.push(stock._stock_id);
     }
 
-    return ids;
+    return { count, ids };
 }
 
 interface FilterUnit {
     filter: Filters;
     update(): Promise<void>;
-    get(): Promise<ObjectId[]>;
+    get(): Promise<FiltredIds>;
 }
 
 class VolumeFilter implements FilterUnit {
@@ -99,7 +106,7 @@ class VolumeFilter implements FilterUnit {
         }
     }
 
-    async get(): Promise<ObjectId[]> {
+    async get(): Promise<FiltredIds> {
         return await getFilter(this.filter);
     }
 }
@@ -125,7 +132,7 @@ class TinkoffFilter implements FilterUnit {
         }
     }
 
-    async get(): Promise<ObjectId[]> {
+    async get(): Promise<FiltredIds> {
         return await getFilter(this.filter);
     }
 }

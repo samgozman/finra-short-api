@@ -22,20 +22,23 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
                 .split(',')
                 .map((e) => e as Filters);
             const ids = await getFilter(...filtersArray);
+            const count = ids.count;
             const stocks = [];
-            for (const id of ids) {
+            for (const id of ids.ids) {
                 const stock = (await Stock.findById(id))!.ticker;
                 stocks.push(stock);
             }
-            return res.send(stocks);
+            return res.send({ count, stocks });
         } else {
+            const count = await Stock.estimatedDocumentCount();
             const stocks = (
                 await Stock.find({}, null, {
                     limit,
                     skip,
                 })
             ).map((e) => e.ticker);
-            return res.send(stocks);
+
+            return res.send({ count, stocks });
         }
     } catch (error) {
         return res.status(404).send('Filter request error!');
