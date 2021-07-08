@@ -9,6 +9,7 @@ import {
     updateLastTradingDay,
 } from '../utils/parse';
 import admin from '../middleware/admin';
+import { updateAllFilters } from '../filter';
 
 const collectionRouter = Router();
 
@@ -36,10 +37,18 @@ collectionRouter.get('/collection/recreate', admin, async (req: RequestAuth, res
     }
 });
 
-collectionRouter.get('/collection/updatelastday', admin, async (req: RequestAuth, res: Response) => {
+collectionRouter.get('/collection/update/lastday', admin, async (req: RequestAuth, res: Response) => {
     try {
         await updateLastTradingDay();
+        return res.status(201).send();
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+});
 
+collectionRouter.get('/collection/update/filters', admin, async (req: RequestAuth, res: Response) => {
+    try {
+        await updateAllFilters();
         return res.status(201).send();
     } catch (error) {
         return res.status(500).send(error);
