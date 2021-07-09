@@ -50,15 +50,9 @@ async function resetFilter(key: Filters) {
  * @param keys Filtering key names array. Multiple names to create union
  * @param limit Optional. Limit stocks per request
  * @param skip Optional. Number of stocks to skip
- * @param sort Optional. Sorting options
  * @returns Promise array of ObjectId's
  */
-export async function getFilter(
-    keys: Filters[],
-    limit?: number,
-    skip?: number,
-    sort?: any
-): Promise<FiltredIds> {
+export async function getFilter(keys: Filters[], limit?: number, skip?: number): Promise<FiltredIds> {
     // Convert filter keys to object like {key: true, ...}
     const keyPairs = keys.reduce((ac, a) => ({ ...ac, [a]: true }), {});
     // Count all documents
@@ -66,7 +60,6 @@ export async function getFilter(
     const stocks = await Filter.find(keyPairs, null, {
         limit,
         skip,
-        sort,
     });
     const ids: ObjectId[] = [];
 
