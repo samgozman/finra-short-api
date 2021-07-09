@@ -10,6 +10,7 @@ import {
 } from '../utils/parse';
 import admin from '../middleware/admin';
 import { updateAllFilters } from '../filter';
+import { averages } from '../utils/averages';
 
 const collectionRouter = Router();
 
@@ -49,6 +50,15 @@ collectionRouter.get('/collection/update/lastday', admin, async (req: RequestAut
 collectionRouter.get('/collection/update/filters', admin, async (req: RequestAuth, res: Response) => {
     try {
         await updateAllFilters();
+        return res.status(201).send();
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+});
+
+collectionRouter.get('/collection/update/averages', admin, async (req: RequestAuth, res: Response) => {
+    try {
+        await averages();
         return res.status(201).send();
     } catch (error) {
         return res.status(500).send(error);
