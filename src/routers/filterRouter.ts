@@ -1,6 +1,6 @@
 import { Router, Response } from 'express';
 import { RequestAuth } from '../middleware/RequestAuth';
-import { IStock, IStockDocument, Stock } from '../models/Stock';
+import { IStock, Stock } from '../models/Stock';
 import { getFilter, Filters } from '../filter';
 import auth from '../middleware/auth';
 import { sortObjectsArray } from '../utils/sortObjectsArray';

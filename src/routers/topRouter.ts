@@ -1,3 +1,6 @@
+// ! DEPRECATED !
+// ! USE filterRouter !
+
 import { Router, Response } from 'express';
 import { Tinkoff } from 'tinkoff-api-securities';
 import { Stock } from '../models/Stock';
