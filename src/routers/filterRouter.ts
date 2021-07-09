@@ -12,18 +12,17 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
     try {
         const limit = parseInt(req.query.limit as string) || 25;
         const skip = parseInt(req.query.skip as string) || 0;
-        let sort = (req.query.sort as string).replace(/\s/gm, '').split(':');
+        const sort = req.query.sort as string;
         const filters = req.query.filters as string;
-
         // Validate limit & skip
         if (limit > 100 || skip < 0) throw new Error();
-
         let sortObj = {};
         // Prepare sort
-        if (sort && sort.length > 0) {
-            const dir = sort[1] === 'asc' ? 'asc' : 'desc';
+        if (sort) {
+            const sortArr = sort.replace(/\s/gm, '').split(':');
+            const dir = sortArr[1] === 'asc' ? 'asc' : 'desc';
             sortObj = {
-                [sort[0]]: dir,
+                [sortArr[0]]: dir,
             };
         }
 
@@ -47,7 +46,7 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
                     totalVol20DAVG: stock.totalVol20DAVG,
                 });
             }
-            // ! need to sort stocks
+
             stocks = sortObjectsArray(stocks, sortObj);
             return res.send({ count, stocks });
         } else {
