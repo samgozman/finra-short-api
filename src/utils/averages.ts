@@ -19,6 +19,11 @@ export async function averages() {
         const volume = (await stock.getVirtual('volume', 20, 'desc')).volume;
 
         if (volume && volume.length > 1) {
+            // last day (copy just to be able to sort faster without population)
+            stock.totalVolLast = volume[0].totalVolume;
+            stock.shortVolRatioLast = (volume[0].shortVolume / volume[0].totalVolume) * 100;
+            stock.shortExemptVolRatioLast = (volume[0].shortExemptVolume / volume[0].totalVolume) * 100;
+
             // 5 days
             const vol5 = volume.slice(0, 5);
             stock.totalVol5DAVG = avgVol(vol5, 'totalVolume');

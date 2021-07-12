@@ -6,6 +6,9 @@ type SortDirs = 'desc' | 'acs';
 
 export interface IStock {
     ticker: string;
+    shortVolRatioLast: number;
+    shortExemptVolRatioLast: number;
+    totalVolLast: number;
     shortVolRatio5DAVG: number;
     shortExemptVolRatio5DAVG: number;
     totalVol5DAVG: number;
@@ -46,6 +49,9 @@ const stockSchema = new Schema<IStockDocument, IStockModel>(
             trim: true,
             set: (v: string) => v.replace(/p/g, '-').replace(/\//g, '.'),
         },
+        shortVolRatioLast: Number,
+        shortExemptVolRatioLast: Number,
+        totalVolLast: Number,
         shortVolRatio5DAVG: Number,
         shortExemptVolRatio5DAVG: Number,
         totalVol5DAVG: Number,
