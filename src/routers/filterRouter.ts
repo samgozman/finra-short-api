@@ -38,6 +38,9 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
                 const stock: IStock = (await Stock.findById(id))!;
                 stocks.push({
                     ticker: stock.ticker,
+                    totalVolLast: stock.totalVolLast,
+                    shortVolRatioLast: stock.shortVolRatioLast,
+                    shortExemptVolRatioLast: stock.shortExemptVolRatioLast,
                     shortVolRatio5DAVG: stock.shortVolRatio5DAVG,
                     shortExemptVolRatio5DAVG: stock.shortExemptVolRatio5DAVG,
                     totalVol5DAVG: stock.totalVol5DAVG,
@@ -60,6 +63,9 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
             ).map((e) => {
                 return {
                     ticker: e.ticker,
+                    totalVolLast: e.totalVolLast,
+                    shortVolRatioLast: e.shortVolRatioLast,
+                    shortExemptVolRatioLast: e.shortExemptVolRatioLast,
                     shortVolRatio5DAVG: e.shortVolRatio5DAVG,
                     shortExemptVolRatio5DAVG: e.shortExemptVolRatio5DAVG,
                     totalVol5DAVG: e.totalVol5DAVG,
