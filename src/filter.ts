@@ -117,7 +117,6 @@ class VolumeFilter implements FilterUnit {
     }
 }
 
-// ! Class inheritance need to be done //
 class TinkoffFilter implements FilterUnit {
     constructor(public filter: Filters = 'onTinkoff') {}
 
@@ -143,9 +142,42 @@ class TinkoffFilter implements FilterUnit {
     }
 }
 
+/** Filter new stocks with no data or incomplete */
+class IsNotGarbage implements FilterUnit {
+    constructor(public filter: Filters = 'isNotGarbage') {}
+
+    async update() {
+        await resetFilter(this.filter);
+        const allIds = await Stock.avalibleTickers();
+        let i = 0;
+        for (const _id of allIds) {
+            const stock = (await Stock.findById(_id))!;
+            const volume = (await stock.getVirtual('volume', 5, 'desc')).volume;
+            // Checks
+            const volumeIsAtLeast5 = volume.length === 5;
+            if (volumeIsAtLeast5) {
+                const total_isNotZero = volume.every((item) => item.totalVolume !== 0);
+                const averageIsAboveMinimum =
+                    volume.reduce((p, c) => p + c.totalVolume, 0) / volume.length >= 5000;
+                if (total_isNotZero && averageIsAboveMinimum) {
+                    i++;
+                    await updateFilter(_id, this.filter, true);
+                }
+            }
+        }
+
+        console.log('not g', i);
+    }
+
+    async get(): Promise<FiltredIds> {
+        return await getFilter([this.filter]);
+    }
+}
+
 /* FILTERS SECTION: START */
 
 export const onTinkoff = new TinkoffFilter();
+export const isNotGarbage = new IsNotGarbage();
 // 5 days
 export const shortVolGrows5D = new VolumeFilter('shortVolGrows5D', 'shortVolume', 'growing', 5);
 export const shortVolDecreases5D = new VolumeFilter('shortVolDecreases5D', 'shortVolume', 'decreasing', 5);
@@ -242,6 +274,7 @@ export const shortExemptVolRatioDecreases3D = new VolumeFilter(
 export async function updateAllFilters() {
     await Promise.all([
         onTinkoff.update(),
+        isNotGarbage.update(),
         // 5 days
         shortVolGrows5D.update(),
         shortVolDecreases5D.update(),

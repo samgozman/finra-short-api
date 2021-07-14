@@ -3,6 +3,8 @@ import { Schema, model, Document, Model } from 'mongoose';
 export interface IFilter {
     /** Stock is available on Tinkoff broker */
     onTinkoff: boolean;
+    /** Filter new stocks with no data or incomplete */
+    isNotGarbage: boolean;
     /** Short volume is growing 5 days in a row */
     shortVolGrows5D: boolean;
     /** Short volume is decreasing 5 days in a row */
@@ -57,6 +59,10 @@ const filterSchema = new Schema<IFilterDocument, IFilterModel>({
         ref: 'Stock',
     },
     onTinkoff: {
+        type: Boolean,
+        default: false,
+    },
+    isNotGarbage: {
         type: Boolean,
         default: false,
     },
