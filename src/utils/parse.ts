@@ -152,9 +152,13 @@ export const processLines = async (reports: FinraAssignedReports): Promise<Finra
 };
 
 export const updateLastTradingDay = async (): Promise<void> => {
-    const files = await getLinksToFiles('http://regsho.finra.org/regsho-Index.html');
-    const { [Object.keys(files).pop() as string]: currentDay } = files;
-    const reports = await getDataFromFile(currentDay);
-    let mongoArr = await processLines(reports);
-    await Volume.insertMany(mongoArr);
+    try {
+        const files = await getLinksToFiles('http://regsho.finra.org/regsho-Index.html');
+        const { [Object.keys(files).pop() as string]: currentDay } = files;
+        const reports = await getDataFromFile(currentDay);
+        let mongoArr = await processLines(reports);
+        await Volume.insertMany(mongoArr);
+    } catch (error) {
+        console.error('Error in updateLastTradingDay: ' + error);
+    }
 };

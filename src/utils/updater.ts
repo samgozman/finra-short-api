@@ -13,7 +13,7 @@ cron.schedule(
             await averages();
             await updateAllFilters();
         } catch (error) {
-            console.error('CRON FAILURE!');
+            console.error('CRON FAILURE!: ' + error);
         }
     },
     {

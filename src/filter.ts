@@ -272,30 +272,34 @@ export const shortExemptVolRatioDecreases3D = new VolumeFilter(
 /* FILTERS SECTION: END */
 
 export async function updateAllFilters() {
-    await Promise.all([
-        onTinkoff.update(),
-        isNotGarbage.update(),
-        // 5 days
-        shortVolGrows5D.update(),
-        shortVolDecreases5D.update(),
-        shortVolRatioGrows5D.update(),
-        shortVoRatiolDecreases5D.update(),
-        totalVolGrows5D.update(),
-        totalVolDecreases5D.update(),
-        shortExemptVolGrows5D.update(),
-        shortExemptVolDecreases5D.update(),
-        shortExemptVolRatioGrows5D.update(),
-        shortExemptVolRatioDecreases5D.update(),
-        // 3days
-        shortVolGrows3D.update(),
-        shortVolDecreases3D.update(),
-        shortVolRatioGrows3D.update(),
-        shortVoRatiolDecreases3D.update(),
-        totalVolGrows3D.update(),
-        totalVolDecreases3D.update(),
-        shortExemptVolGrows3D.update(),
-        shortExemptVolDecreases3D.update(),
-        shortExemptVolRatioGrows3D.update(),
-        shortExemptVolRatioDecreases3D.update(),
-    ]);
+    try {
+        await Promise.all([
+            onTinkoff.update(),
+            isNotGarbage.update(),
+            // 5 days
+            shortVolGrows5D.update(),
+            shortVolDecreases5D.update(),
+            shortVolRatioGrows5D.update(),
+            shortVoRatiolDecreases5D.update(),
+            totalVolGrows5D.update(),
+            totalVolDecreases5D.update(),
+            shortExemptVolGrows5D.update(),
+            shortExemptVolDecreases5D.update(),
+            shortExemptVolRatioGrows5D.update(),
+            shortExemptVolRatioDecreases5D.update(),
+            // 3days
+            shortVolGrows3D.update(),
+            shortVolDecreases3D.update(),
+            shortVolRatioGrows3D.update(),
+            shortVoRatiolDecreases3D.update(),
+            totalVolGrows3D.update(),
+            totalVolDecreases3D.update(),
+            shortExemptVolGrows3D.update(),
+            shortExemptVolDecreases3D.update(),
+            shortExemptVolRatioGrows3D.update(),
+            shortExemptVolRatioDecreases3D.update(),
+        ]);
+    } catch (error) {
+        console.error('Error in updateAllFilters: ' + error);
+    }
 }
