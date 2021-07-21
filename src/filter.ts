@@ -71,19 +71,14 @@ export async function getFilter(
     });
 
     // Find filtred stocks by id and sort
-    const sortedStocks: IStock[] = (
-        await Stock.find({}, null, {
-            limit,
-            skip,
-            sort,
-        })
-    ).filter((e) => {
-        if (ids.includes(e._id)) {
-            return hideUnsafeKeys(e);
-        } else {
-            return [];
-        }
-    });
+    const sortedStocks: IStock[] = await Stock.find({}, null, {
+        limit,
+        skip,
+        sort,
+    })
+        .where('_id')
+        .in(ids)
+        .exec();
     return { count: ids.length, stocks: sortedStocks };
 }
 
