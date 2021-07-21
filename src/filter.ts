@@ -64,27 +64,27 @@ export async function getFilter(
 ): Promise<IFiltredStocks> {
     // Convert filter keys to object like {key: true, ...}
     const keyPairs = keys.reduce((ac, a) => ({ ...ac, [a]: true }), {});
-    // Count all documents
-    const stocks = await Filter.find(keyPairs);
-    const ids: ObjectId[] = [];
 
-    // Array of ObjectId's
-    for (const stock of stocks) {
-        ids.push(stock._stock_id);
-    }
+    // Find all parents id's for selected filters
+    const ids: ObjectId[] = (await Filter.find(keyPairs)).map((e) => {
+        return e._stock_id;
+    });
 
     // Find filtred stocks by id and sort
-    const sortedStocks = (
+    const sortedStocks: IStock[] = (
         await Stock.find({}, null, {
             limit,
             skip,
             sort,
         })
-            .where('_id')
-            .in(ids)
-            .exec()
-    ).map((e) => hideUnsafeKeys(e));
-    return { count: stocks.length, stocks: sortedStocks };
+    ).filter((e) => {
+        if (ids.includes(e._id)) {
+            return hideUnsafeKeys(e);
+        } else {
+            return [];
+        }
+    });
+    return { count: ids.length, stocks: sortedStocks };
 }
 
 interface FilterUnit {
