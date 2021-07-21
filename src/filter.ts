@@ -1,12 +1,16 @@
 import { ObjectId } from 'mongoose';
 import { Tinkoff } from 'tinkoff-api-securities';
 import { IFilter, Filter } from './models/Filter';
-import { Stock } from './models/Stock';
+import { IStockDocument, Stock, IStock } from './models/Stock';
+import { hideUnsafeKeys } from './utils/hideUnsafeKeys';
 
-/** Filtred ids result object */
-interface FiltredIds {
+interface ISort {
+    [key: string]: 'asc' | 'desc';
+}
+
+export interface IFiltredStocks {
     count: number;
-    ids: ObjectId[];
+    stocks: IStock[];
 }
 
 /** Filter keys */
@@ -50,30 +54,43 @@ async function resetFilter(key: Filters) {
  * @param keys Filtering key names array. Multiple names to create union
  * @param limit Optional. Limit stocks per request
  * @param skip Optional. Number of stocks to skip
- * @returns Promise array of ObjectId's
+ * @returns Promise array of Stocks
  */
-export async function getFilter(keys: Filters[], limit?: number, skip?: number): Promise<FiltredIds> {
+export async function getFilter(
+    keys: Filters[],
+    limit?: number,
+    skip?: number,
+    sort?: ISort
+): Promise<IFiltredStocks> {
     // Convert filter keys to object like {key: true, ...}
     const keyPairs = keys.reduce((ac, a) => ({ ...ac, [a]: true }), {});
     // Count all documents
-    const count = await Filter.countDocuments(keyPairs);
-    const stocks = await Filter.find(keyPairs, null, {
-        limit,
-        skip,
-    });
+    const stocks = await Filter.find(keyPairs);
     const ids: ObjectId[] = [];
 
+    // Array of ObjectId's
     for (const stock of stocks) {
         ids.push(stock._stock_id);
     }
 
-    return { count, ids };
+    // Find filtred stocks by id and sort
+    const sortedStocks = (
+        await Stock.find({}, null, {
+            limit,
+            skip,
+            sort,
+        })
+            .where('_id')
+            .in(ids)
+            .exec()
+    ).map((e) => hideUnsafeKeys(e));
+    return { count: stocks.length, stocks: sortedStocks };
 }
 
 interface FilterUnit {
     filter: Filters;
     update(): Promise<void>;
-    get(): Promise<FiltredIds>;
+    get(): Promise<IFiltredStocks>;
 }
 
 class VolumeFilter implements FilterUnit {
@@ -112,7 +129,7 @@ class VolumeFilter implements FilterUnit {
         }
     }
 
-    async get(): Promise<FiltredIds> {
+    async get(): Promise<IFiltredStocks> {
         return await getFilter([this.filter]);
     }
 }
@@ -137,7 +154,7 @@ class TinkoffFilter implements FilterUnit {
         }
     }
 
-    async get(): Promise<FiltredIds> {
+    async get(): Promise<IFiltredStocks> {
         return await getFilter([this.filter]);
     }
 }
@@ -169,7 +186,7 @@ class IsNotGarbage implements FilterUnit {
         console.log('not g', i);
     }
 
-    async get(): Promise<FiltredIds> {
+    async get(): Promise<IFiltredStocks> {
         return await getFilter([this.filter]);
     }
 }

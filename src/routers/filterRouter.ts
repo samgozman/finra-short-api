@@ -3,7 +3,7 @@ import { RequestAuth } from '../middleware/RequestAuth';
 import { IStock, Stock } from '../models/Stock';
 import { getFilter, Filters } from '../filter';
 import auth from '../middleware/auth';
-import { sortObjectsArray } from '../utils/sortObjectsArray';
+import { hideUnsafeKeys } from '../utils/hideUnsafeKeys';
 
 const filterRouter = Router();
 
@@ -31,27 +31,8 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
                 .replace(/[^A-z0-9,]/g, '')
                 .split(',')
                 .map((e) => e as Filters);
-            const ids = await getFilter(filtersArray, limit, skip);
-            const count = ids.count;
-            let stocks: IStock[] = [];
-            for (const id of ids.ids) {
-                const stock: IStock = (await Stock.findById(id))!;
-                stocks.push({
-                    ticker: stock.ticker,
-                    totalVolLast: stock.totalVolLast,
-                    shortVolRatioLast: stock.shortVolRatioLast,
-                    shortExemptVolRatioLast: stock.shortExemptVolRatioLast,
-                    shortVolRatio5DAVG: stock.shortVolRatio5DAVG,
-                    shortExemptVolRatio5DAVG: stock.shortExemptVolRatio5DAVG,
-                    totalVol5DAVG: stock.totalVol5DAVG,
-                    shortVolRatio20DAVG: stock.shortVolRatio20DAVG,
-                    shortExemptVolRatio20DAVG: stock.shortExemptVolRatio20DAVG,
-                    totalVol20DAVG: stock.totalVol20DAVG,
-                });
-            }
-
-            stocks = sortObjectsArray(stocks, sortObj);
-            return res.send({ count, stocks });
+            const stocks = await getFilter(filtersArray, limit, skip, sortObj);
+            return res.send(stocks);
         } else {
             const count = await Stock.estimatedDocumentCount();
             const stocks: IStock[] = (
@@ -60,25 +41,12 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
                     skip,
                     sort: sortObj,
                 })
-            ).map((e) => {
-                return {
-                    ticker: e.ticker,
-                    totalVolLast: e.totalVolLast,
-                    shortVolRatioLast: e.shortVolRatioLast,
-                    shortExemptVolRatioLast: e.shortExemptVolRatioLast,
-                    shortVolRatio5DAVG: e.shortVolRatio5DAVG,
-                    shortExemptVolRatio5DAVG: e.shortExemptVolRatio5DAVG,
-                    totalVol5DAVG: e.totalVol5DAVG,
-                    shortVolRatio20DAVG: e.shortVolRatio20DAVG,
-                    shortExemptVolRatio20DAVG: e.shortExemptVolRatio20DAVG,
-                    totalVol20DAVG: e.totalVol20DAVG,
-                };
-            });
+            ).map((e) => hideUnsafeKeys(e));
 
             return res.send({ count, stocks });
         }
     } catch (error) {
-        return res.status(404).send('Filter request error!');
+        return res.status(404).send('Filter request error! ' + error);
     }
 });
 
