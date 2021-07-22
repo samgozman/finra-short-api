@@ -1,9 +1,9 @@
 import { ObjectId } from 'mongoose';
 import { Tinkoff } from 'tinkoff-api-securities';
-import { IFilter, Filter, IFilterModel } from './models/Filter';
+import { IFilter, Filter, IFilterDocument } from './models/Filter';
 import { Stock, IStock } from './models/Stock';
 
-interface ISort {
+export interface ISort {
     [key: string]: 'asc' | 'desc';
 }
 
@@ -69,11 +69,11 @@ export async function getFilter(
     const sortKey: string = Object.keys(sort)[0];
     const stockSortKey: string = `stock.${sortKey}`;
 
-    interface Aggregation extends IFilterModel {
+    interface Aggregation extends IFilterDocument {
         stock: IStock[];
     }
 
-    const aggr = (await Filter.aggregate([
+    const aggregation = (await Filter.aggregate([
         // 1 stage: find matches
         { $match: keyPairs },
         // 2 stage: lookup for their filters
@@ -94,7 +94,7 @@ export async function getFilter(
     ]).exec()) as Aggregation[];
 
     // 5 stage: map array to get only stocks collection
-    const sortedStocks: IStock[] = aggr.map((e) => {
+    const sortedStocks: IStock[] = aggregation.map((e) => {
         return e.stock[0];
     });
 

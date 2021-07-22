@@ -1,9 +1,8 @@
 import { Router, Response } from 'express';
 import { RequestAuth } from '../middleware/RequestAuth';
 import { IStock, Stock } from '../models/Stock';
-import { getFilter, Filters } from '../filter';
+import { getFilter, Filters, ISort } from '../filter';
 import auth from '../middleware/auth';
-import { hideUnsafeKeys } from '../utils/hideUnsafeKeys';
 
 const filterRouter = Router();
 
@@ -16,7 +15,7 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
         const filters = req.query.filters as string;
         // Validate limit & skip
         if (limit > 100 || skip < 0) throw new Error();
-        let sortObj = {};
+        let sortObj: ISort = {};
         // Prepare sort
         if (sort) {
             const sortArr = sort.replace(/\s/gm, '').split(':');
@@ -35,14 +34,14 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
             return res.send(stocks);
         } else {
             const count = await Stock.estimatedDocumentCount();
-            const stocks: IStock[] = (
-                await Stock.find({}, null, {
-                    limit,
-                    skip,
-                    sort: sortObj,
-                })
-            ).map((e) => hideUnsafeKeys(e));
-
+            const sortKey = Object.keys(sortObj)[0];
+            const stocks: IStock[] = await Stock.aggregate([
+                { $match: {} },
+                { $sort: { [sortKey]: sortObj[sortKey] === 'asc' ? 1 : -1 } },
+                { $limit: skip + limit },
+                { $skip: skip },
+                { $project: { _id: false, _stock_id: false, __v: false } },
+            ]);
             return res.send({ count, stocks });
         }
     } catch (error) {
