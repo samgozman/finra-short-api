@@ -1,8 +1,7 @@
 import { ObjectId } from 'mongoose';
 import { Tinkoff } from 'tinkoff-api-securities';
-import { IFilter, Filter } from './models/Filter';
-import { IStockDocument, Stock, IStock } from './models/Stock';
-import { hideUnsafeKeys } from './utils/hideUnsafeKeys';
+import { IFilter, Filter, IFilterModel } from './models/Filter';
+import { Stock, IStock } from './models/Stock';
 
 interface ISort {
     [key: string]: 'asc' | 'desc';
@@ -58,28 +57,48 @@ async function resetFilter(key: Filters) {
  */
 export async function getFilter(
     keys: Filters[],
-    limit?: number,
-    skip?: number,
-    sort?: ISort
+    limit: number = 25,
+    skip: number = 0,
+    sort: ISort = { ticker: 'asc' }
 ): Promise<IFiltredStocks> {
     // Convert filter keys to object like {key: true, ...}
     const keyPairs = keys.reduce((ac, a) => ({ ...ac, [a]: true }), {});
+    const count: number = await Filter.countDocuments(keyPairs);
 
-    // Find all parents id's for selected filters
-    const ids: ObjectId[] = (await Filter.find(keyPairs)).map((e) => {
-        return e._stock_id;
+    // Prepare sort for aggregation format
+    const sortKey: string = Object.keys(sort)[0];
+    const stockSortKey: string = `stock.${sortKey}`;
+
+    interface Aggregation extends IFilterModel {
+        stock: IStock[];
+    }
+
+    const aggr = (await Filter.aggregate([
+        // 1 stage: find matches
+        { $match: keyPairs },
+        // 2 stage: lookup for their filters
+        {
+            $lookup: {
+                from: Stock.collection.name,
+                localField: '_stock_id',
+                foreignField: '_id',
+                as: 'stock',
+            },
+        },
+        // 3 stage: sort and paginate aggregated data
+        { $sort: { [stockSortKey]: sort[sortKey] === 'asc' ? 1 : -1 } },
+        { $limit: skip + limit },
+        { $skip: skip },
+        // 4 stage: hide unsafe keys from aggregation
+        { $project: { stock: { _id: false, _stock_id: false, __v: false } } },
+    ]).exec()) as Aggregation[];
+
+    // 5 stage: map array to get only stocks collection
+    const sortedStocks: IStock[] = aggr.map((e) => {
+        return e.stock[0];
     });
 
-    // Find filtred stocks by id and sort
-    const sortedStocks: IStock[] = await Stock.find({}, null, {
-        limit,
-        skip,
-        sort,
-    })
-        .where('_id')
-        .in(ids)
-        .exec();
-    return { count: ids.length, stocks: sortedStocks };
+    return { count, stocks: sortedStocks };
 }
 
 interface FilterUnit {
