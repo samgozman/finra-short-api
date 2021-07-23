@@ -15,6 +15,9 @@ export interface IFiltredStocks {
 /** Filter keys */
 export type Filters = keyof IFilter & string;
 
+// Convert schema keys to an object of keys to hide for $project
+const filtersToHide = Object.keys(Filter.schema.paths).reduce((ac, a) => ({ ...ac, [a]: false }), {});
+
 /**
  * Function to update any filter
  * @param _stock_id Mongo ID of parent instacne from db.stocks
@@ -90,7 +93,7 @@ export async function getFilter(
         { $limit: skip + limit },
         { $skip: skip },
         // 4 stage: hide unsafe keys from aggregation
-        { $project: { stock: { _id: false, _stock_id: false, __v: false } } },
+        { $project: { ...filtersToHide, stock: { _id: false, _stock_id: false, __v: false } } },
     ]).exec()) as Aggregation[];
 
     // 5 stage: map array to get only stocks collection
