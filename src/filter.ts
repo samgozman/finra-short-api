@@ -2,6 +2,7 @@ import { ObjectId } from 'mongoose';
 import { Tinkoff } from 'tinkoff-api-securities';
 import { IFilter, Filter, IFilterDocument } from './models/Filter';
 import { Stock, IStock } from './models/Stock';
+import { lastDateTime } from './utils/lastDateTime';
 
 export interface ISort {
     [key: string]: 'asc' | 'desc';
@@ -183,13 +184,14 @@ class IsNotGarbage implements FilterUnit {
     async update() {
         await resetFilter(this.filter);
         const allIds = await Stock.avalibleTickers();
+        const lastDay = await lastDateTime();
         let i = 0;
         for (const _id of allIds) {
             const stock = (await Stock.findById(_id))!;
             const volume = (await stock.getVirtual('volume', 5, 'desc')).volume;
             // Checks
             const volumeIsAtLeast5 = volume.length === 5;
-            if (volumeIsAtLeast5) {
+            if (volumeIsAtLeast5 && lastDay === volume[0].date.getTime()) {
                 const total_isNotZero = volume.every((item) => item.totalVolume !== 0);
                 const averageIsAboveMinimum =
                     volume.reduce((p, c) => p + c.totalVolume, 0) / volume.length >= 5000;

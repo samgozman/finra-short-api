@@ -1,5 +1,6 @@
 import { Stock } from '../models/Stock';
 import { FinraReport } from '../models/Volume';
+import { lastDateTime } from './lastDateTime';
 
 // Calculate average volume
 const avgVol = (arr: FinraReport[], key: keyof FinraReport & string): number => {
@@ -13,13 +14,14 @@ const avgVol = (arr: FinraReport[], key: keyof FinraReport & string): number => 
 export async function averages() {
     try {
         const allIds = await Stock.avalibleTickers();
+        const latestDate = await lastDateTime();
 
-        // Find populate all stocks volumes
         for (const _id of allIds) {
             const stock = (await Stock.findById(_id))!;
             const volume = (await stock.getVirtual('volume', 20, 'desc')).volume;
 
-            if (volume && volume.length > 1) {
+            // Check that the volume array is exists and stock was traded during last day
+            if (volume && volume.length > 1 && volume[0].date.getTime() === latestDate) {
                 // last day (copy just to be able to sort faster without population)
                 stock.totalVolLast = volume[0].totalVolume;
                 stock.shortVolRatioLast = (volume[0].shortVolume / volume[0].totalVolume) * 100;
@@ -37,9 +39,19 @@ export async function averages() {
                 stock.shortVolRatio20DAVG = (avgVol(volume, 'shortVolume') / stock.totalVol20DAVG) * 100;
                 stock.shortExemptVolRatio20DAVG =
                     (avgVol(volume, 'shortExemptVolume') / stock.totalVol20DAVG) * 100;
-
-                await stock.save();
+            } else {
+                // Clear statistics
+                stock.totalVolLast = 0;
+                stock.shortVolRatioLast = 0;
+                stock.shortExemptVolRatioLast = 0;
+                stock.totalVol5DAVG = 0;
+                stock.shortVolRatio5DAVG = 0;
+                stock.shortExemptVolRatio5DAVG = 0;
+                stock.totalVol20DAVG = 0;
+                stock.shortVolRatio20DAVG = 0;
+                stock.shortExemptVolRatio20DAVG = 0;
             }
+            await stock.save();
         }
     } catch (error) {
         console.error('Error in averages: ' + error);
