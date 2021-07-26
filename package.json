@@ -35,7 +35,7 @@
         "moment-timezone": "^0.5.33",
         "mongoose": "^5.13.3",
         "node-cron": "^3.0.0",
-        "tinkoff-api-securities": "^1.0.2"
+        "tinkoff-api-securities": "^1.0.3"
     },
     "devDependencies": {
         "@types/bcryptjs": "^2.4.2",
