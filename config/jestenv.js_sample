@@ -1,0 +1,6 @@
+process.env.PORT = 3000;
+process.env.MONGODB_CONNECTION_URL = 'mongodb://127.0.0.1:27017/finra-short-api-test';
+process.env.NODE_ENV = 'development';
+process.env.JWT_SECRET = 'TestKey';
+process.env.ADMIN_KEY = 'AdminKey';
+process.env.SANDBOX_TOKEN = '';
