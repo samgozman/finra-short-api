@@ -3,10 +3,10 @@ import { Stock } from '../../src/models/Stock';
 import { User, IUser } from '../../src/models/User';
 import { Volume } from '../../src/models/Volume';
 
-export const userAdmin = new User({
+export const userAdmin: IUser = {
     login: 'Admin',
     pass: 'test1234',
-});
+};
 
 export const setupDB = async () => {
     // Wipe test database before each test
@@ -16,6 +16,7 @@ export const setupDB = async () => {
     await Filter.deleteMany();
 
     // 1. Setup default user to work with
-    userAdmin.token = await userAdmin.generateAuthToken();
-    await new User(userAdmin).save();
+    const user = new User(userAdmin);
+    user.token = await user.generateAuthToken();
+    await new User(user).save();
 };
