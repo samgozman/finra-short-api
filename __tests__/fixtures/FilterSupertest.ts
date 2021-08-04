@@ -1,7 +1,7 @@
 import supertest, { Response } from 'supertest';
 
-import { IRoutersFilter } from '../../src/routers/interface';
 import app from '../../src/app';
+import { IRoutersFilter } from '../../src/routers/interface';
 import { userAdmin } from './db';
 import { User } from '../../src/models/User';
 import { Filters, ISort } from '../../src/filter';
@@ -15,23 +15,32 @@ export class FilterSupertest {
     constructor(
         public limit: number = 25,
         public skip: number = 0,
-        public filters?: Filters[],
-        public sort: ISort = { ticker: 'asc' }
+        public sort: ISort = { ticker: 'asc' },
+        public filters?: Filters[]
     ) {}
 
-    async test(): Promise<ResponseFilter> {
+    /**
+     * Create filter request and test it's respose length
+     * @param expectedCount Total results (in DB) count
+     * @param expectedLength Number of stocks in response
+     * @returns
+     */
+    async test(expectedCount?: number, expectedLength?: number): Promise<ResponseFilter> {
         // Get user auth token for test
         const { token } = (await User.findOne({ login: userAdmin.login }))!;
         let filtersStr = '';
         if (this.filters) filtersStr = this.filters.toString();
         const sortStr = `${Object.keys(this.sort)[0]}:${Object.values(this.sort)[0]}`;
 
-        const filterLimit: ResponseFilter = await supertest(app)
+        const response: ResponseFilter = await supertest(app)
             .get(`/filter?limit=${this.limit}&skip=${this.skip}&sort=${sortStr}&filters=${filtersStr}`)
             .set('Authorization', `Bearer ${token}`)
             .send()
             .expect(200);
 
-        return filterLimit;
+        if (expectedCount) expect(response.body.count).toBe(expectedCount);
+        if (expectedLength) expect(response.body.stocks.length).toBe(expectedLength);
+
+        return response;
     }
 }
