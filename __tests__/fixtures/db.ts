@@ -1,3 +1,4 @@
+import '../../src/db/connection';
 import { Filter } from '../../src/models/Filter';
 import { Stock } from '../../src/models/Stock';
 import { User, IUser } from '../../src/models/User';

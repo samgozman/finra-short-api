@@ -1,9 +1,17 @@
+import mongoose from 'mongoose';
 import { server } from '../fixtures/dummyServer';
-import { getMonthlyPages, getLinksToFiles, getDataFromFile } from '../../src/utils/parse';
+import { setupDB } from '../fixtures/db';
+import { getMonthlyPages, getLinksToFiles, getDataFromFile, processLines } from '../../src/utils/parse';
 import { finraParsed } from '../fixtures/finraParsed';
 
-beforeAll(() => server);
-afterAll(() => server.close());
+beforeAll(async () => {
+    server;
+    await setupDB();
+});
+afterAll(async () => {
+    server.close();
+    await mongoose.connection.close();
+});
 
 const mounths = [
     'August',
@@ -55,9 +63,14 @@ test('Finra: Should get URL list for each day', async () => {
         // - Check day of the week name
         expect(dayOfTheWeek).toContain(parts[0]);
     }
-});
+}, 15000);
 
 test('Finra: Should parse finra report file', async () => {
     const file = await getDataFromFile('http://localhost:5000/TestFinraReport.txt');
     expect(file).toMatchObject(finraParsed);
 });
+
+test('Insert parsed report it database', async () => {
+    const documents = await processLines(finraParsed);
+    expect(documents.length).toBe(10);
+}, 10000);
