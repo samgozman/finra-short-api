@@ -105,24 +105,6 @@ export const getDataFromFile = async (url: string): Promise<FinraAssignedReports
 
 /**
  * @async
- * @return Promise of array of dates
- */
-export const getTradingDays = async (): Promise<moment.Moment[]> => {
-    const pages = await getMonthlyPages();
-    const fullDateObj: moment.Moment[] = [];
-    for (const page in pages) {
-        const daysObj = await getLinksToFiles(pages[page]);
-        Object.keys(daysObj).forEach((el) => {
-            const date = moment(+el.replace(/[A-z ]/g, '') + ' ' + page, 'DD MMM YYYY');
-            fullDateObj.push(date);
-        });
-    }
-
-    return fullDateObj;
-};
-
-/**
- * @async
  * @param reports
  * @return Array of FinraReport objects
  */
