@@ -1,4 +1,9 @@
-import { getMonthlyPages, getLinksToFiles } from '../../src/utils/parse';
+import { server } from '../fixtures/dummyServer';
+import { getMonthlyPages, getLinksToFiles, getDataFromFile } from '../../src/utils/parse';
+import { finraParsed } from '../fixtures/finraParsed';
+
+beforeAll(() => server);
+afterAll(() => server.close());
 
 const mounths = [
     'August',
@@ -50,4 +55,9 @@ test('Finra: Should get URL list for each day', async () => {
         // - Check day of the week name
         expect(dayOfTheWeek).toContain(parts[0]);
     }
+});
+
+test('Finra: Should parse finra report file', async () => {
+    const file = await getDataFromFile('http://localhost:5000/TestFinraReport.txt');
+    expect(file).toMatchObject(finraParsed);
 });
