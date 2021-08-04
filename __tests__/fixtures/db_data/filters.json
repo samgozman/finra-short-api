@@ -1,0 +1,961 @@
+[{
+  "_id": {
+    "$oid": "60efd0da20ae3cda32d5cc23"
+  },
+  "onTinkoff": true,
+  "isNotGarbage": true,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": true,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685346d"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0da20ae3cda32d5cc25"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685346d"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0da20ae3cda32d5cc27"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685346d"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0da20ae3cda32d5cc32"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685346d"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0da20ae3cda32d5cc34"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685346d"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0da20ae3cda32d5cc36"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685346d"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0da20ae3cda32d5cc3d"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685346d"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0da20ae3cda32d5cc3f"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685346d"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0da20ae3cda32d5cc41"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685346d"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0da20ae3cda32d5cc43"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685346d"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0da20ae3cda32d5cc45"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685346d"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0dc20ae3cda32d5d221"
+  },
+  "onTinkoff": true,
+  "isNotGarbage": true,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": true,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0dc20ae3cda32d5d223"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0dc20ae3cda32d5d225"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0dc20ae3cda32d5d227"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0dc20ae3cda32d5d229"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0dc20ae3cda32d5d231"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0dc20ae3cda32d5d233"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0dc20ae3cda32d5d235"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0dc20ae3cda32d5d23e"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0dc20ae3cda32d5d240"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0dc20ae3cda32d5d242"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0dc20ae3cda32d5d244"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0dc20ae3cda32d5d246"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": false,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0e420ae3cda32d5e3fd"
+  },
+  "onTinkoff": true,
+  "isNotGarbage": true,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": true,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": true,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae9a6baea6221768537e8"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd0f120ae3cda32d60029"
+  },
+  "onTinkoff": true,
+  "isNotGarbage": true,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": true,
+  "_stock_id": {
+    "$oid": "609aea28baea622176855139"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd10320ae3cda32d6250d"
+  },
+  "onTinkoff": true,
+  "isNotGarbage": true,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": true,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": true,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609ae9eabaea6221768544fa"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd11720ae3cda32d64a06"
+  },
+  "onTinkoff": true,
+  "isNotGarbage": true,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": true,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": true,
+  "_stock_id": {
+    "$oid": "609aea10baea622176854c70"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd13920ae3cda32d687fe"
+  },
+  "onTinkoff": true,
+  "isNotGarbage": true,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609aea39baea62217685548a"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd13a20ae3cda32d689dd"
+  },
+  "onTinkoff": true,
+  "isNotGarbage": true,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": true,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609bb81c8f08b04b11f6aa66"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd15420ae3cda32d6ba67"
+  },
+  "onTinkoff": true,
+  "isNotGarbage": true,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609aea39baea622176855489"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60efd9d620ae3cda32e08555"
+  },
+  "onTinkoff": false,
+  "isNotGarbage": true,
+  "shortVolGrows5D": false,
+  "shortVolDecreases5D": false,
+  "shortVolRatioGrows5D": false,
+  "shortVoRatiolDecreases5D": false,
+  "totalVolGrows5D": false,
+  "totalVolDecreases5D": false,
+  "shortExemptVolGrows5D": false,
+  "shortExemptVolDecreases5D": false,
+  "shortExemptVolRatioGrows5D": false,
+  "shortExemptVolRatioDecreases5D": false,
+  "shortVolGrows3D": false,
+  "shortVolDecreases3D": false,
+  "shortVolRatioGrows3D": false,
+  "shortVoRatiolDecreases3D": false,
+  "totalVolGrows3D": false,
+  "totalVolDecreases3D": false,
+  "shortExemptVolGrows3D": false,
+  "shortExemptVolDecreases3D": false,
+  "shortExemptVolRatioGrows3D": false,
+  "shortExemptVolRatioDecreases3D": false,
+  "_stock_id": {
+    "$oid": "609b9a738f08b04b11eb9e20"
+  },
+  "__v": 0
+}]

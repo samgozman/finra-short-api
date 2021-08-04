@@ -1,0 +1,151 @@
+[{
+  "_id": {
+    "$oid": "609ae995baea62217685346d"
+  },
+  "ticker": "AAL",
+  "__v": 0,
+  "shortExemptVolRatio20DAVG": 0.3365496161475757,
+  "shortExemptVolRatio5DAVG": 0.3699268431561841,
+  "shortVolRatio20DAVG": 42.17874275908321,
+  "shortVolRatio5DAVG": 40.417568643930515,
+  "totalVol20DAVG": 14928289.2,
+  "totalVol5DAVG": 11700313.4,
+  "shortExemptVolRatioLast": 0.2759423861183408,
+  "shortVolRatioLast": 42.496274183844406,
+  "totalVolLast": 17004999
+},{
+  "_id": {
+    "$oid": "609ae995baea62217685347c"
+  },
+  "ticker": "ABBV",
+  "__v": 0,
+  "shortExemptVolRatio20DAVG": 0.2439526509578177,
+  "shortExemptVolRatio5DAVG": 0.24566251670470668,
+  "shortVolRatio20DAVG": 39.39567534672964,
+  "shortVolRatio5DAVG": 32.50282430092812,
+  "totalVol20DAVG": 1849477.75,
+  "totalVol5DAVG": 2090428.8,
+  "shortExemptVolRatioLast": 0.01779008115567658,
+  "shortVolRatioLast": 27.10365138844899,
+  "totalVolLast": 1944904
+},{
+  "_id": {
+    "$oid": "609ae9a6baea6221768537e8"
+  },
+  "ticker": "BLUE",
+  "__v": 0,
+  "shortExemptVolRatio20DAVG": 0.38700703252603885,
+  "shortExemptVolRatio5DAVG": 0.22747134118130882,
+  "shortVolRatio20DAVG": 41.92862370342778,
+  "shortVolRatio5DAVG": 42.546190390513885,
+  "totalVol20DAVG": 288857.8,
+  "totalVol5DAVG": 373497.6,
+  "shortExemptVolRatioLast": 0.7276865919695714,
+  "shortVolRatioLast": 40.58299077295926,
+  "totalVolLast": 475342
+},{
+  "_id": {
+    "$oid": "609ae9eabaea6221768544fa"
+  },
+  "ticker": "KEY",
+  "__v": 0,
+  "shortExemptVolRatio20DAVG": 0.09838174760000772,
+  "shortExemptVolRatio5DAVG": 0.1843213631881179,
+  "shortVolRatio20DAVG": 56.340879905514385,
+  "shortVolRatio5DAVG": 58.774316529395975,
+  "totalVol20DAVG": 1737364.95,
+  "totalVol5DAVG": 1362077.6,
+  "shortExemptVolRatioLast": 0.106227620884478,
+  "shortVolRatioLast": 58.87046758602877,
+  "totalVolLast": 1409238
+},{
+  "_id": {
+    "$oid": "609bb81c8f08b04b11f6aa66"
+  },
+  "ticker": "POSH",
+  "__v": 0,
+  "shortExemptVolRatio20DAVG": 13.48676511233946,
+  "shortExemptVolRatio5DAVG": 8.695560984840364,
+  "shortVolRatio20DAVG": 59.97844742187406,
+  "shortVolRatio5DAVG": 48.25104424659973,
+  "totalVol20DAVG": 406308.7,
+  "totalVol5DAVG": 429113.2,
+  "shortExemptVolRatioLast": 3.8741681728292567,
+  "shortVolRatioLast": 68.13724858257424,
+  "totalVolLast": 387851
+},{
+  "_id": {
+    "$oid": "609aea10baea622176854c70"
+  },
+  "ticker": "RDS.A",
+  "__v": 0,
+  "shortExemptVolRatio20DAVG": 0.2172569793429997,
+  "shortExemptVolRatio5DAVG": 0.21729942830309218,
+  "shortVolRatio20DAVG": 36.04977377849536,
+  "shortVolRatio5DAVG": 28.721310043191234,
+  "totalVol20DAVG": 950970.6,
+  "totalVol5DAVG": 915695,
+  "shortExemptVolRatioLast": 0.09897848237635898,
+  "shortVolRatioLast": 27.935905712799258,
+  "totalVolLast": 1005269
+},{
+  "_id": {
+    "$oid": "609b9a738f08b04b11eb9e20"
+  },
+  "ticker": "SNOW",
+  "__v": 0,
+  "shortExemptVolRatio20DAVG": 0.26222586521891317,
+  "shortExemptVolRatio5DAVG": 0.06354933165594825,
+  "shortVolRatio20DAVG": 55.889340284346936,
+  "shortVolRatio5DAVG": 56.86569867083564,
+  "totalVol20DAVG": 1273310.7,
+  "totalVol5DAVG": 1143049,
+  "shortExemptVolRatioLast": 0.09192920130135505,
+  "shortVolRatioLast": 55.227867698715094,
+  "totalVolLast": 3178533
+},{
+  "_id": {
+    "$oid": "609aea28baea622176855139"
+  },
+  "ticker": "TSLA",
+  "__v": 0,
+  "shortExemptVolRatio20DAVG": 0.34159377036375577,
+  "shortExemptVolRatio5DAVG": 0.4138578170501905,
+  "shortVolRatio20DAVG": 41.0689686647464,
+  "shortVolRatio5DAVG": 37.91933993137197,
+  "totalVol20DAVG": 9829350.8,
+  "totalVol5DAVG": 11240188.8,
+  "shortExemptVolRatioLast": 0.3529716943892204,
+  "shortVolRatioLast": 40.744935759479716,
+  "totalVolLast": 9753190
+},{
+  "_id": {
+    "$oid": "609aea39baea622176855489"
+  },
+  "ticker": "ZYNE",
+  "__v": 0,
+  "shortExemptVolRatio20DAVG": 0.11848843978654354,
+  "shortExemptVolRatio5DAVG": 0.07076201397064755,
+  "shortVolRatio20DAVG": 13.26082336170355,
+  "shortVolRatio5DAVG": 7.50039907869832,
+  "totalVol20DAVG": 265131.35,
+  "totalVol5DAVG": 587603.4,
+  "shortExemptVolRatioLast": 0.004714751959672785,
+  "shortVolRatioLast": 2.1375021355052994,
+  "totalVolLast": 1802852
+},{
+  "_id": {
+    "$oid": "609aea39baea62217685548a"
+  },
+  "ticker": "ZYXI",
+  "__v": 0,
+  "shortExemptVolRatio20DAVG": 0.46986529098993307,
+  "shortExemptVolRatio5DAVG": 0.9057291200741684,
+  "shortVolRatio20DAVG": 47.36948003113744,
+  "shortVolRatio5DAVG": 50.65019407651297,
+  "totalVol20DAVG": 121268.8,
+  "totalVol5DAVG": 172148.6,
+  "shortExemptVolRatioLast": 0,
+  "shortVolRatioLast": 44.38798055678303,
+  "totalVolLast": 95046
+}]
