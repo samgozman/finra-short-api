@@ -57,6 +57,7 @@ const filterSchema = new Schema<IFilterDocument, IFilterModel>({
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'Stock',
+        unique: true,
     },
     onTinkoff: {
         type: Boolean,

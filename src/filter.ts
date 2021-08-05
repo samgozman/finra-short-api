@@ -21,6 +21,16 @@ export type Filters = keyof IFilter & string;
 const filtersToHide = Object.keys(Filter.schema.paths).reduce((ac, a) => ({ ...ac, [a]: false }), {});
 
 /**
+ * Create empty DB record for each stock
+ */
+async function createEmptyFilters() {
+    const allIds = await Stock.avalibleTickers();
+    for (const _id of allIds) {
+        await new Filter({ _stock_id: _id }).save();
+    }
+}
+
+/**
  * Function to update any filter
  * @param _stock_id Mongo ID of parent instacne from db.stocks
  * @param key Filtering key name
@@ -182,7 +192,7 @@ class IsNotGarbage implements FilterUnit {
         await resetFilter(this.filter);
         const allIds = await Stock.avalibleTickers();
         const lastDay = await lastDateTime();
-        let i = 0;
+
         for (const _id of allIds) {
             const stock = (await Stock.findById(_id))!;
             const volume = (await stock.getVirtual('volume', 5, 'desc')).volume;
@@ -193,13 +203,10 @@ class IsNotGarbage implements FilterUnit {
                 const averageIsAboveMinimum =
                     volume.reduce((p, c) => p + c.totalVolume, 0) / volume.length >= 5000;
                 if (total_isNotZero && averageIsAboveMinimum) {
-                    i++;
                     await updateFilter(_id, this.filter, true);
                 }
             }
         }
-
-        console.log('not g', i);
     }
 
     async get(): Promise<IFiltredStocks> {
@@ -306,6 +313,8 @@ export const shortExemptVolRatioDecreases3D = new VolumeFilter(
 
 export async function updateAllFilters() {
     try {
+        // Create empty filters before starting to update them in parallel
+        await createEmptyFilters();
         await Promise.all([
             onTinkoff.update(),
             isNotGarbage.update(),
