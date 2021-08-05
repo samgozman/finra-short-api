@@ -5,7 +5,8 @@ import { Stock, IStock } from './models/Stock';
 import { lastDateTime } from './utils/lastDateTime';
 
 export interface ISort {
-    [key: string]: 'asc' | 'desc';
+    field: keyof IStock;
+    dir: 'asc' | 'desc';
 }
 
 export interface IFiltredStocks {
@@ -63,15 +64,11 @@ export async function getFilter(
     keys: Filters[],
     limit: number = 25,
     skip: number = 0,
-    sort: ISort = { ticker: 'asc' }
+    sort: ISort = { field: 'ticker', dir: 'asc' }
 ): Promise<IFiltredStocks> {
     // Convert filter keys to object like {key: true, ...}
     const keyPairs = keys.reduce((ac, a) => ({ ...ac, [a]: true }), {});
     const count: number = await Filter.countDocuments(keyPairs);
-
-    // Prepare sort for aggregation format
-    const sortKey: string = Object.keys(sort)[0];
-    const stockSortKey: string = `stock.${sortKey}`;
 
     interface Aggregation extends IFilterDocument {
         stock: IStock[];
@@ -90,7 +87,7 @@ export async function getFilter(
             },
         },
         // 3 stage: sort and paginate aggregated data
-        { $sort: { [stockSortKey]: sort[sortKey] === 'asc' ? 1 : -1 } },
+        { $sort: { [`stock.${sort.field}`]: sort.dir === 'asc' ? 1 : -1 } },
         { $limit: skip + limit },
         { $skip: skip },
         // 4 stage: hide unsafe keys from aggregation

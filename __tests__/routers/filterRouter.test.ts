@@ -17,10 +17,10 @@ test('Filter: sort', async () => {
     const asc = ['AAL', 'ABBV', 'BLUE', 'KEY', 'POSH', 'RDS.A', 'SNOW', 'TSLA', 'ZYNE', 'ZYXI'];
     const desc = ['ZYXI', 'ZYNE', 'TSLA', 'SNOW', 'RDS.A', 'POSH', 'KEY', 'BLUE', 'ABBV', 'AAL'];
 
-    const sort_asc = await new FilterSupertest(20, 0, { ticker: 'asc' }).test();
+    const sort_asc = await new FilterSupertest(20, 0, { field: 'ticker', dir: 'asc' }).test();
     const tickers_asc = sort_asc.body.stocks.map((e) => e.ticker);
 
-    const sort_desc = await new FilterSupertest(20, 0, { ticker: 'desc' }).test();
+    const sort_desc = await new FilterSupertest(20, 0, { field: 'ticker', dir: 'desc' }).test();
     const tickers_desc = sort_desc.body.stocks.map((e) => e.ticker);
 
     expect(asc).toStrictEqual(tickers_asc);

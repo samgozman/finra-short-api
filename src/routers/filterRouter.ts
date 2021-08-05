@@ -13,15 +13,19 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
         const skip = parseInt(req.query.skip as string) || 0;
         const sort = req.query.sort as string;
         const filters = req.query.filters as string;
+
         // Validate limit & skip
         if (limit > 100 || skip < 0) throw new Error();
-        let sortObj: ISort = {};
+        let sortObj: ISort = { field: 'ticker', dir: 'asc' };
+
         // Prepare sort
         if (sort) {
             const sortArr = sort.replace(/\s/gm, '').split(':');
             const dir = sortArr[1] === 'asc' ? 'asc' : 'desc';
+            const field = sortArr[0] as keyof IStock;
             sortObj = {
-                [sortArr[0]]: dir,
+                field,
+                dir,
             };
         }
 
@@ -34,10 +38,9 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
             return res.send(stocks);
         } else {
             const count = await Stock.estimatedDocumentCount();
-            const sortKey = Object.keys(sortObj)[0];
             const stocks: IStock[] = await Stock.aggregate([
                 { $match: {} },
-                { $sort: { [sortKey]: sortObj[sortKey] === 'asc' ? 1 : -1 } },
+                { $sort: { [sortObj.field]: sortObj.dir === 'asc' ? 1 : -1 } },
                 { $limit: skip + limit },
                 { $skip: skip },
                 { $project: { _id: false, _stock_id: false, __v: false } },

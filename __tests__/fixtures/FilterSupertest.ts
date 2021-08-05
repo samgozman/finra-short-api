@@ -15,7 +15,7 @@ export class FilterSupertest {
     constructor(
         public limit: number = 25,
         public skip: number = 0,
-        public sort: ISort = { ticker: 'asc' },
+        public sort: ISort = { field: 'ticker', dir: 'asc' },
         public filters?: Filters[]
     ) {}
 
@@ -30,7 +30,7 @@ export class FilterSupertest {
         const { token } = (await User.findOne({ login: userAdmin.login }))!;
         let filtersStr = '';
         if (this.filters) filtersStr = this.filters.toString();
-        const sortStr = `${Object.keys(this.sort)[0]}:${Object.values(this.sort)[0]}`;
+        const sortStr = `${this.sort.field}:${this.sort.dir}`;
 
         const response: ResponseFilter = await supertest(app)
             .get(`/filter?limit=${this.limit}&skip=${this.skip}&sort=${sortStr}&filters=${filtersStr}`)
