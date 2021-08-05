@@ -24,6 +24,9 @@ const filtersToHide = Object.keys(Filter.schema.paths).reduce((ac, a) => ({ ...a
  * Create empty DB record for each stock
  */
 async function createEmptyFilters() {
+    // Drop collection before recreation
+    await Filter.collection.drop();
+
     const allIds = await Stock.avalibleTickers();
     for (const _id of allIds) {
         await new Filter({ _stock_id: _id }).save();
@@ -53,14 +56,6 @@ async function updateFilter(_stock_id: ObjectId, key: Filters, value: boolean = 
 
         await newFilter.save();
     }
-}
-
-/**
- * Reset filter (change all 'true' values on 'false')
- * @param key Filtering key name
- */
-async function resetFilter(key: Filters) {
-    await Filter.updateMany({ [key]: true }, { [key]: false });
 }
 
 /**
@@ -129,7 +124,6 @@ class VolumeFilter implements FilterUnit {
 
     /** Update filters in MongoDB */
     async update() {
-        await resetFilter(this.filter);
         const allIds = await Stock.avalibleTickers();
         for (const _id of allIds) {
             const stock = (await Stock.findById(_id))!;
@@ -163,7 +157,6 @@ class TinkoffFilter implements FilterUnit {
     constructor(public filter: Filters = 'onTinkoff') {}
 
     async update() {
-        await resetFilter(this.filter);
         const tinkoff = new Tinkoff(process.env.SANDBOX_TOKEN!);
         const onTinkoff = await tinkoff.stocks('USD');
         for (const tink of onTinkoff) {
@@ -189,7 +182,6 @@ class IsNotGarbage implements FilterUnit {
     constructor(public filter: Filters = 'isNotGarbage') {}
 
     async update() {
-        await resetFilter(this.filter);
         const allIds = await Stock.avalibleTickers();
         const lastDay = await lastDateTime();
 
