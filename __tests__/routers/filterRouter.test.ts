@@ -26,3 +26,24 @@ test('Filter: sort', async () => {
     expect(asc).toStrictEqual(tickers_asc);
     expect(desc).toStrictEqual(tickers_desc);
 });
+
+test('Filter: by one field', async () => {
+    await new FilterSupertest(20, 0, { field: 'ticker', dir: 'asc' }, ['isNotGarbage']).test(10);
+    await new FilterSupertest(20, 0, { field: 'ticker', dir: 'asc' }, ['onTinkoff']).test(9);
+    await new FilterSupertest(20, 0, { field: 'ticker', dir: 'asc' }, [
+        'shortExemptVolRatioDecreases3D',
+    ]).test(2);
+    await new FilterSupertest(20, 0, { field: 'ticker', dir: 'asc' }, ['shortVolGrows3D']).test(2);
+});
+
+test('Filter: by multiple fields', async () => {
+    await new FilterSupertest(20, 0, { field: 'ticker', dir: 'asc' }, ['onTinkoff', 'isNotGarbage']).test(9);
+    const complexQuery = await new FilterSupertest(20, 0, { field: 'ticker', dir: 'asc' }, [
+        'onTinkoff',
+        'isNotGarbage',
+        'shortVolGrows3D',
+        'totalVolGrows3D',
+    ]).test(1);
+
+    expect(complexQuery.body.stocks[0].ticker).toBe('KEY');
+});
