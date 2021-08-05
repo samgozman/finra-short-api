@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 import { Tinkoff } from 'tinkoff-api-securities';
 import { IFilter, Filter, IFilterDocument } from './models/Filter';
 import { Stock, IStock } from './models/Stock';
@@ -39,7 +39,7 @@ async function createEmptyFilters() {
  * @param key Filtering key name
  * @param value Filtering value (true or false)
  */
-async function updateFilter(_stock_id: ObjectId, key: Filters, value: boolean = true) {
+async function updateFilter(_stock_id: Types.ObjectId, key: Filters, value: boolean = true) {
     // Find filter for _stock_id
     const filter = await Filter.findOne({ _stock_id });
     if (filter) {
@@ -164,7 +164,7 @@ class TinkoffFilter implements FilterUnit {
             const { ticker } = tink;
             const stock = await Stock.findOne({ ticker });
             // Get ID
-            const _stock_id: ObjectId = stock?.id;
+            const _stock_id: Types.ObjectId = stock?.id;
             // Create record
             if (_stock_id) {
                 await updateFilter(_stock_id, this.filter, true);

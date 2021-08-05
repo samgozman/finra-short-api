@@ -1,4 +1,4 @@
-import { Schema, model, Document, Model } from 'mongoose';
+import { Schema, model, Document, Model, Types } from 'mongoose';
 
 export interface IFilter {
     /** Stock is available on Tinkoff broker */
@@ -48,13 +48,13 @@ export interface IFilter {
 }
 
 export interface IFilterDocument extends IFilter, Document {
-    _stock_id: Schema.Types.ObjectId;
+    _stock_id: Types.ObjectId;
 }
 export interface IFilterModel extends Model<IFilterDocument> {}
 
 const filterSchema = new Schema<IFilterDocument, IFilterModel>({
     _stock_id: {
-        type: Schema.Types.ObjectId,
+        type: Types.ObjectId,
         required: true,
         ref: 'Stock',
         unique: true,

@@ -1,4 +1,4 @@
-import { Schema, model, Document, Model, ObjectId } from 'mongoose';
+import { Schema, model, Document, Model, Types } from 'mongoose';
 import { StockPopulatedDocument } from './PopulatedVolume';
 
 type Virtuals = 'volume' | 'filter';
@@ -36,7 +36,7 @@ export interface IStockModel extends Model<IStockDocument> {
      * @async
      * @returns Promise array of stocks ObjectId's
      */
-    avalibleTickers(): Promise<ObjectId[]>;
+    avalibleTickers(): Promise<Types.ObjectId[]>;
 }
 
 const stockSchema = new Schema<IStockDocument, IStockModel>(
@@ -84,9 +84,9 @@ stockSchema.methods.getVirtual = async function (
     return this as StockPopulatedDocument;
 };
 
-stockSchema.statics.avalibleTickers = async function (): Promise<ObjectId[]> {
+stockSchema.statics.avalibleTickers = async function (): Promise<Types.ObjectId[]> {
     const stocks: IStockDocument[] = await Stock.find({});
-    return stocks.map((a: IStockDocument) => a._id as ObjectId);
+    return stocks.map((a: IStockDocument) => a._id as Types.ObjectId);
 };
 
 stockSchema.virtual('volume', {

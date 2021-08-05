@@ -1,4 +1,4 @@
-import { Schema, model, Document, Model } from 'mongoose';
+import { Schema, model, Document, Model, Types } from 'mongoose';
 import { toJSON } from '../utils/toJSON';
 
 export interface FinraReport {
@@ -14,7 +14,7 @@ export interface FinraAssignedReports {
 }
 
 export interface FinraMongo extends FinraReport {
-    _stock_id?: Schema.Types.ObjectId;
+    _stock_id?: Types.ObjectId;
 }
 
 // Finra volumes with mongoose Document properties
@@ -23,7 +23,7 @@ export interface IFinraModel extends Model<IFinraDocument> {}
 
 const volumeSchema = new Schema<IFinraDocument, IFinraModel>({
     _stock_id: {
-        type: Schema.Types.ObjectId,
+        type: Types.ObjectId,
         required: true,
         ref: 'Stock',
     },
