@@ -25,14 +25,9 @@ const filtersToHide = Object.keys(Filter.schema.paths).reduce((ac, a) => ({ ...a
  */
 async function createEmptyFilters() {
     // Drop collection before recreation
-    await Filter.collection
-        .drop()
-        .then(function () {
-            console.log('Filter collection was dropped.');
-        })
-        .catch(function () {
-            console.log('Filter collection do not exist yet.');
-        });
+    await Filter.collection.drop().catch(function () {
+        console.log('Filter collection do not exist yet.');
+    });
 
     const allIds = await Stock.avalibleTickers();
     for (const _id of allIds) {
