@@ -39,11 +39,11 @@ const fixDb = (element: BaseId) => {
     return s;
 };
 
-export const db_fill = async () => {
+export const db_fill = async (nofilters = false) => {
     await setupDB();
     await Stock.insertMany(stocks.map(fixDb));
     await Volume.insertMany(volumes.map(fixDb));
-    await Filter.insertMany(filters.map(fixDb));
+    if (!nofilters) await Filter.insertMany(filters);
 };
 
 // Stock

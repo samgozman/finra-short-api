@@ -3,9 +3,11 @@ import mongoose from 'mongoose';
 import { db_fill } from '../fixtures/db_fill';
 import { FilterSupertest } from '../fixtures/FilterSupertest';
 
-beforeAll(db_fill, 30000);
-afterAll(() => {
-    mongoose.connection.close();
+beforeAll(async () => {
+    await db_fill();
+}, 30000);
+afterAll(async () => {
+    await mongoose.connection.close();
 });
 
 test('Filter: limit and skip', async () => {
