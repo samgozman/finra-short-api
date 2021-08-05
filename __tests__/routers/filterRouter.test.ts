@@ -47,3 +47,13 @@ test('Filter: by multiple fields', async () => {
 
     expect(complexQuery.body.stocks[0].ticker).toBe('KEY');
 });
+
+test('Filter: by multiple fields with sorting and pagination', async () => {
+    const testArray = ['BLUE', 'POSH', 'ZYXI', 'KEY'];
+    const { body } = await new FilterSupertest(5, 5, { field: 'shortVolRatio5DAVG', dir: 'asc' }, [
+        'onTinkoff',
+        'isNotGarbage',
+    ]).test(9, 4);
+
+    expect(body.stocks.map((e) => e.ticker)).toStrictEqual(testArray);
+});
