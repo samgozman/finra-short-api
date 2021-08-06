@@ -4,6 +4,8 @@ import { db_fill } from './fixtures/db_fill';
 import { updateAllFilters, getFilter } from '../src/filter';
 import { Filter } from '../src/models/Filter';
 
+jest.setTimeout(100000);
+
 beforeAll(async () => {
     await db_fill(true);
 }, 30000);
@@ -17,7 +19,7 @@ test('Test recreation of filters', async () => {
 
     const filter = await Filter.findOne({ _stock_id: new Types.ObjectId('609ae9a6baea6221768537e8') });
     expect(filter).not.toBeNull();
-}, 30000);
+});
 
 test('Should get filter by `getFilter` function', async () => {
     const filter = await getFilter(['onTinkoff', 'isNotGarbage', 'shortVolGrows3D', 'totalVolGrows3D']);

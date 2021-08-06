@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import { db_fill } from '../fixtures/db_fill';
 import { FilterSupertest } from '../fixtures/FilterSupertest';
 
+jest.setTimeout(100000);
+
 beforeAll(async () => {
     await db_fill();
 }, 30000);
