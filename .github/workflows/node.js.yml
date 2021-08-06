@@ -21,4 +21,11 @@ jobs:
                   node-version: ${{ matrix.node }}
             - run: npm install
             - run: npm run build
-            - run: npm run test
+            - name: Run test
+                env: 
+                    PORT: ${{ secrets.PORT }}
+                    MONGODB_CONNECTION_URL: ${{ secrets.MONGODB_CONNECTION_URL }}
+                    JWT_SECRET: ${{ secrets.JWT_SECRET }}
+                    ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+                    SANDBOX_TOKEN: ${{ secrets.SANDBOX_TOKEN }}
+                run: npm run test
