@@ -105,4 +105,3 @@ dist
 
 *.env
 lib/
-config/jestenv.js

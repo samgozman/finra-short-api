@@ -4,6 +4,6 @@
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
-    "setupFiles": ["<rootDir>/config/jestenv.js"],
+    "globalSetup": "<rootDir>/config/jestenv.ts",
     "modulePathIgnorePatterns": ["<rootDir>/__tests__/fixtures"]
 }
