@@ -19,13 +19,12 @@ jobs:
               uses: actions/setup-node@v2
               with:
                   node-version: ${{ matrix.node }}
+              env:
+                  PORT: ${{ secrets.PORT }}
+                  MONGODB_CONNECTION_URL: ${{ secrets.MONGODB_CONNECTION_URL }}
+                  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+                  ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+                  SANDBOX_TOKEN: ${{ secrets.SANDBOX_TOKEN }}
             - run: npm install
             - run: npm run build
-            - name: Run test
-                env: 
-                    PORT: ${{ secrets.PORT }}
-                    MONGODB_CONNECTION_URL: ${{ secrets.MONGODB_CONNECTION_URL }}
-                    JWT_SECRET: ${{ secrets.JWT_SECRET }}
-                    ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
-                    SANDBOX_TOKEN: ${{ secrets.SANDBOX_TOKEN }}
-                run: npm run test
+            - run: npm run test
