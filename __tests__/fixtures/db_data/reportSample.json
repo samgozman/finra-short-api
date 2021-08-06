@@ -1,0 +1,141 @@
+{
+    "ticker": "ZYNE",
+    "shortExemptVolRatio20DAVG": 0.11848843978654354,
+    "shortExemptVolRatio5DAVG": 0.07076201397064755,
+    "shortVolRatio20DAVG": 13.26082336170355,
+    "shortVolRatio5DAVG": 7.50039907869832,
+    "totalVol20DAVG": 265131.35,
+    "totalVol5DAVG": 587603.4,
+    "shortExemptVolRatioLast": 0.004714751959672785,
+    "shortVolRatioLast": 2.1375021355052994,
+    "totalVolLast": 1802852,
+    "volume": [
+        {
+            "shortVolume": 38536,
+            "shortExemptVolume": 85,
+            "totalVolume": 1802852,
+            "date": "2021-08-03T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 40336,
+            "shortExemptVolume": 0,
+            "totalVolume": 242801,
+            "date": "2021-08-02T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 39503,
+            "shortExemptVolume": 1880,
+            "totalVolume": 428155,
+            "date": "2021-07-30T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 34281,
+            "shortExemptVolume": 64,
+            "totalVolume": 112554,
+            "date": "2021-07-29T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 67707,
+            "shortExemptVolume": 50,
+            "totalVolume": 351655,
+            "date": "2021-07-28T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 93869,
+            "shortExemptVolume": 243,
+            "totalVolume": 403886,
+            "date": "2021-07-27T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 26715,
+            "shortExemptVolume": 508,
+            "totalVolume": 304376,
+            "date": "2021-07-26T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 11108,
+            "shortExemptVolume": 74,
+            "totalVolume": 78272,
+            "date": "2021-07-23T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 14633,
+            "shortExemptVolume": 6,
+            "totalVolume": 62499,
+            "date": "2021-07-22T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 23255,
+            "shortExemptVolume": 20,
+            "totalVolume": 75891,
+            "date": "2021-07-21T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 26049,
+            "shortExemptVolume": 196,
+            "totalVolume": 100480,
+            "date": "2021-07-20T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 28112,
+            "shortExemptVolume": 50,
+            "totalVolume": 142518,
+            "date": "2021-07-19T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 22644,
+            "shortExemptVolume": 98,
+            "totalVolume": 98291,
+            "date": "2021-07-16T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 30592,
+            "shortExemptVolume": 1336,
+            "totalVolume": 216845,
+            "date": "2021-07-15T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 39573,
+            "shortExemptVolume": 1257,
+            "totalVolume": 178428,
+            "date": "2021-07-14T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 26875,
+            "shortExemptVolume": 416,
+            "totalVolume": 101826,
+            "date": "2021-07-13T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 33344,
+            "shortExemptVolume": 0,
+            "totalVolume": 209568,
+            "date": "2021-07-12T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 36711,
+            "shortExemptVolume": 0,
+            "totalVolume": 113056,
+            "date": "2021-07-09T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 25390,
+            "shortExemptVolume": 0,
+            "totalVolume": 111302,
+            "date": "2021-07-08T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 43939,
+            "shortExemptVolume": 0,
+            "totalVolume": 167372,
+            "date": "2021-07-07T04:00:00.000Z"
+        },
+        {
+            "shortVolume": 124486,
+            "shortExemptVolume": 231,
+            "totalVolume": 345732,
+            "date": "2021-07-06T04:00:00.000Z"
+        }
+    ],
+    "version": "1.1.2"
+}
