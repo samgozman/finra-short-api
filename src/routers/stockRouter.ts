@@ -1,11 +1,15 @@
 import { Router, Response } from 'express';
 import { RequestAuth } from '../middleware/RequestAuth';
-import { Stock } from '../models/Stock';
+import { IStockDocument, Stock } from '../models/Stock';
+import { IRoutersStock, IStockExtension } from './interface';
 import auth from '../middleware/auth';
+import { LeanDocument } from 'mongoose';
+
+interface StockStringified extends LeanDocument<IStockDocument>, IStockExtension {}
 
 const stockRouter = Router();
 
-stockRouter.get('/stock', auth, async (req: RequestAuth, res: Response) => {
+stockRouter.get('/stock', auth, async (req: RequestAuth, res: Response<IRoutersStock>) => {
     try {
         const ticker = req.query.ticker;
         const limit = req.query.limit;
@@ -28,7 +32,7 @@ stockRouter.get('/stock', auth, async (req: RequestAuth, res: Response) => {
                 })
                 .execPopulate();
 
-            const stockJson = stock.toJSON({
+            const stockJson: StockStringified = stock.toJSON({
                 virtuals: true,
             });
 
@@ -37,13 +41,12 @@ stockRouter.get('/stock', auth, async (req: RequestAuth, res: Response) => {
             delete stockJson.__v;
 
             stockJson.version = process.env.npm_package_version;
-
             return res.send(stockJson);
         } else {
             throw new Error();
         }
     } catch (error) {
-        return res.status(404).send('Stock is not found!');
+        return res.status(404).send();
     }
 });
 
