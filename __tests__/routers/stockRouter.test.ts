@@ -14,7 +14,7 @@ interface ResponseStock extends Response {
 }
 
 beforeAll(async () => {
-    await db_fill();
+    await db_fill(true);
 }, 30000);
 afterAll(async () => {
     await connection.close();

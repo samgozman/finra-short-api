@@ -2,12 +2,13 @@ import { Router, Response } from 'express';
 import { RequestAuth } from '../middleware/RequestAuth';
 import { IStock, Stock } from '../models/Stock';
 import { getFilter, Filters, ISort } from '../filter';
+import { IRoutersFilter } from './interface';
 import auth from '../middleware/auth';
 
 const filterRouter = Router();
 
 // GET /filter?limit=10&skip=0
-filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
+filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response<IRoutersFilter>) => {
     try {
         const limit = parseInt(req.query.limit as string) || 25;
         const skip = parseInt(req.query.skip as string) || 0;
@@ -48,7 +49,7 @@ filterRouter.get('/filter', auth, async (req: RequestAuth, res: Response) => {
             return res.send({ count, stocks });
         }
     } catch (error) {
-        return res.status(404).send('Filter request error! ' + error);
+        return res.status(404).send();
     }
 });
 
