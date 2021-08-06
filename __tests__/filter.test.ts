@@ -4,7 +4,7 @@ import { db_fill } from './fixtures/db_fill';
 import { updateAllFilters, getFilter } from '../src/filter';
 import { Filter } from '../src/models/Filter';
 
-jest.setTimeout(100000);
+jest.setTimeout(1500000);
 
 beforeAll(async () => {
     await db_fill(true);
@@ -13,6 +13,7 @@ afterAll(async () => {
     await connection.close();
 });
 
+// Long running test
 test('Test recreation of filters', async () => {
     await updateAllFilters();
     expect(await Filter.countDocuments()).toBe(10);
