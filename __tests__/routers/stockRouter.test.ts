@@ -21,6 +21,7 @@ afterAll(async () => {
 });
 
 test('Stock: should get stock on response', async () => {
+    reportSample.version = process.env.npm_package_version!;
     const { token } = (await User.findOne({ login: userAdmin.login }))!;
     const response: ResponseStock = await supertest(app)
         .get('/stock?ticker=ZYNE&limit=21&sort=desc')
