@@ -13,17 +13,17 @@ export interface FinraAssignedReports {
     [ticker: string]: FinraReport;
 }
 
-export interface FinraMongo extends FinraReport {
-    _stock_id?: Types.ObjectId;
+export interface IFinraMongo extends FinraReport {
+    _stock_id: Types.ObjectId;
 }
 
 // Finra volumes with mongoose Document properties
-export interface IFinraDocument extends FinraMongo, Document {}
+export interface IFinraDocument extends IFinraMongo, Document {}
 export interface IFinraModel extends Model<IFinraDocument> {}
 
-const volumeSchema = new Schema<IFinraDocument, IFinraModel>({
+const volumeSchema = new Schema<IFinraDocument, IFinraModel, IFinraMongo>({
     _stock_id: {
-        type: Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
         ref: 'Stock',
     },

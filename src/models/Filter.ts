@@ -1,6 +1,8 @@
 import { Schema, model, Document, Model, Types } from 'mongoose';
 
 export interface IFilter {
+    /** Parent stock id */
+    _stock_id: Types.ObjectId;
     /** Stock is available on Tinkoff broker */
     onTinkoff: boolean;
     /** Filter new stocks with no data or incomplete */
@@ -47,14 +49,12 @@ export interface IFilter {
     shortExemptVolRatioDecreases3D: boolean;
 }
 
-export interface IFilterDocument extends IFilter, Document {
-    _stock_id: Types.ObjectId;
-}
+export interface IFilterDocument extends IFilter, Document {}
 export interface IFilterModel extends Model<IFilterDocument> {}
 
-const filterSchema = new Schema<IFilterDocument, IFilterModel>({
+const filterSchema = new Schema<IFilterDocument, IFilterModel, IFilter>({
     _stock_id: {
-        type: Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
         ref: 'Stock',
         unique: true,

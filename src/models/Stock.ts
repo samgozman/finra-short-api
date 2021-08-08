@@ -39,7 +39,7 @@ export interface IStockModel extends Model<IStockDocument> {
     avalibleTickers(): Promise<Types.ObjectId[]>;
 }
 
-const stockSchema = new Schema<IStockDocument, IStockModel>(
+const stockSchema = new Schema<IStockDocument, IStockModel, IStock>(
     {
         ticker: {
             type: String,
@@ -86,7 +86,7 @@ stockSchema.methods.getVirtual = async function (
 
 stockSchema.statics.avalibleTickers = async function (): Promise<Types.ObjectId[]> {
     const stocks: IStockDocument[] = await Stock.find({});
-    return stocks.map((a: IStockDocument) => a._id as Types.ObjectId);
+    return stocks.map((a) => a._id);
 };
 
 stockSchema.virtual('volume', {

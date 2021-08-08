@@ -15,7 +15,7 @@ export interface IUserDocument extends IUser, Document {
 
 export interface IUserModel extends Model<IUserDocument> {}
 
-const userSchema = new Schema<IUserDocument, IUserModel>({
+const userSchema = new Schema<IUserDocument, IUserModel, IUser>({
     login: {
         type: String,
         required: true,

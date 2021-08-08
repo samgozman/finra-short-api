@@ -3,7 +3,7 @@ import cheerio from 'cheerio';
 import moment from 'moment-timezone';
 
 import { Stock, IStockDocument } from '../models/Stock';
-import { Volume, FinraAssignedReports, FinraMongo } from '../models/Volume';
+import { Volume, FinraAssignedReports, IFinraMongo } from '../models/Volume';
 
 moment.tz.setDefault('America/New_York');
 
@@ -108,8 +108,8 @@ export const getDataFromFile = async (url: string): Promise<FinraAssignedReports
  * @param reports
  * @return Array of FinraReport objects
  */
-export const processLines = async (reports: FinraAssignedReports): Promise<FinraMongo[]> => {
-    let mongoArr: FinraMongo[] = [];
+export const processLines = async (reports: FinraAssignedReports): Promise<IFinraMongo[]> => {
+    let mongoArr: IFinraMongo[] = [];
     for (const report in reports) {
         // Try to find existing
         let stock: IStockDocument | null = await Stock.findOne({

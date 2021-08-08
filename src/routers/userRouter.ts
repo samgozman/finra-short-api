@@ -20,9 +20,7 @@ userRouter.post('/user/add', admin, async (req: RequestAuth, res: Response) => {
             token,
         });
     } catch (error) {
-        return res.status(404).send({
-            error: error.message,
-        });
+        return res.status(404).send();
     }
 });
 
@@ -39,9 +37,7 @@ userRouter.get('/user/list', admin, async (req: RequestAuth, res: Response) => {
 
         return res.send(users);
     } catch (error) {
-        return res.status(404).send({
-            error: error.message,
-        });
+        return res.status(404).send();
     }
 });
 

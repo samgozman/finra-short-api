@@ -11,9 +11,7 @@ const admin = async (req: RequestAuth, res: Response, next: NextFunction) => {
         req.token = token;
         next();
     } catch (error) {
-        res.status(401).send({
-            error: 'Admin access only!',
-        });
+        res.status(401).send();
     }
 };
 

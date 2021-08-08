@@ -1,14 +1,8 @@
 import { IStock } from '../../models/Stock';
-
-interface IVolumeReport {
-    shortVolume: number;
-    shortExemptVolume: number;
-    totalVolume: number;
-    date: string;
-}
+import { FinraReport } from '../../models/Volume';
 
 export interface IStockExtension {
-    volume?: IVolumeReport[];
+    volume?: FinraReport[];
     version?: string | undefined;
 }
 
