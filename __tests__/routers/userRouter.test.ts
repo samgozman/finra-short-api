@@ -32,3 +32,11 @@ test('Should register new user and get his token', async () => {
     expect(typeof body.token).toBe('string');
     expect(typeof body.token).not.toBeNull();
 });
+
+test('Should get 401 on wrong auth', async () => {
+    // Wrong auth
+    await supertest(app).get('/user/list').set('Authorization', 'Bearer 121232323').send().expect(401);
+
+    // No auth
+    await supertest(app).get('/user/list').send().expect(401);
+});
