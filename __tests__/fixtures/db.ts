@@ -11,10 +11,10 @@ export const userAdmin: IUser = {
 
 export const setupDB = async () => {
     // Wipe test database before each test
-    await User.deleteMany();
-    await Volume.deleteMany();
-    await Stock.deleteMany();
-    await Filter.deleteMany();
+    await User.collection.drop().catch(() => {});
+    await Volume.collection.drop().catch(() => {});
+    await Stock.collection.drop().catch(() => {});
+    await Filter.collection.drop().catch(() => {});
 
     // 1. Setup default user to work with
     const user = new User(userAdmin);
