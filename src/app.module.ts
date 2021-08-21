@@ -1,6 +1,6 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_PIPE } from '@nestjs/core';
+import { APP_PIPE, APP_FILTER } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,6 +10,7 @@ import { StocksModule } from './stocks/stocks.module';
 import { VolumesModule } from './volumes/volumes.module';
 import { FiltersModule } from './filters/filters.module';
 import { CollectionModule } from './collection/collection.module';
+import { MongoExceptionFilter } from './exceptions/mongo-exception.filter';
 
 @Module({
 	imports: [
@@ -23,6 +24,10 @@ import { CollectionModule } from './collection/collection.module';
 			useFactory: (config: ConfigService) => {
 				return {
 					uri: config.get('MONGODB_CONNECTION_URL'),
+					useNewUrlParser: true,
+					useUnifiedTopology: true,
+					useCreateIndex: true,
+					useFindAndModify: false,
 				};
 			},
 		}),
@@ -42,6 +47,10 @@ import { CollectionModule } from './collection/collection.module';
 				// Check that incoming request don't have unexpected keys (removes them)
 				whitelist: true,
 			}),
+		},
+		{
+			provide: APP_FILTER,
+			useClass: MongoExceptionFilter,
 		},
 	],
 })
