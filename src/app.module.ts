@@ -5,11 +5,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { configValidationSchema } from './config.schema';
-import { UsersModule } from './users/users.module';
-import { StocksModule } from './stocks/stocks.module';
-import { VolumesModule } from './volumes/volumes.module';
-import { FiltersModule } from './filters/filters.module';
-import { CollectionModule } from './collection/collection.module';
+import { UsersModule } from './models/users/users.module';
+import { StocksModule } from './models/stocks/stocks.module';
+import { VolumesModule } from './models/volumes/volumes.module';
+import { FiltersModule } from './models/filters/filters.module';
+import { CollectionModule } from './models/collection/collection.module';
 import { MongoExceptionFilter } from './exceptions/mongo-exception.filter';
 
 @Module({
