@@ -1,8 +1,11 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { UserDto } from './dtos/user.dto';
 import { UsersService } from './users.service';
 
 @Controller('user')
+@Serialize(UserDto)
 export class UsersController {
 	constructor(private usersService: UsersService) {}
 
@@ -19,6 +22,6 @@ export class UsersController {
 
 	@Get('/list')
 	getUsersList() {
-		return 'Users list';
+		return this.usersService.listAllUsers();
 	}
 }

@@ -25,4 +25,8 @@ export class UsersService {
 
 		return token;
 	}
+
+	listAllUsers() {
+		return this.userModel.find({});
+	}
 }
