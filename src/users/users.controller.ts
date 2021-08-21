@@ -9,7 +9,7 @@ export class UsersController {
 	@Post('/register')
 	createUser(@Body() body: CreateUserDto) {
 		// ! Should return auth token for now
-		return this.usersService.create(body.login, body.pass);
+		return this.usersService.create(body);
 	}
 
 	@Post('/login')

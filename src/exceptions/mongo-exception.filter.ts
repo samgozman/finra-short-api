@@ -12,17 +12,17 @@ export class MongoExceptionFilter implements ExceptionFilter {
 			response.status(status).json({
 				statusCode: status,
 				path: request.url,
-				errorType: type,
-				errorMessage: message,
+				error: type,
+				message: message,
 			});
 		};
-
-		// exception.message
 
 		switch (exception.code) {
 			case 11000:
 				errorMessage(400, 'MongoDB error', 'Duplicate key');
 				break;
+			default:
+				errorMessage(500, `MongoDB ${exception.code} error`, exception.message);
 		}
 	}
 }
