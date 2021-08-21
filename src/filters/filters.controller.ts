@@ -1,4 +1,13 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
+import { GetFiltredStocksDto } from './dtos/get-filtred-stocks.dto';
+import { FiltersService } from './filters.service';
 
-@Controller('filters')
-export class FiltersController {}
+@Controller('filter')
+export class FiltersController {
+	constructor(filtersService: FiltersService) {}
+
+	@Get()
+	getFilter(@Query() query: GetFiltredStocksDto) {
+		return query;
+	}
+}
