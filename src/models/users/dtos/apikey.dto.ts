@@ -1,6 +1,9 @@
 import { Expose } from 'class-transformer';
 
-export class UserDto {
+export class ApiKeyDto {
 	@Expose()
 	login: string;
+
+	@Expose()
+	apikey: string;
 }

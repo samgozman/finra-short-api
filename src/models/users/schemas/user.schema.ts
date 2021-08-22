@@ -5,20 +5,7 @@ export interface IUserDocument extends User, Document {
 	generateAuthToken(jwt_secret: string): Promise<string>;
 }
 
-/** Grant access to the hidden resources */
-export class UserPrivileges {
-	/** User admin privileges (get access to the hidden requests) */
-	admin: boolean;
-	screener: boolean;
-	stockInfo: boolean;
-}
-
-/** Default values for user privileges */
-const defaultPrivileges: UserPrivileges = {
-	admin: false,
-	screener: false,
-	stockInfo: false,
-};
+export type UserPrivileges = 'admin' | 'screener' | 'stockInfo';
 
 @Schema()
 export class User {
@@ -28,8 +15,8 @@ export class User {
 	@Prop({ required: true })
 	pass: string;
 
-	@Prop({ type: UserPrivileges, default: defaultPrivileges })
-	privileges: UserPrivileges;
+	@Prop({ default: [] })
+	roles: UserPrivileges[];
 
 	@Prop()
 	apikey?: string;

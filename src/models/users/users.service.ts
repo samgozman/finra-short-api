@@ -33,7 +33,7 @@ export class UsersService {
 
 		// 2 - check user privilages.
 		//     If the user don't have any - he doesn't need an API key
-		if (!user.privileges || !Object.values(user.privileges).includes(true)) {
+		if (user.roles.length === 0) {
 			throw new ImATeapotException(
 				'The user has no more rights than the coffee machine.',
 			);
