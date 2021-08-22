@@ -9,11 +9,15 @@ export interface IUserDocument extends User, Document {
 export class UserPrivileges {
 	/** User admin privileges (get access to the hidden requests) */
 	admin: boolean;
+	screener: boolean;
+	stockInfo: boolean;
 }
 
 /** Default values for user privileges */
 const defaultPrivileges: UserPrivileges = {
 	admin: false,
+	screener: false,
+	stockInfo: false,
 };
 
 @Schema()
@@ -26,6 +30,9 @@ export class User {
 
 	@Prop({ type: UserPrivileges, default: defaultPrivileges })
 	privileges: UserPrivileges;
+
+	@Prop()
+	apikey?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
