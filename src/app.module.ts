@@ -11,6 +11,7 @@ import { VolumesModule } from './models/volumes/volumes.module';
 import { FiltersModule } from './models/filters/filters.module';
 import { CollectionModule } from './models/collection/collection.module';
 import { MongoExceptionFilter } from './exceptions/mongo-exception.filter';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
 	imports: [
@@ -36,6 +37,7 @@ import { MongoExceptionFilter } from './exceptions/mongo-exception.filter';
 		VolumesModule,
 		FiltersModule,
 		CollectionModule,
+		AuthenticationModule,
 	],
 	controllers: [AppController],
 	providers: [

@@ -1,11 +1,20 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { sign } from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
 
 export interface IUserDocument extends User, Document {
 	generateAuthToken(jwt_secret: string): Promise<string>;
 }
+
+/** Grant access to the hidden resources */
+export class UserPrivileges {
+	/** User admin privileges (get access to the hidden requests) */
+	admin: boolean;
+}
+
+/** Default values for user privileges */
+const defaultPrivileges: UserPrivileges = {
+	admin: false,
+};
 
 @Schema()
 export class User {
@@ -15,34 +24,8 @@ export class User {
 	@Prop({ required: true })
 	pass: string;
 
-	@Prop({ required: true })
-	token: string;
+	@Prop({ type: UserPrivileges, default: defaultPrivileges })
+	privileges: UserPrivileges;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
-UserSchema.methods.generateAuthToken = async function (
-	jwt_secret: string,
-): Promise<string> {
-	const user = this as IUserDocument;
-	const token = sign(
-		{
-			_id: user._id.toString(),
-		},
-		jwt_secret,
-	);
-
-	// One user = one device!
-	user.token = token;
-
-	await user.save();
-	return token;
-};
-
-UserSchema.pre('save', async function (next) {
-	const user = this as IUserDocument;
-	if (user.isModified('pass')) {
-		user.pass = await bcrypt.hash(user.pass, 8);
-	}
-	next();
-});
