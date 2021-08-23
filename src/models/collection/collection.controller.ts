@@ -14,14 +14,14 @@ export class CollectionController {
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	recreateCollection() {
-		return 'Recreate collection';
+		return this.collectionService.recreateFullDatabase();
 	}
 
 	@Get('/update/lastday')
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	updateLastDay() {
-		return 'Update Last Day';
+		return this.collectionService.updateLastTradingDay();
 	}
 
 	@Get('/update/filters')
