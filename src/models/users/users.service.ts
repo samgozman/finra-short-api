@@ -51,6 +51,6 @@ export class UsersService {
 		await user.save();
 
 		// 6 - Return API key
-		return { login, apikey };
+		return { apikey: `${login}:${apikey}` };
 	}
 }
