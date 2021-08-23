@@ -9,7 +9,7 @@ export class FiltersController {
 	constructor(filtersService: FiltersService) {}
 
 	@Get()
-	@Roles('admin')
+	@Roles('screener')
 	@UseGuards(RolesGuard)
 	getFilter(@Query() query: GetFiltredStocksDto) {
 		return query;

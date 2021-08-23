@@ -1,4 +1,9 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import {
+	Injectable,
+	CanActivate,
+	ExecutionContext,
+	ForbiddenException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { compare } from 'bcrypt';
 import { User } from 'src/models/users/schemas/user.schema';
@@ -13,7 +18,7 @@ export class RolesGuard implements CanActivate {
 	) {}
 
 	matchRoles(roles: string[], userRoles: string[]) {
-		return userRoles.every((v) => roles.includes(v));
+		return roles.every((v) => userRoles.includes(v));
 	}
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -42,6 +47,10 @@ export class RolesGuard implements CanActivate {
 			const userFromDb = await this.usersService.findOne({ login });
 			if (!userFromDb) {
 				return false;
+			}
+
+			if (!userFromDb.apikey) {
+				throw new ForbiddenException('The user does not have an API key');
 			}
 
 			user = userFromDb;
