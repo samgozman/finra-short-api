@@ -3,14 +3,14 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserSchema, User } from './schemas/user.schema';
+import { UserModel } from './schemas/user.schema';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({
 	imports: [
 		ConfigModule,
 		PassportModule.register({ defaultStrategy: 'jwt' }),
-		MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+		MongooseModule.forFeature([UserModel]),
 	],
 	controllers: [UsersController],
 	providers: [UsersService],
