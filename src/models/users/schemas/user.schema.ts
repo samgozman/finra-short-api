@@ -1,9 +1,7 @@
 import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export interface IUserDocument extends User, Document {
-	generateAuthToken(jwt_secret: string): Promise<string>;
-}
+export interface IUserDocument extends User, Document {}
 
 export enum UserRules {
 	admin,
