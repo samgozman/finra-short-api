@@ -1,4 +1,6 @@
 import {
+	BadRequestException,
+	ConflictException,
 	ImATeapotException,
 	Injectable,
 	NotFoundException,
@@ -8,6 +10,7 @@ import { randomBytes } from 'crypto';
 import { genSalt, hash } from 'bcrypt';
 import { FilterQuery, Model } from 'mongoose';
 import { IUserDocument, User } from './schemas/user.schema';
+import { UpdateRolesDto } from './dtos/update-roles.dto';
 
 @Injectable()
 export class UsersService {
@@ -52,5 +55,28 @@ export class UsersService {
 
 		// 6 - Return API key
 		return { apikey: `${login}:${apikey}` };
+	}
+
+	async updateRoles(updateRolesDto: UpdateRolesDto) {
+		// Check roles. They should contains only predefined values
+		const { login, role } = updateRolesDto;
+		if (role === 'admin') {
+			throw new BadRequestException('You can not set admin roles via request');
+		}
+
+		const user = await this.findOne({ login });
+
+		if (!user) {
+			throw new NotFoundException('User is not found');
+		}
+
+		if (user.roles.includes(role)) {
+			throw new ConflictException(
+				`'${role}' role is allready exists in user object`,
+			);
+		}
+
+		user.roles.push(role);
+		return user.save();
 	}
 }

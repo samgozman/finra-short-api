@@ -5,7 +5,13 @@ export interface IUserDocument extends User, Document {
 	generateAuthToken(jwt_secret: string): Promise<string>;
 }
 
-export type UserPrivileges = 'admin' | 'screener' | 'stockInfo';
+export enum UserRules {
+	admin,
+	screener,
+	stockInfo,
+}
+
+export type UserPrivileges = keyof typeof UserRules;
 
 @Schema()
 export class User {
