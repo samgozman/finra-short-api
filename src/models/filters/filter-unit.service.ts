@@ -140,71 +140,80 @@ export class FilterUnitService {
 
 	// *** UNITS *** //
 
-	async isNotGarbageFilter(filter: Filters = 'isNotGarbage') {
-		const allIds = await this.stocksService.avalibleTickers();
-		const lastDay = await this.volumesService.lastDateTime();
+	isNotGarbageFilter(filter: Filters = 'isNotGarbage'): () => Promise<void> {
+		return async () => {
+			const allIds = await this.stocksService.avalibleTickers();
+			const lastDay = await this.volumesService.lastDateTime();
 
-		for (const _id of allIds) {
-			const stock = (await this.stockModel.findById(_id))!;
-			const volume = (await stock.getVirtual('volume', 5, 'desc')).volume;
-			// Checks
-			const volumeIsAtLeast5 = volume.length === 5;
-			if (volumeIsAtLeast5 && lastDay === volume[0].date.getTime()) {
-				const total_isNotZero = volume.every((item) => item.totalVolume !== 0);
-				const averageIsAboveMinimum =
-					volume.reduce((p, c) => p + c.totalVolume, 0) / volume.length >= 5000;
-				if (total_isNotZero && averageIsAboveMinimum) {
-					await this.updateFilter(_id, filter, true);
+			for (const _id of allIds) {
+				const stock = (await this.stockModel.findById(_id))!;
+				const volume = (await stock.getVirtual('volume', 5, 'desc')).volume;
+				// Checks
+				const volumeIsAtLeast5 = volume.length === 5;
+				if (volumeIsAtLeast5 && lastDay === volume[0].date.getTime()) {
+					const total_isNotZero = volume.every(
+						(item) => item.totalVolume !== 0,
+					);
+					const averageIsAboveMinimum =
+						volume.reduce((p, c) => p + c.totalVolume, 0) / volume.length >=
+						5000;
+					if (total_isNotZero && averageIsAboveMinimum) {
+						await this.updateFilter(_id, filter, true);
+					}
 				}
 			}
-		}
+		};
 	}
 
-	async tinkoffFilter(filter: Filters = 'onTinkoff') {
-		const tinkoff = new Tinkoff(this.configService.get('SANDBOX_TOKEN'));
-		const onTinkoff = await tinkoff.stocks('USD');
-		for (const tink of onTinkoff) {
-			// Find Stock
-			const { ticker } = tink;
-			const stock = await this.stockModel.findOne({ ticker });
-			// Get ID
-			const _stock_id: Types.ObjectId = stock?.id;
-			// Create record
-			if (_stock_id) {
-				await this.updateFilter(_stock_id, filter, true);
+	tinkoffFilter(filter: Filters = 'onTinkoff'): () => Promise<void> {
+		return async () => {
+			const tinkoff = new Tinkoff(this.configService.get('SANDBOX_TOKEN'));
+			const onTinkoff = await tinkoff.stocks('USD');
+			for (const tink of onTinkoff) {
+				// Find Stock
+				const { ticker } = tink;
+				const stock = await this.stockModel.findOne({ ticker });
+				// Get ID
+				const _stock_id: Types.ObjectId = stock?.id;
+				// Create record
+				if (_stock_id) {
+					await this.updateFilter(_stock_id, filter, true);
+				}
 			}
-		}
+		};
 	}
 
-	async volumeFilter(
+	volumeFilter(
 		filter: Filters,
 		volType: 'shortVolume' | 'shortExemptVolume' | 'totalVolume',
 		momentum: 'growing' | 'decreasing',
 		period: number = 5,
 		ratio: boolean = false,
-	): Promise<void> {
-		const allIds = await this.stocksService.avalibleTickers();
-		for (const _id of allIds) {
-			const stock = (await this.stockModel.findById(_id))!;
-			const volume = (await stock.getVirtual('volume', period + 1, 'desc'))
-				.volume;
+	): () => Promise<void> {
+		return async () => {
+			const allIds = await this.stocksService.avalibleTickers();
+			for (const _id of allIds) {
+				const stock = (await this.stockModel.findById(_id))!;
+				const volume = (await stock.getVirtual('volume', period + 1, 'desc'))
+					.volume;
 
-			// Check if populated volume exists
-			if (volume && volume.length > 1) {
-				const volArr = ratio
-					? volume.map((e) => e[volType] / e.totalVolume).reverse()
-					: volume.map((e) => e[volType]).reverse();
-				// Validate each value is greater / lesser than previous
-				const validation: boolean[] =
-					momentum === 'growing'
-						? volArr.map((e, i: number) => volArr[i] > volArr[i - 1])
-						: volArr.map((e, i: number) => volArr[i] < volArr[i - 1]);
-				// Remove first element of the array (it was used for comparing only)
-				validation.shift();
-				// If all validations in row are true
-				const checker = validation.every((v) => v === true);
-				await this.updateFilter(_id, filter, checker);
+				// Check if populated volume exists
+				if (volume && volume.length > 1) {
+					const volArr = ratio
+						? volume.map((e) => e[volType] / e.totalVolume).reverse()
+						: volume.map((e) => e[volType]).reverse();
+					// Validate each value is greater / lesser than previous
+					const validation: boolean[] =
+						momentum === 'growing'
+							? volArr.map((e, i: number) => volArr[i] > volArr[i - 1])
+							: volArr.map((e, i: number) => volArr[i] < volArr[i - 1]);
+					// Remove first element of the array (it was used for comparing only)
+					validation.shift();
+					// If all validations in row are true
+					const checker = validation.every((v) => v === true);
+					await this.updateFilter(_id, filter, checker);
+				}
 			}
-		}
+		};
 	}
 }
