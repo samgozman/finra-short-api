@@ -1,5 +1,5 @@
 import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Model } from 'mongoose';
 
 export interface IUserDocument extends User, Document {}
 
@@ -29,7 +29,10 @@ export class User {
 export const UserSchema = SchemaFactory.createForClass(User);
 
 /** Model definition for MongooseModule usage */
-export const UserModel: ModelDefinition = {
+export const UserModelDefinition: ModelDefinition = {
 	name: User.name,
 	schema: UserSchema,
 };
+
+/** Model type for injection */
+export type UserModel = Model<IUserDocument>;

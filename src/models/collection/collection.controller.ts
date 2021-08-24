@@ -2,12 +2,18 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { AveragesService } from './averages.service';
 import { CollectionService } from './collection.service';
+
+// ! Log after success
 
 @Controller('collection')
 @UseGuards(AuthGuard())
 export class CollectionController {
-	constructor(private collectionService: CollectionService) {}
+	constructor(
+		private collectionService: CollectionService,
+		private averagesService: AveragesService,
+	) {}
 
 	// ! Only dev route! Use CLI params in prod!
 	@Get('/recreate')
@@ -35,6 +41,6 @@ export class CollectionController {
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	updateAverages() {
-		return 'Update Averages';
+		return this.averagesService.averages();
 	}
 }

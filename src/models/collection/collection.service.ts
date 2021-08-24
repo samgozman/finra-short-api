@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { IStockDocument, Stock } from '../stocks/schemas/stock.schema';
+import { Stock, StockModel } from '../stocks/schemas/stock.schema';
 import {
 	FinraAssignedReports,
 	IFinraMongo,
-	IVolumeDocument,
 	Volume,
+	VolumeModel,
 } from '../volumes/schemas/volume.schema';
 import { ParseService } from './parse.service';
 
@@ -17,9 +16,9 @@ export class CollectionService {
 	constructor(
 		private parseService: ParseService,
 		@InjectModel(Stock.name)
-		private readonly stockModel: Model<IStockDocument>,
+		private readonly stockModel: StockModel,
 		@InjectModel(Volume.name)
-		private readonly volumeModel: Model<IVolumeDocument>,
+		private readonly volumeModel: VolumeModel,
 	) {}
 
 	// ex processLines
@@ -30,7 +29,7 @@ export class CollectionService {
 		for (const report in reports) {
 			// ! Push Stock related strings to the StocksService
 			// Try to find existing
-			let stock: IStockDocument | null = await this.stockModel.findOne({
+			let stock = await this.stockModel.findOne({
 				ticker: report,
 			});
 

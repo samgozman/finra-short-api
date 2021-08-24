@@ -108,7 +108,10 @@ export class Filter {
 export const FilterSchema = SchemaFactory.createForClass(Filter);
 
 /** Model definition for MongooseModule usage */
-export const FilterModel: ModelDefinition = {
+export const FilterModelDefinition: ModelDefinition = {
 	name: Filter.name,
 	schema: FilterSchema,
 };
+
+/** Model type for injection */
+export type FilterModel = Model<IFilterDocument>;

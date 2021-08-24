@@ -1,5 +1,5 @@
 import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, Model, Types } from 'mongoose';
 import { StockPopulatedDocument } from '../PopulatedVolume';
 
 type Virtuals = 'volume' | 'filter';
@@ -58,13 +58,6 @@ export class Stock {
 		limit: number,
 		sortDir?: SortDirs,
 	) => Promise<StockPopulatedDocument>;
-
-	/**
-	 * Get array of all available stocks
-	 * @async
-	 * @returns Promise array of stocks ObjectId's
-	 */
-	static avalibleTickers: () => Promise<Types.ObjectId[]>;
 }
 
 export const StockSchema = SchemaFactory.createForClass(Stock);
@@ -87,13 +80,6 @@ StockSchema.methods.getVirtual = async function (
 	return this as StockPopulatedDocument;
 };
 
-StockSchema.statics.avalibleTickers = async function (): Promise<
-	Types.ObjectId[]
-> {
-	const stocks: IStockDocument[] = await this.find({});
-	return stocks.map((a) => a._id);
-};
-
 StockSchema.virtual('volume', {
 	ref: 'Volume',
 	localField: '_id',
@@ -107,7 +93,10 @@ StockSchema.virtual('filter', {
 });
 
 /** Model definition for MongooseModule usage */
-export const StockModel: ModelDefinition = {
+export const StockModelDefinition: ModelDefinition = {
 	name: Stock.name,
 	schema: StockSchema,
 };
+
+/** Model type for injection */
+export type StockModel = Model<IStockDocument>;

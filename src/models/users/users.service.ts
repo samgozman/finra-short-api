@@ -8,15 +8,15 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { randomBytes } from 'crypto';
 import { genSalt, hash } from 'bcrypt';
-import { FilterQuery, Model } from 'mongoose';
-import { IUserDocument, User } from './schemas/user.schema';
+import { FilterQuery } from 'mongoose';
+import { IUserDocument, User, UserModel } from './schemas/user.schema';
 import { UpdateRolesDto } from './dtos/update-roles.dto';
 
 @Injectable()
 export class UsersService {
 	constructor(
 		@InjectModel(User.name)
-		private readonly userModel: Model<IUserDocument>,
+		private readonly userModel: UserModel,
 	) {}
 
 	findOne(filter: FilterQuery<IUserDocument>) {

@@ -1,5 +1,5 @@
 import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types, Schema as SchemaMongoose } from 'mongoose';
+import { Document, Types, Schema as SchemaMongoose, Model } from 'mongoose';
 
 // ! Deprecated?
 export interface FinraReport {
@@ -93,7 +93,10 @@ VolumeSchema.statics.findByStockId = async function (
 };
 
 /** Model definition for MongooseModule usage */
-export const VolumeModel: ModelDefinition = {
+export const VolumeModelDefinition: ModelDefinition = {
 	name: Volume.name,
 	schema: VolumeSchema,
 };
+
+/** Model type for injection */
+export type VolumeModel = Model<IVolumeDocument>;
