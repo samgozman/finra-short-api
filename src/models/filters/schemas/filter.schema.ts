@@ -5,9 +5,56 @@ export interface IFilterDocument extends Filter, Document {}
 // ! Deprecated?
 export interface IFilterModel extends Model<IFilterDocument> {}
 
+/** List of all avalible filters */
+export interface IFiltersList {
+	/** Stock is available on Tinkoff broker */
+	onTinkoff: boolean;
+	/** Filter new stocks with no data or incomplete */
+	isNotGarbage: boolean;
+	/** Short volume is growing 5 days in a row */
+	shortVolGrows5D: boolean;
+	/** Short volume is decreasing 5 days in a row */
+	shortVolDecreases5D: boolean;
+	/** Short volume ratio (%) is growing 5 days in a row */
+	shortVolRatioGrows5D: boolean;
+	/** Short volume ratio (%) is decreasing 5 days in a row */
+	shortVoRatiolDecreases5D: boolean;
+	/** Total volume is growing 5 days in a row */
+	totalVolGrows5D: boolean;
+	/** Total volume is decreasing 5 days in a row */
+	totalVolDecreases5D: boolean;
+	/** Short Exempt volume is growing 5 days in a row */
+	shortExemptVolGrows5D: boolean;
+	/** Short Exempt volume is decreasing 5 days in a row */
+	shortExemptVolDecreases5D: boolean;
+	/** Short Exempt volume ratio is growing 5 days in a row */
+	shortExemptVolRatioGrows5D: boolean;
+	/** Short Exempt volume ratio is decreasing 5 days in a row */
+	shortExemptVolRatioDecreases5D: boolean;
+	/** Short volume is growing 3 days in a row */
+	shortVolGrows3D: boolean;
+	/** Short volume is decreasing 3 days in a row */
+	shortVolDecreases3D: boolean;
+	/** Short volume ratio (%) is growing 3 days in a row */
+	shortVolRatioGrows3D: boolean;
+	/** Short volume ratio (%) is decreasing 3 days in a row */
+	shortVoRatiolDecreases3D: boolean;
+	/** Total volume is growing 3 days in a row */
+	totalVolGrows3D: boolean;
+	/** Total volume is decreasing 3 days in a row */
+	totalVolDecreases3D: boolean;
+	/** Short Exempt volume is growing 3 days in a row */
+	shortExemptVolGrows3D: boolean;
+	/** Short Exempt volume is decreasing 3 days in a row */
+	shortExemptVolDecreases3D: boolean;
+	/** Short Exempt volume ratio is growing 3 days in a row */
+	shortExemptVolRatioGrows3D: boolean;
+	/** Short Exempt volume ratio is decreasing 3 days in a row */
+	shortExemptVolRatioDecreases3D: boolean;
+}
+
 @Schema()
-export class Filter {
-	/** Parent stock id */
+export class Filter implements IFiltersList {
 	@Prop({
 		type: SchemaMongoose.Types.ObjectId,
 		required: true,
@@ -16,91 +63,69 @@ export class Filter {
 	})
 	_stock_id: Types.ObjectId;
 
-	/** Stock is available on Tinkoff broker */
 	@Prop({ default: false })
 	onTinkoff: boolean;
 
-	/** Filter new stocks with no data or incomplete */
 	@Prop({ default: false })
 	isNotGarbage: boolean;
 
-	/** Short volume is growing 5 days in a row */
 	@Prop({ default: false })
 	shortVolGrows5D: boolean;
 
-	/** Short volume is decreasing 5 days in a row */
 	@Prop({ default: false })
 	shortVolDecreases5D: boolean;
 
-	/** Short volume ratio (%) is growing 5 days in a row */
 	@Prop({ default: false })
 	shortVolRatioGrows5D: boolean;
 
-	/** Short volume ratio (%) is decreasing 5 days in a row */
 	@Prop({ default: false })
 	shortVoRatiolDecreases5D: boolean;
 
-	/** Total volume is growing 5 days in a row */
 	@Prop({ default: false })
 	totalVolGrows5D: boolean;
 
-	/** Total volume is decreasing 5 days in a row */
 	@Prop({ default: false })
 	totalVolDecreases5D: boolean;
 
-	/** Short Exempt volume is growing 5 days in a row */
 	@Prop({ default: false })
 	shortExemptVolGrows5D: boolean;
 
-	/** Short Exempt volume is decreasing 5 days in a row */
 	@Prop({ default: false })
 	shortExemptVolDecreases5D: boolean;
 
-	/** Short Exempt volume ratio is growing 5 days in a row */
 	@Prop({ default: false })
 	shortExemptVolRatioGrows5D: boolean;
 
-	/** Short Exempt volume ratio is decreasing 5 days in a row */
 	@Prop({ default: false })
 	shortExemptVolRatioDecreases5D: boolean;
 
-	/** Short volume is growing 3 days in a row */
 	@Prop({ default: false })
 	shortVolGrows3D: boolean;
 
-	/** Short volume is decreasing 3 days in a row */
 	@Prop({ default: false })
 	shortVolDecreases3D: boolean;
 
-	/** Short volume ratio (%) is growing 3 days in a row */
 	@Prop({ default: false })
 	shortVolRatioGrows3D: boolean;
 
-	/** Short volume ratio (%) is decreasing 3 days in a row */
 	@Prop({ default: false })
 	shortVoRatiolDecreases3D: boolean;
 
-	/** Total volume is growing 3 days in a row */
 	@Prop({ default: false })
 	totalVolGrows3D: boolean;
 
-	/** Total volume is decreasing 3 days in a row */
 	@Prop({ default: false })
 	totalVolDecreases3D: boolean;
 
-	/** Short Exempt volume is growing 3 days in a row */
 	@Prop({ default: false })
 	shortExemptVolGrows3D: boolean;
 
-	/** Short Exempt volume is decreasing 3 days in a row */
 	@Prop({ default: false })
 	shortExemptVolDecreases3D: boolean;
 
-	/** Short Exempt volume ratio is growing 3 days in a row */
 	@Prop({ default: false })
 	shortExemptVolRatioGrows3D: boolean;
 
-	/** Short Exempt volume ratio is decreasing 3 days in a row */
 	@Prop({ default: false })
 	shortExemptVolRatioDecreases3D: boolean;
 }

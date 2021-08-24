@@ -2,6 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { FiltersService } from '../filters/filters.service';
 import { AveragesService } from './averages.service';
 import { CollectionService } from './collection.service';
 
@@ -13,6 +14,7 @@ export class CollectionController {
 	constructor(
 		private collectionService: CollectionService,
 		private averagesService: AveragesService,
+		private filtersService: FiltersService,
 	) {}
 
 	// ! Only dev route! Use CLI params in prod!
@@ -34,7 +36,7 @@ export class CollectionController {
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	updateFilters() {
-		return 'Update filters';
+		return this.filtersService.updateAll();
 	}
 
 	@Get('/update/averages')
