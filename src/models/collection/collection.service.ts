@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Stock, StockModel } from '../stocks/schemas/stock.schema';
 import {
 	FinraAssignedReports,
-	IFinraMongo,
 	Volume,
 	VolumeModel,
 } from '../volumes/schemas/volume.schema';
@@ -22,10 +21,8 @@ export class CollectionService {
 	) {}
 
 	// ex processLines
-	async uploadFinraReports(
-		reports: FinraAssignedReports,
-	): Promise<IFinraMongo[]> {
-		let mongoArr: IFinraMongo[] = [];
+	async uploadFinraReports(reports: FinraAssignedReports): Promise<Volume[]> {
+		let mongoArr: Volume[] = [];
 		for (const report in reports) {
 			// ! Push Stock related strings to the StocksService
 			// Try to find existing

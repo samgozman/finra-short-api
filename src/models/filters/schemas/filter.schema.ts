@@ -2,8 +2,6 @@ import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Model, Types, Schema as SchemaMongoose } from 'mongoose';
 
 export interface IFilterDocument extends Filter, Document {}
-// ! Deprecated?
-export interface IFilterModel extends Model<IFilterDocument> {}
 
 /** List of all avalible filters */
 export interface IFiltersList {

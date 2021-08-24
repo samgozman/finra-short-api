@@ -1,5 +1,5 @@
 import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Model, Types } from 'mongoose';
+import { Document, Model } from 'mongoose';
 import { StockPopulatedDocument } from '../PopulatedVolume';
 
 type Virtuals = 'volume' | 'filter';

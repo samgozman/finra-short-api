@@ -1,7 +1,6 @@
 import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types, Schema as SchemaMongoose, Model } from 'mongoose';
+import { Document, Schema as SchemaMongoose, Model } from 'mongoose';
 
-// ! Deprecated?
 export interface FinraReport {
 	date: Date;
 	shortVolume: number;
@@ -13,14 +12,6 @@ export interface FinraReport {
 export interface FinraAssignedReports {
 	[ticker: string]: FinraReport;
 }
-
-// ! Deprecated?
-export interface IFinraMongo extends FinraReport {
-	_stock_id: Types.ObjectId;
-}
-
-// ! Deprecated?
-export interface IFinraDocument extends IFinraMongo, Document {}
 
 export interface IVolumeDocument extends Volume, Document {}
 
