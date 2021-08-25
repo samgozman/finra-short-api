@@ -48,8 +48,12 @@ import { AuthenticationModule } from './authentication/authentication.module';
 		{
 			provide: APP_PIPE,
 			useValue: new ValidationPipe({
+				// Enable transformation in validation process
+				transform: true,
 				// Check that incoming request don't have unexpected keys (removes them)
 				whitelist: true,
+				// Throw an error on forbiden request
+				forbidNonWhitelisted: true,
 			}),
 		},
 		{
