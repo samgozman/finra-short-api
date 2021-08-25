@@ -34,7 +34,7 @@
         "jsonwebtoken": "^8.5.1",
         "moment": "^2.29.1",
         "moment-timezone": "^0.5.33",
-        "mongoose": "^5.13.7",
+        "mongoose": "^6.0.0",
         "node-cron": "^3.0.0",
         "tinkoff-api-securities": "^1.0.3"
     },
