@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+	Injectable,
+	InternalServerErrorException,
+	Logger,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
@@ -28,6 +32,7 @@ export type Filters = keyof IFiltersList & string;
 
 @Injectable()
 export class FilterUnitService {
+	private readonly logger = new Logger(FilterUnitService.name);
 	constructor(
 		@InjectModel(Filter.name)
 		private readonly filterModel: FilterModel,
@@ -42,14 +47,19 @@ export class FilterUnitService {
 	 * Create empty DB record for each stock
 	 */
 	async createEmptyFilters() {
-		// Drop collection before recreation
-		await this.filterModel.collection.drop().catch(function () {
-			console.log('Filter collection do not exist yet.');
-		});
+		try {
+			// Drop collection before recreation
+			await this.filterModel.collection.drop().catch(() => {
+				this.logger.log('Filter collection do not exist yet.');
+			});
 
-		const allIds = await this.stocksService.avalibleTickers();
-		for (const _id of allIds) {
-			await new this.filterModel({ _stock_id: _id }).save();
+			const allIds = await this.stocksService.avalibleTickers();
+			for (const _id of allIds) {
+				await new this.filterModel({ _stock_id: _id }).save();
+			}
+		} catch (error) {
+			this.logger.error(`Error in ${this.createEmptyFilters.name}`, error);
+			throw new InternalServerErrorException();
 		}
 	}
 
@@ -64,21 +74,26 @@ export class FilterUnitService {
 		key: Filters,
 		value: boolean = true,
 	) {
-		// Find filter for _stock_id
-		const filter = await this.filterModel.findOne({ _stock_id });
-		if (filter) {
-			// If it is existing - update
-			await filter.updateOne({
-				[key]: value,
-			});
-		} else {
-			// If not - create
-			const newFilter = new this.filterModel({
-				_stock_id,
-				[key]: value,
-			});
+		try {
+			// Find filter for _stock_id
+			const filter = await this.filterModel.findOne({ _stock_id });
+			if (filter) {
+				// If it is existing - update
+				await filter.updateOne({
+					[key]: value,
+				});
+			} else {
+				// If not - create
+				const newFilter = new this.filterModel({
+					_stock_id,
+					[key]: value,
+				});
 
-			await newFilter.save();
+				await newFilter.save();
+			}
+		} catch (error) {
+			this.logger.error(`Error in ${this.updateFilter.name}`, error);
+			throw new InternalServerErrorException();
 		}
 	}
 
@@ -95,92 +110,107 @@ export class FilterUnitService {
 		skip: number = 0,
 		sort: ISort = { field: 'ticker', dir: 'asc' },
 	): Promise<IFiltredStocks> {
-		// Convert filter keys to object like {key: true, ...}
-		const keyPairs = keys.reduce((ac, a) => ({ ...ac, [a]: true }), {});
-		const count: number = await this.filterModel.countDocuments(keyPairs);
+		try {
+			// Convert filter keys to object like {key: true, ...}
+			const keyPairs = keys.reduce((ac, a) => ({ ...ac, [a]: true }), {});
+			const count: number = await this.filterModel.countDocuments(keyPairs);
 
-		interface Aggregation extends IFilterDocument {
-			stock: Stock[];
+			interface Aggregation extends IFilterDocument {
+				stock: Stock[];
+			}
+
+			const aggregation = (await this.filterModel
+				.aggregate([
+					// 1 stage: find matches
+					{ $match: keyPairs },
+					// 2 stage: lookup for their filters
+					// ! this.stockModel => Stock.name
+					{
+						$lookup: {
+							from: this.stockModel.collection.name,
+							localField: '_stock_id',
+							foreignField: '_id',
+							as: 'stock',
+						},
+					},
+					// 3 stage: sort and paginate aggregated data
+					{ $sort: { [`stock.${sort.field}`]: sort.dir === 'asc' ? 1 : -1 } },
+					{ $limit: skip + limit },
+					{ $skip: skip },
+					// 4 stage: hide unsafe keys from aggregation
+					{
+						$project: {
+							stock: { _id: false, _stock_id: false, __v: false },
+						},
+					},
+				])
+				.exec()) as Aggregation[];
+
+			// 5 stage: map array to get only stocks collection
+			const sortedStocks: Stock[] = aggregation.map((e) => {
+				return e.stock[0];
+			});
+
+			return { count, stocks: sortedStocks };
+		} catch (error) {
+			this.logger.error(`Error in ${this.getFilter.name}`, error);
+			throw new InternalServerErrorException();
 		}
-
-		const aggregation = (await this.filterModel
-			.aggregate([
-				// 1 stage: find matches
-				{ $match: keyPairs },
-				// 2 stage: lookup for their filters
-				// ! this.stockModel => Stock.name
-				{
-					$lookup: {
-						from: this.stockModel.collection.name,
-						localField: '_stock_id',
-						foreignField: '_id',
-						as: 'stock',
-					},
-				},
-				// 3 stage: sort and paginate aggregated data
-				{ $sort: { [`stock.${sort.field}`]: sort.dir === 'asc' ? 1 : -1 } },
-				{ $limit: skip + limit },
-				{ $skip: skip },
-				// 4 stage: hide unsafe keys from aggregation
-				{
-					$project: {
-						stock: { _id: false, _stock_id: false, __v: false },
-					},
-				},
-			])
-			.exec()) as Aggregation[];
-
-		// 5 stage: map array to get only stocks collection
-		const sortedStocks: Stock[] = aggregation.map((e) => {
-			return e.stock[0];
-		});
-
-		return { count, stocks: sortedStocks };
 	}
 
 	// *** UNITS *** //
 
 	isNotGarbageFilter(filter: Filters = 'isNotGarbage'): () => Promise<void> {
-		return async () => {
-			const allIds = await this.stocksService.avalibleTickers();
-			const lastDay = await this.volumesService.lastDateTime();
+		try {
+			return async () => {
+				const allIds = await this.stocksService.avalibleTickers();
+				const lastDay = await this.volumesService.lastDateTime();
 
-			for (const _id of allIds) {
-				const stock = (await this.stockModel.findById(_id))!;
-				const volume = (await stock.getVirtual('volume', 5, 'desc')).volume;
-				// Checks
-				const volumeIsAtLeast5 = volume.length === 5;
-				if (volumeIsAtLeast5 && lastDay === volume[0].date.getTime()) {
-					const total_isNotZero = volume.every(
-						(item) => item.totalVolume !== 0,
-					);
-					const averageIsAboveMinimum =
-						volume.reduce((p, c) => p + c.totalVolume, 0) / volume.length >=
-						5000;
-					if (total_isNotZero && averageIsAboveMinimum) {
-						await this.updateFilter(_id, filter, true);
+				for (const _id of allIds) {
+					const stock = (await this.stockModel.findById(_id))!;
+					const volume = (await stock.getVirtual('volume', 5, 'desc')).volume;
+					// Checks
+					const volumeIsAtLeast5 = volume.length === 5;
+					if (volumeIsAtLeast5 && lastDay === volume[0].date.getTime()) {
+						const total_isNotZero = volume.every(
+							(item) => item.totalVolume !== 0,
+						);
+						const averageIsAboveMinimum =
+							volume.reduce((p, c) => p + c.totalVolume, 0) / volume.length >=
+							5000;
+						if (total_isNotZero && averageIsAboveMinimum) {
+							await this.updateFilter(_id, filter, true);
+						}
 					}
 				}
-			}
-		};
+			};
+		} catch (error) {
+			this.logger.error(`Error in ${this.isNotGarbageFilter.name}`, error);
+			throw new InternalServerErrorException();
+		}
 	}
 
 	tinkoffFilter(filter: Filters = 'onTinkoff'): () => Promise<void> {
-		return async () => {
-			const tinkoff = new Tinkoff(this.configService.get('SANDBOX_TOKEN'));
-			const onTinkoff = await tinkoff.stocks('USD');
-			for (const tink of onTinkoff) {
-				// Find Stock
-				const { ticker } = tink;
-				const stock = await this.stockModel.findOne({ ticker });
-				// Get ID
-				const _stock_id: Types.ObjectId = stock?.id;
-				// Create record
-				if (_stock_id) {
-					await this.updateFilter(_stock_id, filter, true);
+		try {
+			return async () => {
+				const tinkoff = new Tinkoff(this.configService.get('SANDBOX_TOKEN'));
+				const onTinkoff = await tinkoff.stocks('USD');
+				for (const tink of onTinkoff) {
+					// Find Stock
+					const { ticker } = tink;
+					const stock = await this.stockModel.findOne({ ticker });
+					// Get ID
+					const _stock_id: Types.ObjectId = stock?.id;
+					// Create record
+					if (_stock_id) {
+						await this.updateFilter(_stock_id, filter, true);
+					}
 				}
-			}
-		};
+			};
+		} catch (error) {
+			this.logger.error(`Error in ${this.tinkoffFilter.name}`, error);
+			throw new InternalServerErrorException();
+		}
 	}
 
 	volumeFilter(
@@ -190,30 +220,35 @@ export class FilterUnitService {
 		period: number = 5,
 		ratio: boolean = false,
 	): () => Promise<void> {
-		return async () => {
-			const allIds = await this.stocksService.avalibleTickers();
-			for (const _id of allIds) {
-				const stock = (await this.stockModel.findById(_id))!;
-				const volume = (await stock.getVirtual('volume', period + 1, 'desc'))
-					.volume;
+		try {
+			return async () => {
+				const allIds = await this.stocksService.avalibleTickers();
+				for (const _id of allIds) {
+					const stock = (await this.stockModel.findById(_id))!;
+					const volume = (await stock.getVirtual('volume', period + 1, 'desc'))
+						.volume;
 
-				// Check if populated volume exists
-				if (volume && volume.length > 1) {
-					const volArr = ratio
-						? volume.map((e) => e[volType] / e.totalVolume).reverse()
-						: volume.map((e) => e[volType]).reverse();
-					// Validate each value is greater / lesser than previous
-					const validation: boolean[] =
-						momentum === 'growing'
-							? volArr.map((e, i: number) => volArr[i] > volArr[i - 1])
-							: volArr.map((e, i: number) => volArr[i] < volArr[i - 1]);
-					// Remove first element of the array (it was used for comparing only)
-					validation.shift();
-					// If all validations in row are true
-					const checker = validation.every((v) => v === true);
-					await this.updateFilter(_id, filter, checker);
+					// Check if populated volume exists
+					if (volume && volume.length > 1) {
+						const volArr = ratio
+							? volume.map((e) => e[volType] / e.totalVolume).reverse()
+							: volume.map((e) => e[volType]).reverse();
+						// Validate each value is greater / lesser than previous
+						const validation: boolean[] =
+							momentum === 'growing'
+								? volArr.map((e, i: number) => volArr[i] > volArr[i - 1])
+								: volArr.map((e, i: number) => volArr[i] < volArr[i - 1]);
+						// Remove first element of the array (it was used for comparing only)
+						validation.shift();
+						// If all validations in row are true
+						const checker = validation.every((v) => v === true);
+						await this.updateFilter(_id, filter, checker);
+					}
 				}
-			}
-		};
+			};
+		} catch (error) {
+			this.logger.error(`Error in ${this.volumeFilter.name}`, error);
+			throw new InternalServerErrorException();
+		}
 	}
 }

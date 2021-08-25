@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+	Injectable,
+	InternalServerErrorException,
+	Logger,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Stock, StockModel } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
@@ -19,6 +23,7 @@ const avgVol = (
 
 @Injectable()
 export class AveragesService {
+	private readonly logger = new Logger(AveragesService.name);
 	constructor(
 		@InjectModel(Stock.name)
 		private readonly stockModel: StockModel,
@@ -78,7 +83,8 @@ export class AveragesService {
 				await stock.save();
 			}
 		} catch (error) {
-			console.error('Error in averages: ' + error);
+			this.logger.error(`Error in ${this.averages.name}`, error);
+			throw new InternalServerErrorException();
 		}
 	}
 }

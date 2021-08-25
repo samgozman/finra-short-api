@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+	Injectable,
+	InternalServerErrorException,
+	Logger,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Stock, StockModel } from '../stocks/schemas/stock.schema';
 import {
@@ -12,6 +16,7 @@ import { ParseService } from './parse.service';
 
 @Injectable()
 export class CollectionService {
+	private readonly logger = new Logger(CollectionService.name);
 	constructor(
 		private parseService: ParseService,
 		@InjectModel(Stock.name)
@@ -22,29 +27,34 @@ export class CollectionService {
 
 	// ex processLines
 	async uploadFinraReports(reports: FinraAssignedReports): Promise<Volume[]> {
-		let mongoArr: Volume[] = [];
-		for (const report in reports) {
-			// ! Push Stock related strings to the StocksService
-			// Try to find existing
-			let stock = await this.stockModel.findOne({
-				ticker: report,
-			});
-
-			// If not - create
-			if (!stock) {
-				stock = new this.stockModel({
+		try {
+			let mongoArr: Volume[] = [];
+			for (const report in reports) {
+				// ! Push Stock related strings to the StocksService
+				// Try to find existing
+				let stock = await this.stockModel.findOne({
 					ticker: report,
 				});
-				await stock.save();
+
+				// If not - create
+				if (!stock) {
+					stock = new this.stockModel({
+						ticker: report,
+					});
+					await stock.save();
+				}
+
+				mongoArr.push({
+					_stock_id: stock._id,
+					...reports[report],
+				});
 			}
 
-			mongoArr.push({
-				_stock_id: stock._id,
-				...reports[report],
-			});
+			return mongoArr;
+		} catch (error) {
+			this.logger.error(`Error in ${this.uploadFinraReports.name}`, error);
+			throw new InternalServerErrorException();
 		}
-
-		return mongoArr;
 	}
 
 	async updateLastTradingDay(): Promise<void> {
@@ -57,7 +67,8 @@ export class CollectionService {
 			let mongoArr = await this.uploadFinraReports(reports);
 			await this.volumeModel.insertMany(mongoArr);
 		} catch (error) {
-			console.error('Error in updateLastTradingDay: ' + error);
+			this.logger.error(`Error in ${this.updateLastTradingDay.name}`, error);
+			throw new InternalServerErrorException();
 		}
 	}
 
@@ -80,7 +91,8 @@ export class CollectionService {
 				await this.volumeModel.insertMany(mongoArr);
 			}
 		} catch (error) {
-			console.log('recreateFullDatabase:', error);
+			this.logger.error(`Error in ${this.recreateFullDatabase.name}`, error);
+			throw new InternalServerErrorException();
 		}
 	}
 }

@@ -1,9 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import {
+	Injectable,
+	InternalServerErrorException,
+	Logger,
+} from '@nestjs/common';
 import { FilterUnitService } from './filter-unit.service';
 import { IFiltersList } from './schemas/filter.schema';
 
 @Injectable()
 export class FiltersService {
+	private readonly logger = new Logger(FiltersService.name);
 	constructor(private readonly fus: FilterUnitService) {}
 
 	/**
@@ -154,16 +159,21 @@ export class FiltersService {
 	 */
 	async updateAll() {
 		try {
+			this.logger.warn('The filters regeneration process has started');
 			// Create empty filters before starting to update them in parallel
 			await this.fus.createEmptyFilters();
+			this.logger.warn('Previous filters have been removed');
 			const updaters = this.getFiltersUpdaters();
 			await Promise.all([...Object.values(updaters).map((e) => e())]).then(
-				function () {
-					console.log('Filter collection was regenerated.');
+				() => {
+					this.logger.log(
+						'The filter collection has been successfully generated',
+					);
 				},
 			);
 		} catch (error) {
-			console.error('Error in updateAllFilters: ' + error);
+			this.logger.error(`Error in ${this.updateAll.name}`, error);
+			throw new InternalServerErrorException();
 		}
 	}
 }

@@ -1,7 +1,11 @@
 import got from 'got';
 import cheerio from 'cheerio';
 import moment from 'moment-timezone';
-import { Injectable } from '@nestjs/common';
+import {
+	Injectable,
+	InternalServerErrorException,
+	Logger,
+} from '@nestjs/common';
 import { FinraAssignedReports } from '../volumes/schemas/volume.schema';
 
 moment.tz.setDefault('America/New_York');
@@ -17,6 +21,8 @@ interface Links {
 /** Parse FINRA */
 @Injectable()
 export class ParseService {
+	private readonly logger = new Logger(ParseService.name);
+
 	/**
 	 * Get pages with monthly data
 	 * @async
@@ -48,9 +54,8 @@ export class ParseService {
 
 			return links;
 		} catch (error) {
-			return {
-				error: error.message,
-			};
+			this.logger.error(`Error in ${this.getMonthlyPages.name}`, error);
+			throw new InternalServerErrorException();
 		}
 	}
 
@@ -75,9 +80,8 @@ export class ParseService {
 
 			return filePaths;
 		} catch (error) {
-			return {
-				error: error.message,
-			};
+			this.logger.error(`Error in ${this.getLinksToFiles.name}`, error);
+			throw new InternalServerErrorException();
 		}
 	}
 
@@ -88,27 +92,31 @@ export class ParseService {
 	 * @return Object promise: ticker: FinraReport
 	 */
 	async getDataFromFile(url: string): Promise<FinraAssignedReports> {
-		const response = await got(url);
-		const text = response.body.toString();
-		let textArray = text.split(/\r?\n/);
+		try {
+			const response = await got(url);
+			const text = response.body.toString();
+			let textArray = text.split(/\r?\n/);
 
-		// Remove first and last 2 lines of the array
-		textArray.shift();
-		textArray.pop();
-		textArray.pop();
+			// Remove first and last 2 lines of the array
+			textArray.shift();
+			textArray.pop();
+			textArray.pop();
 
-		let obj: FinraAssignedReports = {};
-		textArray.forEach((str) => {
-			// String format: Date|Symbol|ShortVolume|ShortExemptVolume|TotalVolume|Market
-			const strArr = str.split('|');
-			obj[strArr[1]] = {
-				date: new Date(moment(strArr[0], 'YYYYMMDD') as unknown as string),
-				shortVolume: +strArr[2],
-				shortExemptVolume: +strArr[3],
-				totalVolume: +strArr[4],
-			};
-		});
-
-		return obj;
+			let obj: FinraAssignedReports = {};
+			textArray.forEach((str) => {
+				// String format: Date|Symbol|ShortVolume|ShortExemptVolume|TotalVolume|Market
+				const strArr = str.split('|');
+				obj[strArr[1]] = {
+					date: new Date(moment(strArr[0], 'YYYYMMDD') as unknown as string),
+					shortVolume: +strArr[2],
+					shortExemptVolume: +strArr[3],
+					totalVolume: +strArr[4],
+				};
+			});
+			return obj;
+		} catch (error) {
+			this.logger.error(`Error in ${this.getDataFromFile.name}`, error);
+			throw new InternalServerErrorException();
+		}
 	}
 }
