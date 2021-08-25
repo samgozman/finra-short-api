@@ -37,6 +37,7 @@
 		"@nestjs/mongoose": "^8.0.1",
 		"@nestjs/passport": "^8.0.1",
 		"@nestjs/platform-express": "^8.0.5",
+		"@nestjs/schedule": "^1.0.1",
 		"bcrypt": "^5.0.1",
 		"bcryptjs": "^2.4.3",
 		"cheerio": "^1.0.0-rc.10",

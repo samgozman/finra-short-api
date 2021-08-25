@@ -2,6 +2,7 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_PIPE, APP_FILTER } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ScheduleModule } from '@nestjs/schedule';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { configValidationSchema } from './config.schema';
@@ -20,6 +21,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 			envFilePath: `config/.${process.env.NODE_ENV}.env`,
 			validationSchema: configValidationSchema,
 		}),
+		ScheduleModule.forRoot(),
 		MongooseModule.forRootAsync({
 			inject: [ConfigService],
 			useFactory: (config: ConfigService) => {

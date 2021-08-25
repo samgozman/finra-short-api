@@ -33,6 +33,7 @@ export class AveragesService {
 
 	async averages() {
 		try {
+			this.logger.warn('Averages calculation procces has started');
 			// ! Get method from `stockModel`
 			const allIds = await this.stocksService.avalibleTickers();
 			const latestDate = await this.volumesService.lastDateTime();
@@ -81,6 +82,7 @@ export class AveragesService {
 					stock.shortExemptVolRatio20DAVG = 0;
 				}
 				await stock.save();
+				this.logger.log('Averages calculation procces has finished');
 			}
 		} catch (error) {
 			this.logger.error(`Error in ${this.averages.name}`, error);

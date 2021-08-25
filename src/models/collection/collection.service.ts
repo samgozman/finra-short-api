@@ -59,6 +59,7 @@ export class CollectionService {
 
 	async updateLastTradingDay(): Promise<void> {
 		try {
+			this.logger.warn('Fetching last day data from FINRA has started');
 			const files = await this.parseService.getLinksToFiles(
 				'http://regsho.finra.org/regsho-Index.html',
 			);
@@ -66,6 +67,7 @@ export class CollectionService {
 			const reports = await this.parseService.getDataFromFile(currentDay);
 			let mongoArr = await this.uploadFinraReports(reports);
 			await this.volumeModel.insertMany(mongoArr);
+			this.logger.log('Fetching last day data from FINRA has finished');
 		} catch (error) {
 			this.logger.error(`Error in ${this.updateLastTradingDay.name}`, error);
 			throw new InternalServerErrorException();
