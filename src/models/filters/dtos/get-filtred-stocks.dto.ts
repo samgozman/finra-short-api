@@ -69,24 +69,24 @@ export class GetFiltredStocksDto {
 	@Min(1)
 	@Max(100)
 	@Type(() => Number)
-	limit?: number = 25;
+	limit: number = 25;
 
 	@IsOptional()
 	@IsInt()
 	@Min(0)
 	@Max(100000)
 	@Type(() => Number)
-	skip?: number = 0;
+	skip: number = 0;
 
 	@IsOptional()
 	@IsIn(sortKeysObject)
-	sortby?: StockKeys = 'ticker';
+	sortby: StockKeys = 'ticker';
 
 	@IsOptional()
 	@IsEnum(SortDirection, {
 		message: `sort direction can be 'asc' or 'desc' only`,
 	})
-	sortdir?: SortDirs = 'asc';
+	sortdir: SortDirs = 'asc';
 
 	@IsOptional()
 	@IsArray()

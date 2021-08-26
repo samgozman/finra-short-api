@@ -1,10 +1,19 @@
 import { Type } from 'class-transformer';
-import { IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import {
+	IsEnum,
+	IsInt,
+	IsOptional,
+	IsString,
+	Max,
+	Min,
+	IsNotEmpty,
+} from 'class-validator';
 import { SortDirection } from '../../filters/enums/SortDirection';
 import { SortDirs } from '../schemas/stock.schema';
 
 export class GetStockDto {
 	@IsString()
+	@IsNotEmpty()
 	ticker: string;
 
 	@IsOptional()
@@ -12,11 +21,11 @@ export class GetStockDto {
 	@Min(1)
 	@Max(100)
 	@Type(() => Number)
-	limit?: number;
+	limit: number = 21;
 
 	@IsOptional()
 	@IsEnum(SortDirection, {
 		message: `sort direction can be 'asc' or 'desc' only`,
 	})
-	sort?: SortDirs;
+	sort: SortDirs = 'asc';
 }

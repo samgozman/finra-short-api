@@ -44,9 +44,9 @@ export class StocksService {
 				.populate({
 					path: 'volume',
 					options: {
-						limit: query.limit || 25,
+						limit: query.limit,
 						sort: {
-							date: query.sort || 'asc',
+							date: query.sort,
 						},
 					},
 					select:
