@@ -2,11 +2,12 @@ import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Model } from 'mongoose';
 import { StockPopulatedDocument } from '../PopulatedVolume';
 
-type Virtuals = 'volume' | 'filter';
-type SortDirs = 'desc' | 'acs';
+export type Virtuals = 'volume' | 'filter';
+export type SortDirs = 'desc' | 'asc';
 
 export interface IStockDocument extends Stock, Document {}
 
+/** Interface of main stock keys */
 export interface IStock {
 	ticker: string;
 	shortVolRatioLast: number;
@@ -19,6 +20,9 @@ export interface IStock {
 	shortExemptVolRatio20DAVG: number;
 	totalVol20DAVG: number;
 }
+
+/** List of stock keys */
+export type StockKeys = keyof IStock & string;
 
 @Schema({ toJSON: { virtuals: true } })
 export class Stock implements IStock {

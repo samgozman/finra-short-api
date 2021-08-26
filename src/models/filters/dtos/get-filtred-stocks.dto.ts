@@ -12,6 +12,11 @@ import {
 import { SortDirection } from '../enums/SortDirection';
 import { IFiltersList } from '../schemas/filter.schema';
 import { Filters } from '../filter-unit.service';
+import {
+	IStock,
+	SortDirs,
+	StockKeys,
+} from 'src/models/stocks/schemas/stock.schema';
 
 // Duplication required for validation to work,
 // since an interface cannot be turned into an array in a TS,
@@ -41,8 +46,22 @@ const filtersObject: IFiltersList = {
 	shortExemptVolRatioDecreases3D: false,
 };
 
+const sortObject: IStock = {
+	ticker: '',
+	shortVolRatioLast: 0,
+	shortExemptVolRatioLast: 0,
+	totalVolLast: 0,
+	shortVolRatio5DAVG: 0,
+	shortExemptVolRatio5DAVG: 0,
+	totalVol5DAVG: 0,
+	shortVolRatio20DAVG: 0,
+	shortExemptVolRatio20DAVG: 0,
+	totalVol20DAVG: 0,
+};
+
 // Filters can be of type IFiltersList or empty
 const filtersArray = [...Object.keys(filtersObject), ''];
+const sortKeysObject = [...Object.keys(sortObject)];
 
 export class GetFiltredStocksDto {
 	@IsOptional()
@@ -50,20 +69,24 @@ export class GetFiltredStocksDto {
 	@Min(1)
 	@Max(100)
 	@Type(() => Number)
-	limit?: number;
+	limit?: number = 25;
 
 	@IsOptional()
 	@IsInt()
 	@Min(0)
 	@Max(100000)
 	@Type(() => Number)
-	skip?: number;
+	skip?: number = 0;
+
+	@IsOptional()
+	@IsIn(sortKeysObject)
+	sortby?: StockKeys = 'ticker';
 
 	@IsOptional()
 	@IsEnum(SortDirection, {
 		message: `sort direction can be 'asc' or 'desc' only`,
 	})
-	sort?: SortDirection;
+	sortdir?: SortDirs = 'asc';
 
 	@IsOptional()
 	@IsArray()

@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 import { SortDirection } from '../../filters/enums/SortDirection';
+import { SortDirs } from '../schemas/stock.schema';
 
 export class GetStockDto {
 	@IsString()
@@ -17,5 +18,5 @@ export class GetStockDto {
 	@IsEnum(SortDirection, {
 		message: `sort direction can be 'asc' or 'desc' only`,
 	})
-	sort?: SortDirection;
+	sort?: SortDirs;
 }
