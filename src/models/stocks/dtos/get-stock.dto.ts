@@ -25,10 +25,10 @@ export class GetStockDto {
 
 	@IsOptional()
 	@IsInt()
-	@Min(1)
+	@Min(0)
 	@Max(100)
 	@Type(() => Number)
-	limit: number = 21;
+	limit: number = 0;
 
 	@IsOptional()
 	@IsEnum(SortDirection, {
