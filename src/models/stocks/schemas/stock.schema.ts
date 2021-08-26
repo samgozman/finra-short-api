@@ -7,8 +7,21 @@ type SortDirs = 'desc' | 'acs';
 
 export interface IStockDocument extends Stock, Document {}
 
-@Schema()
-export class Stock {
+export interface IStock {
+	ticker: string;
+	shortVolRatioLast: number;
+	shortExemptVolRatioLast: number;
+	totalVolLast: number;
+	shortVolRatio5DAVG: number;
+	shortExemptVolRatio5DAVG: number;
+	totalVol5DAVG: number;
+	shortVolRatio20DAVG: number;
+	shortExemptVolRatio20DAVG: number;
+	totalVol20DAVG: number;
+}
+
+@Schema({ toJSON: { virtuals: true } })
+export class Stock implements IStock {
 	@Prop({
 		type: String,
 		required: true,

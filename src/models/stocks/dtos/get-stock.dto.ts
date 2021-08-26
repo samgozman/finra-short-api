@@ -11,11 +11,11 @@ export class GetStockDto {
 	@Min(1)
 	@Max(100)
 	@Type(() => Number)
-	limit: number;
+	limit?: number;
 
 	@IsOptional()
 	@IsEnum(SortDirection, {
 		message: `sort direction can be 'asc' or 'desc' only`,
 	})
-	sort: SortDirection;
+	sort?: SortDirection;
 }

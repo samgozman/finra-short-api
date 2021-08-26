@@ -50,20 +50,20 @@ export class GetFiltredStocksDto {
 	@Min(1)
 	@Max(100)
 	@Type(() => Number)
-	limit: number;
+	limit?: number;
 
 	@IsOptional()
 	@IsInt()
 	@Min(0)
 	@Max(100000)
 	@Type(() => Number)
-	skip: number;
+	skip?: number;
 
 	@IsOptional()
 	@IsEnum(SortDirection, {
 		message: `sort direction can be 'asc' or 'desc' only`,
 	})
-	sort: SortDirection;
+	sort?: SortDirection;
 
 	@IsOptional()
 	@IsArray()
@@ -71,5 +71,5 @@ export class GetFiltredStocksDto {
 	@Type(() => String)
 	@Transform(({ value }) => value.split(','))
 	@IsIn(filtersArray, { each: true })
-	filters: Filters[];
+	filters?: Filters[];
 }
