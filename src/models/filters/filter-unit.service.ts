@@ -106,9 +106,9 @@ export class FilterUnitService {
 	 */
 	async getFilter(
 		keys: Filters[],
-		limit: number = 25,
-		skip: number = 0,
-		sort: ISort = { field: 'ticker', dir: 'asc' },
+		limit: number,
+		skip: number,
+		sort: ISort,
 	): Promise<IFiltredStocks> {
 		try {
 			// Convert filter keys to object like {key: true, ...}

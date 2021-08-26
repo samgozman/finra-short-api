@@ -3,13 +3,20 @@ import {
 	InternalServerErrorException,
 	Logger,
 } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { IStock, Stock, StockModel } from '../stocks/schemas/stock.schema';
+import { GetFiltredStocksDto } from './dtos/get-filtred-stocks.dto';
 import { FilterUnitService } from './filter-unit.service';
 import { IFiltersList } from './schemas/filter.schema';
 
 @Injectable()
 export class FiltersService {
 	private readonly logger = new Logger(FiltersService.name);
-	constructor(private readonly fus: FilterUnitService) {}
+	constructor(
+		private readonly fus: FilterUnitService,
+		@InjectModel(Stock.name)
+		private readonly stockModel: StockModel,
+	) {}
 
 	/**
 	 * Get object of filters update functions
@@ -174,6 +181,39 @@ export class FiltersService {
 		} catch (error) {
 			this.logger.error(`Error in ${this.updateAll.name}`, error);
 			throw new InternalServerErrorException();
+		}
+	}
+
+	/**
+	 * Get filtred stocks by query
+	 * @param query GetFiltredStocksDto
+	 */
+	async get(query: GetFiltredStocksDto) {
+		const { limit, skip, sortby, sortdir, filters } = query;
+
+		if (filters) {
+			// Get filtred values
+			const stocks = await this.fus.getFilter(filters, limit, skip, {
+				field: sortby,
+				dir: sortdir,
+			});
+			return stocks;
+		} else {
+			// Get all by aggregation
+			const count = await this.stockModel.estimatedDocumentCount();
+			const stocks = await this.stockModel.aggregate<IStock>([
+				{ $match: {} },
+				{
+					$sort: {
+						[sortby]: sortdir === 'asc' ? 1 : -1,
+					},
+				},
+				{ $limit: skip + limit },
+				{ $skip: skip },
+				{ $project: { _id: false, _stock_id: false, __v: false } },
+			]);
+
+			return { count, stocks };
 		}
 	}
 }
