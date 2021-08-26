@@ -82,8 +82,8 @@ export class AveragesService {
 					stock.shortExemptVolRatio20DAVG = 0;
 				}
 				await stock.save();
-				this.logger.log('Averages calculation procces has finished');
 			}
+			this.logger.log('Averages calculation procces has finished');
 		} catch (error) {
 			this.logger.error(`Error in ${this.averages.name}`, error);
 			throw new InternalServerErrorException();
