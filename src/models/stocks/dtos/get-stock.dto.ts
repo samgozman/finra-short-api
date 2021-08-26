@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
 import {
 	IsEnum,
 	IsInt,
@@ -7,6 +7,8 @@ import {
 	Max,
 	Min,
 	IsNotEmpty,
+	Matches,
+	MaxLength,
 } from 'class-validator';
 import { SortDirection } from '../../filters/enums/SortDirection';
 import { SortDirs } from '../schemas/stock.schema';
@@ -14,6 +16,11 @@ import { SortDirs } from '../schemas/stock.schema';
 export class GetStockDto {
 	@IsString()
 	@IsNotEmpty()
+	@MaxLength(16)
+	@Matches(/^([a-zA-Z0-9]\.?)+$/s, {
+		message: 'ticker can only contain letters, numbers and a period.',
+	})
+	@Transform(({ value }) => value.toUpperCase())
 	ticker: string;
 
 	@IsOptional()
