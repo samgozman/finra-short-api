@@ -56,14 +56,17 @@ export const getLinksToFiles = async (url: string): Promise<Links> => {
         const response = await got(url);
         const $ = cheerio.load(response.body);
 
-        const filePathsNode = $('ul').first().find('li > a').toArray().reverse();
+        const filePathsNode = $('div.view-content > .item-list > ul')
+            .first()
+            .find('li a')
+            .toArray()
+            .reverse();
         let filePaths: Links = {};
         Array.prototype.map.call(filePathsNode, (a) => {
             const link = $(a);
             const key = link.text();
             if (key) filePaths[key] = link.attr('href') || '';
         });
-
         return filePaths;
     } catch (error) {
         return {
@@ -135,7 +138,9 @@ export const processLines = async (reports: FinraAssignedReports): Promise<IFinr
 
 export const updateLastTradingDay = async (): Promise<void> => {
     try {
-        const files = await getLinksToFiles('http://regsho.finra.org/regsho-Index.html');
+        const files = await getLinksToFiles(
+            'https://www.finra.org/finra-data/browse-catalog/short-sale-volume-data/daily-short-sale-volume-files'
+        );
         const { [Object.keys(files).pop() as string]: currentDay } = files;
         const reports = await getDataFromFile(currentDay);
         let mongoArr = await processLines(reports);
