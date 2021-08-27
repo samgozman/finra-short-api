@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_PIPE, APP_FILTER } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { configValidationSchema } from './config.schema';
 import { UsersModule } from './models/users/users.module';
@@ -41,7 +40,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 		CollectionModule,
 		AuthenticationModule,
 	],
-	controllers: [AppController],
+	controllers: [],
 	providers: [
 		AppService,
 		// Apply this pipe on any request that flows into the application (instead of main.ts file)
