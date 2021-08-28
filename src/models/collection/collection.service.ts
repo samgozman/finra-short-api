@@ -105,8 +105,6 @@ export class CollectionService {
 			this.logger.warn('CREATING DATABASE FROM THE START');
 			await this.fillDataBase(false);
 			this.logger.log('Database rebuilding completed');
-
-			// }
 		} catch (error) {
 			this.logger.error(`Error in ${this.recreateFullDatabase.name}`, error);
 			throw new InternalServerErrorException();
