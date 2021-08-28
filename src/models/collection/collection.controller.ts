@@ -1,4 +1,4 @@
-import { Controller, Get, Logger, UseGuards } from '@nestjs/common';
+import { Controller, Get, Logger, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Cron } from '@nestjs/schedule';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -6,8 +6,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { FiltersService } from '../filters/filters.service';
 import { AveragesService } from './averages.service';
 import { CollectionService } from './collection.service';
-
-// ! Log after success
+import { GetLinkDto } from './dtos/get-link.dto';
 
 @Controller('collection')
 @UseGuards(AuthGuard())
@@ -19,7 +18,6 @@ export class CollectionController {
 		private filtersService: FiltersService,
 	) {}
 
-	// ! Only dev route! Use CLI params in prod!
 	@Get('/recreate')
 	@Roles('admin')
 	@UseGuards(RolesGuard)
@@ -46,6 +44,14 @@ export class CollectionController {
 	@UseGuards(RolesGuard)
 	updateAverages() {
 		return this.averagesService.averages();
+	}
+
+	/** Update collection directly from the FINRA report txt file by link */
+	@Get('/update/link')
+	@Roles('admin')
+	@UseGuards(RolesGuard)
+	updateVolumesByLink(@Query() query: GetLinkDto) {
+		return this.collectionService.updateVolumesByLink(query.link);
 	}
 
 	// Run every day except Sunday at 6.30pm/12 ET (01:30/24 Moscow time) ('30 18 * * 1-6)

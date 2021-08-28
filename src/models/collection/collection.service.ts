@@ -12,8 +12,6 @@ import {
 } from '../volumes/schemas/volume.schema';
 import { ParseService } from './parse.service';
 
-// ! Setup nest logger
-
 @Injectable()
 export class CollectionService {
 	private readonly logger = new Logger(CollectionService.name);
@@ -74,7 +72,7 @@ export class CollectionService {
 				: this.parseService.getAllDaysPages();
 			for (const file in files) {
 				const reports = await this.parseService.getDataFromFile(files[file]);
-				let mongoArr = await this.createVolumeArray(reports);
+				const mongoArr = await this.createVolumeArray(reports);
 				await this.volumeModel.insertMany(mongoArr);
 			}
 		} catch (error) {
@@ -111,6 +109,16 @@ export class CollectionService {
 			// }
 		} catch (error) {
 			this.logger.error(`Error in ${this.recreateFullDatabase.name}`, error);
+			throw new InternalServerErrorException();
+		}
+	}
+
+	async updateVolumesByLink(link: string) {
+		try {
+			const reports = await this.parseService.getDataFromFile(link);
+			const mongoArr = await this.createVolumeArray(reports);
+			await this.volumeModel.insertMany(mongoArr);
+		} catch (error) {
 			throw new InternalServerErrorException();
 		}
 	}
