@@ -1,9 +1,4 @@
-import {
-	Injectable,
-	InternalServerErrorException,
-	Logger,
-	NotFoundException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { GetStockDto } from './dtos/get-stock.dto';
@@ -22,7 +17,7 @@ export class StocksService {
 	 * @async
 	 * @returns Promise array of stocks ObjectId's
 	 */
-	async avalibleTickers(): Promise<Types.ObjectId[]> {
+	async availableTickers(): Promise<Types.ObjectId[]> {
 		const stocks = await this.stockModel.find({});
 		return stocks.map((a) => a._id);
 	}

@@ -53,7 +53,7 @@ export class FilterUnitService {
 				this.logger.log('Filter collection do not exist yet.');
 			});
 
-			const allIds = await this.stocksService.avalibleTickers();
+			const allIds = await this.stocksService.availableTickers();
 			for (const _id of allIds) {
 				await new this.filterModel({ _stock_id: _id }).save();
 			}
@@ -163,7 +163,7 @@ export class FilterUnitService {
 	isNotGarbageFilter(filter: Filters = 'isNotGarbage'): () => Promise<void> {
 		try {
 			return async () => {
-				const allIds = await this.stocksService.avalibleTickers();
+				const allIds = await this.stocksService.availableTickers();
 				const lastDay = await this.volumesService.lastDateTime();
 
 				for (const _id of allIds) {
@@ -222,7 +222,7 @@ export class FilterUnitService {
 	): () => Promise<void> {
 		try {
 			return async () => {
-				const allIds = await this.stocksService.avalibleTickers();
+				const allIds = await this.stocksService.availableTickers();
 				for (const _id of allIds) {
 					const stock = (await this.stockModel.findById(_id))!;
 					const volume = (await stock.getVirtual('volume', period + 1, 'desc'))

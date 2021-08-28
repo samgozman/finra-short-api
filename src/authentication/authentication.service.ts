@@ -1,9 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { compare, genSalt, hash } from 'bcrypt';
-import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
-import { IUserDocument, User } from '../models/users/schemas/user.schema';
+import { User, UserModel } from '../models/users/schemas/user.schema';
 import { UsersService } from '../models/users/users.service';
 import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
 import { JwtPayload } from './jwt-payload.interface';
@@ -12,7 +11,7 @@ import { JwtPayload } from './jwt-payload.interface';
 export class AuthenticationService {
 	constructor(
 		@InjectModel(User.name)
-		private readonly userModel: Model<IUserDocument>,
+		private readonly userModel: UserModel,
 		private usersService: UsersService,
 		private jwtService: JwtService,
 	) {}
