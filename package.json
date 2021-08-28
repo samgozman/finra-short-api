@@ -40,7 +40,6 @@
 		"@nestjs/schedule": "^1.0.1",
 		"bcrypt": "^5.0.1",
 		"bcryptjs": "^2.4.3",
-		"cheerio": "^1.0.0-rc.10",
 		"class-transformer": "^0.4.0",
 		"class-validator": "^0.13.1",
 		"compression": "^1.7.4",

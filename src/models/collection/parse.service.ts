@@ -1,6 +1,6 @@
 import got from 'got';
-import cheerio from 'cheerio';
-import moment from 'moment-timezone';
+import timezone from 'moment-timezone';
+import moment from 'moment';
 import {
 	Injectable,
 	InternalServerErrorException,
@@ -8,81 +8,40 @@ import {
 } from '@nestjs/common';
 import { FinraAssignedReports } from '../volumes/schemas/volume.schema';
 
-moment.tz.setDefault('America/New_York');
-
-// ! Think about proper error handling
-// ! Setup nest logger
-
-interface Links {
-	/** Key: 'Date of report', Value: url*/
-	[key: string]: string;
-}
+timezone.tz.setDefault('America/New_York');
 
 /** Parse FINRA */
 @Injectable()
 export class ParseService {
 	private readonly logger = new Logger(ParseService.name);
 
-	/**
-	 * Get pages with monthly data
-	 * @async
-	 * @return Object promise: 'Mounth Year': 'Link'
-	 */
-	async getMonthlyPages(): Promise<Links> {
-		try {
-			const baseUrl = 'http://regsho.finra.org/regsho-Index.html';
-			const response = await got(baseUrl);
-			const $ = cheerio.load(response.body);
+	getAllDaysPages(): string[] {
+		function getDatesPages(startDate: Date, endDate: Date) {
+			const dates = [];
+			let currentDate = startDate;
+			const addDays = function (days: number) {
+				const date = new Date(this.valueOf());
+				date.setDate(date.getDate() + days);
+				return date;
+			};
+			while (currentDate <= endDate) {
+				const dayOfWeek = moment(currentDate).weekday();
 
-			const menuTable = $('body > table:nth-child(2) > tbody > tr > td');
-			let links: Links = {};
-			Array.prototype.map.call(menuTable, (td) => {
-				const link = $(td).find('a');
-				const key: string | undefined = link.text();
-				if (key) {
-					links[key] = link.attr('href') || '';
-				} else {
-					// Last / current menu item is empty.
-					const currentPageDate = $(
-						'body > table:nth-child(2) > tbody > tr > td',
-					)
-						.last()
-						.text();
-					links[currentPageDate] = baseUrl;
+				if (dayOfWeek !== 6 && dayOfWeek !== 0) {
+					// If not weekend
+					const d = moment(currentDate).format('YYYYMMDD');
+					dates.push(
+						`https://cdn.finra.org/equity/regsho/daily/CNMSshvol${d}.txt`,
+					);
 				}
-			});
 
-			return links;
-		} catch (error) {
-			this.logger.error(`Error in ${this.getMonthlyPages.name}`, error);
-			throw new InternalServerErrorException();
+				currentDate = addDays.call(currentDate, 1);
+			}
+			return dates;
 		}
-	}
 
-	/**
-	 * Get links to the monthly reports
-	 * @async
-	 * @param url Link to the monthly page
-	 * @return Object promise: 'DayOfTheWeek Day': 'Link'
-	 */
-	async getLinksToFiles(url: string): Promise<Links> {
-		try {
-			const response = await got(url);
-			const $ = cheerio.load(response.body);
-
-			const filePathsNode = $('ul').first().find('li > a').toArray().reverse();
-			let filePaths: Links = {};
-			Array.prototype.map.call(filePathsNode, (a) => {
-				const link = $(a);
-				const key = link.text();
-				if (key) filePaths[key] = link.attr('href') || '';
-			});
-
-			return filePaths;
-		} catch (error) {
-			this.logger.error(`Error in ${this.getLinksToFiles.name}`, error);
-			throw new InternalServerErrorException();
-		}
+		const dates = getDatesPages(new Date(2018, 9, 10), new Date());
+		return dates;
 	}
 
 	/**
@@ -94,6 +53,7 @@ export class ParseService {
 	async getDataFromFile(url: string): Promise<FinraAssignedReports> {
 		try {
 			const response = await got(url);
+
 			const text = response.body.toString();
 			let textArray = text.split(/\r?\n/);
 
@@ -115,8 +75,11 @@ export class ParseService {
 			});
 			return obj;
 		} catch (error) {
-			this.logger.error(`Error in ${this.getDataFromFile.name}`, error);
-			throw new InternalServerErrorException();
+			if (!(error instanceof got.HTTPError)) {
+				this.logger.error(`Error in ${this.getDataFromFile.name}`, error);
+				throw new InternalServerErrorException();
+			}
+			return {};
 		}
 	}
 }

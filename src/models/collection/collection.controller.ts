@@ -31,7 +31,7 @@ export class CollectionController {
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	updateLastDay() {
-		return this.collectionService.updateLastTradingDay();
+		return this.collectionService.updateLastTradingDays();
 	}
 
 	@Get('/update/filters')

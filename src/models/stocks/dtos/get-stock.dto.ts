@@ -26,7 +26,7 @@ export class GetStockDto {
 	@IsOptional()
 	@IsInt()
 	@Min(0)
-	@Max(100)
+	@Max(1000)
 	@Type(() => Number)
 	limit: number = 0;
 

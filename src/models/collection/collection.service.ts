@@ -26,8 +26,12 @@ export class CollectionService {
 	) {}
 
 	// ex processLines
-	async uploadFinraReports(reports: FinraAssignedReports): Promise<Volume[]> {
+	async createVolumeArray(reports: FinraAssignedReports): Promise<Volume[]> {
 		try {
+			if (Object.keys(reports).length === 0) {
+				return [];
+			}
+
 			let mongoArr: Volume[] = [];
 			for (const report in reports) {
 				// ! Push Stock related strings to the StocksService
@@ -52,24 +56,47 @@ export class CollectionService {
 
 			return mongoArr;
 		} catch (error) {
-			this.logger.error(`Error in ${this.uploadFinraReports.name}`, error);
+			this.logger.error(`Error in ${this.createVolumeArray.name}`, error);
 			throw new InternalServerErrorException();
 		}
 	}
 
-	async updateLastTradingDay(): Promise<void> {
+	/**
+	 * Recreate full database from the start.
+	 * When using the `reversed` option, you can add the missing days to the already generated base.
+	 * The script will stop at the first data duplication error.
+	 * @param reversed bypass an array of files from the last element
+	 */
+	private async fillDataBase(reversed: boolean = false) {
+		try {
+			const files = reversed
+				? this.parseService.getAllDaysPages().reverse()
+				: this.parseService.getAllDaysPages();
+			for (const file in files) {
+				const reports = await this.parseService.getDataFromFile(files[file]);
+				let mongoArr = await this.createVolumeArray(reports);
+				await this.volumeModel.insertMany(mongoArr);
+			}
+		} catch (error) {
+			if (error.code !== 11000) {
+				this.logger.error(`Error in ${this.fillDataBase.name}`, error);
+				throw new InternalServerErrorException();
+			} else {
+				this.logger.log(
+					`${this.fillDataBase.name}: first duplication error. Data recording is stopped`,
+				);
+			}
+		}
+	}
+
+	/** Update last trading days. */
+	async updateLastTradingDays(): Promise<void> {
 		try {
 			this.logger.warn('Fetching last day data from FINRA has started');
-			const files = await this.parseService.getLinksToFiles(
-				'http://regsho.finra.org/regsho-Index.html',
-			);
-			const { [Object.keys(files).pop() as string]: currentDay } = files;
-			const reports = await this.parseService.getDataFromFile(currentDay);
-			let mongoArr = await this.uploadFinraReports(reports);
-			await this.volumeModel.insertMany(mongoArr);
+			await this.fillDataBase(true);
 			this.logger.log('Fetching last day data from FINRA has finished');
 		} catch (error) {
-			this.logger.error(`Error in ${this.updateLastTradingDay.name}`, error);
+			this.logger.error(`Error in ${this.updateLastTradingDays.name}`, error);
 			throw new InternalServerErrorException();
 		}
 	}
@@ -77,21 +104,11 @@ export class CollectionService {
 	/** Creates db from the start */
 	async recreateFullDatabase() {
 		try {
-			const pages = await this.parseService.getMonthlyPages();
-			const files = [];
+			this.logger.warn('CREATING DATABASE FROM THE START');
+			await this.fillDataBase(false);
+			this.logger.log('Database rebuilding completed');
 
-			// Get links to reports
-			for (const page in pages) {
-				const links = await this.parseService.getLinksToFiles(pages[page]);
-				files.push(...Object.values(links));
-			}
-
-			// Process files
-			for (const file in files) {
-				const reports = await this.parseService.getDataFromFile(files[file]);
-				let mongoArr = await this.uploadFinraReports(reports);
-				await this.volumeModel.insertMany(mongoArr);
-			}
+			// }
 		} catch (error) {
 			this.logger.error(`Error in ${this.recreateFullDatabase.name}`, error);
 			throw new InternalServerErrorException();
