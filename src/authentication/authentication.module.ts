@@ -5,9 +5,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthenticationService } from './authentication.service';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthenticationController } from './authentication.controller';
-import { UsersService } from 'src/models/users/users.service';
+import { UsersService } from '../models/users/users.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserModelDefinition } from 'src/models/users/schemas/user.schema';
+import { UserModelDefinition } from '../models/users/schemas/user.schema';
 
 @Module({
 	imports: [

@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Roles } from 'src/decorators/roles.decorator';
-import { RolesGuard } from 'src/guards/roles.guard';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { Roles } from '../../decorators/roles.decorator';
+import { RolesGuard } from '../../guards/roles.guard';
+import { Serialize } from '../../interceptors/serialize.interceptor';
 import { ApiKeyDto } from './dtos/apikey.dto';
 import { CreateUserApiKeyDto } from './dtos/create-user-api-key.dto';
 import { UpdateRolesDto } from './dtos/update-roles.dto';

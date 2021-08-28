@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { Tinkoff } from 'tinkoff-api-securities';
-import { VolumesService } from 'src/models/volumes/volumes.service';
+import { VolumesService } from '../../models/volumes/volumes.service';
 import { Stock, StockModel } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
 import {

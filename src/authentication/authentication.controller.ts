@@ -6,7 +6,7 @@ import {
 	ForbiddenException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthenticationService } from './authentication.service';
 import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
 import { AuthDto } from './dtos/auth.dto';

@@ -16,7 +16,7 @@ import {
 	IStock,
 	SortDirs,
 	StockKeys,
-} from 'src/models/stocks/schemas/stock.schema';
+} from '../../../models/stocks/schemas/stock.schema';
 
 // Duplication required for validation to work,
 // since an interface cannot be turned into an array in a TS,

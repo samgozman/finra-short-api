@@ -3,8 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { compare, genSalt, hash } from 'bcrypt';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
-import { IUserDocument, User } from 'src/models/users/schemas/user.schema';
-import { UsersService } from 'src/models/users/users.service';
+import { IUserDocument, User } from '../models/users/schemas/user.schema';
+import { UsersService } from '../models/users/users.service';
 import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
 import { JwtPayload } from './jwt-payload.interface';
 

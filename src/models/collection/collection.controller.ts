@@ -1,8 +1,8 @@
 import { Controller, Get, Logger, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Cron } from '@nestjs/schedule';
-import { Roles } from 'src/decorators/roles.decorator';
-import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from '../../decorators/roles.decorator';
+import { RolesGuard } from '../../guards/roles.guard';
 import { FiltersService } from '../filters/filters.service';
 import { AveragesService } from './averages.service';
 import { CollectionService } from './collection.service';

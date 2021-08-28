@@ -1,5 +1,5 @@
-import { Expose, Transform, Type } from 'class-transformer';
-import { Volume } from 'src/models/volumes/schemas/volume.schema';
+import { Expose } from 'class-transformer';
+import { Volume } from '../../../models/volumes/schemas/volume.schema';
 import { IStock } from '../schemas/stock.schema';
 
 export class StockDto implements IStock {
