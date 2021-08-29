@@ -6,7 +6,12 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Stock, StockModel } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
-import { FinraReport } from '../volumes/schemas/volume.schema';
+import {
+	FinraReport,
+	IVolumeDocument,
+	Volume,
+	VolumeModel,
+} from '../volumes/schemas/volume.schema';
 import { VolumesService } from '../volumes/volumes.service';
 
 // Calculate average volume
@@ -27,6 +32,8 @@ export class AveragesService {
 	constructor(
 		@InjectModel(Stock.name)
 		private readonly stockModel: StockModel,
+		@InjectModel(Volume.name)
+		private readonly volumeModel: VolumeModel,
 		private volumesService: VolumesService,
 		private stocksService: StocksService,
 	) {}
@@ -40,7 +47,11 @@ export class AveragesService {
 
 			for (const _id of allIds) {
 				const stock = (await this.stockModel.findById(_id))!;
-				const { volume } = await stock.getVirtual('volume', 20, 'desc');
+				const volume = await this.volumeModel.aggregate<IVolumeDocument>([
+					{ $match: { _stock_id: _id } },
+					{ $sort: { date: -1 } },
+					{ $limit: 20 },
+				]);
 
 				// Check that the volume array is exists and stock was traded during last day
 				if (
