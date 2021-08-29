@@ -11,6 +11,11 @@ import { VolumesService } from '../../models/volumes/volumes.service';
 import { Stock, StockModel } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
 import {
+	IVolumeDocument,
+	Volume,
+	VolumeModel,
+} from '../volumes/schemas/volume.schema';
+import {
 	Filter,
 	FilterModel,
 	IFilterDocument,
@@ -38,6 +43,8 @@ export class FilterUnitService {
 		private readonly filterModel: FilterModel,
 		@InjectModel(Stock.name)
 		private readonly stockModel: StockModel,
+		@InjectModel(Volume.name)
+		private readonly volumeModel: VolumeModel,
 		private readonly stocksService: StocksService,
 		private readonly configService: ConfigService,
 		private readonly volumesService: VolumesService,
@@ -167,8 +174,11 @@ export class FilterUnitService {
 				const lastDay = await this.volumesService.lastDateTime();
 
 				for (const _id of allIds) {
-					const stock = (await this.stockModel.findById(_id))!;
-					const volume = (await stock.getVirtual('volume', 5, 'desc')).volume;
+					const volume = await this.volumeModel.aggregate<IVolumeDocument>([
+						{ $match: { _stock_id: _id } },
+						{ $sort: { date: -1 } },
+						{ $limit: 5 },
+					]);
 					// Checks
 					const volumeIsAtLeast5 = volume.length === 5;
 					if (volumeIsAtLeast5 && lastDay === volume[0].date.getTime()) {
@@ -224,9 +234,11 @@ export class FilterUnitService {
 			return async () => {
 				const allIds = await this.stocksService.availableTickers();
 				for (const _id of allIds) {
-					const stock = (await this.stockModel.findById(_id))!;
-					const volume = (await stock.getVirtual('volume', period + 1, 'desc'))
-						.volume;
+					const volume = await this.volumeModel.aggregate<IVolumeDocument>([
+						{ $match: { _stock_id: _id } },
+						{ $sort: { date: -1 } },
+						{ $limit: period + 1 },
+					]);
 
 					// Check if populated volume exists
 					if (volume && volume.length > 1) {
