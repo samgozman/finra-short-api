@@ -1,21 +1,12 @@
 import { NotFoundException } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { FilterQuery, Types } from 'mongoose';
+import { FilterQuery } from 'mongoose';
 import { IStockDocument, Stock, StockModel } from './schemas/stock.schema';
 import { StocksService } from './stocks.service';
 
 class MockStock {
 	constructor(public _id: string, public ticker: string) {}
-	populate() {
-		return this;
-	}
-	execPopulate() {
-		return this;
-	}
-	toJSON() {
-		return this;
-	}
 }
 
 const mockStockAapl = new MockStock('1234', 'AAPL');
@@ -30,6 +21,16 @@ class MockStockModel implements Partial<StockModel> {
 
 	find(filter?: FilterQuery<IStockDocument>): any {
 		return Promise.resolve(stockArr);
+	}
+
+	// ! HOW TO MOCK THIS FUCKING THING?!
+	aggregate(): any {
+		return {
+			exec: () => {
+				// const stock = stockArr.filter((e) => e.ticker === filter.ticker)[0];
+				return Promise.resolve(mockStockAapl);
+			},
+		};
 	}
 }
 
