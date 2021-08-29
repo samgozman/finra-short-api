@@ -2,7 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { GetStockDto } from './dtos/get-stock.dto';
-import { Stock, StockModel } from './schemas/stock.schema';
+import { IStockDocument, Stock, StockModel } from './schemas/stock.schema';
 
 @Injectable()
 export class StocksService {
@@ -28,29 +28,34 @@ export class StocksService {
 	 */
 	async get(query: GetStockDto) {
 		try {
-			let stock = await this.stockModel.findOne({ ticker: query.ticker });
-
-			if (!stock) {
-				throw new Error();
-			}
-
-			// Populate volumes
-			await stock
-				.populate({
-					path: 'volume',
-					options: {
-						limit: query.limit,
-						sort: {
-							date: query.sort,
+			const stock = await this.stockModel
+				.aggregate<IStockDocument>([
+					{ $match: { ticker: query.ticker } },
+					{ $limit: 1 },
+					{
+						$lookup: {
+							from: 'volumes',
+							let: { id: '$_id' },
+							pipeline: [
+								{ $match: { $expr: { $eq: ['$$id', '$_stock_id'] } } },
+								{ $sort: { date: query.sort === 'asc' ? 1 : -1 } },
+								{ $limit: query.limit },
+							],
+							as: 'volume',
 						},
 					},
-					select:
-						'-_id -_stock_id totalVolume shortExemptVolume shortVolume date',
-				})
-				.execPopulate();
+					{
+						$project: {
+							_id: false,
+							__v: false,
+							volume: { _id: false, _stock_id: false, __v: false },
+						},
+					},
+				])
+				.exec();
 
 			return {
-				...stock.toJSON(),
+				...stock[0],
 				version: process.env.npm_package_version,
 			};
 		} catch (error) {

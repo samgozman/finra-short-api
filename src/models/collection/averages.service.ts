@@ -40,7 +40,7 @@ export class AveragesService {
 
 			for (const _id of allIds) {
 				const stock = (await this.stockModel.findById(_id))!;
-				const volume = (await stock.getVirtual('volume', 20, 'desc')).volume;
+				const { volume } = await stock.getVirtual('volume', 20, 'desc');
 
 				// Check that the volume array is exists and stock was traded during last day
 				if (
