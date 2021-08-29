@@ -62,40 +62,9 @@ export class Stock implements IStock {
 
 	@Prop()
 	totalVol20DAVG: number;
-
-	/**
-	 * Populate virtual with sorting options
-	 * @param path virtual path ('volume' etc.)
-	 * @param limit max number of strokes to populate
-	 * @param sortDir sort direction (by date)
-	 * @returns Mongoose object with populated virtuals
-	 */
-	getVirtual: (
-		path: Virtuals,
-		limit: number,
-		sortDir?: SortDirs,
-	) => Promise<StockPopulatedDocument>;
 }
 
 export const StockSchema = SchemaFactory.createForClass(Stock);
-
-StockSchema.methods.getVirtual = async function (
-	path: Virtuals = 'volume',
-	limit: number,
-	sortDir: SortDirs = 'desc',
-): Promise<StockPopulatedDocument> {
-	await this.populate({
-		path,
-		options: {
-			limit,
-			sort: {
-				date: sortDir,
-			},
-		},
-	}).execPopulate();
-
-	return this as StockPopulatedDocument;
-};
 
 StockSchema.virtual('volume', {
 	ref: 'Volume',
