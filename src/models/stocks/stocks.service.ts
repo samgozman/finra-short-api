@@ -2,7 +2,12 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { GetStockDto } from './dtos/get-stock.dto';
-import { IStockDocument, Stock, StockModel } from './schemas/stock.schema';
+import {
+	IStock,
+	IStockDocument,
+	Stock,
+	StockModel,
+} from './schemas/stock.schema';
 
 @Injectable()
 export class StocksService {
@@ -28,7 +33,7 @@ export class StocksService {
 	 */
 	async get(query: GetStockDto) {
 		try {
-			const stock = await this.stockModel
+			const stock = (await this.stockModel
 				.aggregate<IStockDocument>([
 					{ $match: { ticker: query.ticker } },
 					{ $limit: 1 },
@@ -52,7 +57,11 @@ export class StocksService {
 						},
 					},
 				])
-				.exec();
+				.exec()) as IStock[];
+
+			if (!stock || stock.length === 0) {
+				throw new Error();
+			}
 
 			return {
 				...stock[0],
