@@ -41,7 +41,6 @@ export class AveragesService {
 	async averages() {
 		try {
 			this.logger.warn('Averages calculation procces has started');
-			// ! Get method from `stockModel`
 			const allIds = await this.stocksService.availableTickers();
 			const latestDate = await this.volumesService.lastDateTime();
 
