@@ -1,9 +1,9 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
+import { AnyKeys, AnyObject, Types } from 'mongoose';
 import { GetStockDto } from './dtos/get-stock.dto';
 import { StockDto } from './dtos/stock.dto';
-import { Stock, StockModel } from './schemas/stock.schema';
+import { IStockDocument, Stock, StockModel } from './schemas/stock.schema';
 
 @Injectable()
 export class StocksService {
@@ -12,6 +12,10 @@ export class StocksService {
 		@InjectModel(Stock.name)
 		private readonly stockModel: StockModel,
 	) {}
+
+	/** Create new Stock instance */
+	create = (doc?: AnyKeys<IStockDocument> & AnyObject) =>
+		new this.stockModel(doc);
 
 	/**
 	 * Get array of all available stocks id's
