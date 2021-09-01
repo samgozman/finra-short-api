@@ -1,9 +1,11 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Volume } from './schemas/volume.schema';
+import { IVolumeDocument, Volume } from './schemas/volume.schema';
 import { VolumesService } from './volumes.service';
 
 const mockDate = new Date();
+let volume = { date: mockDate } as IVolumeDocument;
 
 class MockVolumeModel {
 	findOne() {
@@ -11,7 +13,7 @@ class MockVolumeModel {
 	}
 
 	sort() {
-		return { date: mockDate };
+		return volume;
 	}
 }
 
@@ -39,5 +41,12 @@ describe('VolumesService', () => {
 	it('lastDateTime: should get last day as number', async () => {
 		const date = await service.lastDateTime();
 		expect(date).toEqual(mockDate.getTime());
+	});
+
+	it('lastDateTime: should get error if volume is undefined', async () => {
+		volume = undefined;
+		await expect(service.lastDateTime()).rejects.toBeInstanceOf(
+			InternalServerErrorException,
+		);
 	});
 });
