@@ -15,12 +15,8 @@ import {
 	Volume,
 	VolumeModel,
 } from '../volumes/schemas/volume.schema';
-import {
-	Filter,
-	FilterModel,
-	IFilterDocument,
-	IFiltersList,
-} from './schemas/filter.schema';
+import { FiltersRepository } from './repositories/filters.repository';
+import { IFiltersList } from './schemas/filter.schema';
 
 export interface ISort {
 	field: keyof Stock;
@@ -39,8 +35,6 @@ export type Filters = keyof IFiltersList & string;
 export class FilterUnitService {
 	private readonly logger = new Logger(FilterUnitService.name);
 	constructor(
-		@InjectModel(Filter.name)
-		private readonly filterModel: FilterModel,
 		@InjectModel(Stock.name)
 		private readonly stockModel: StockModel,
 		@InjectModel(Volume.name)
@@ -48,6 +42,8 @@ export class FilterUnitService {
 		private readonly stocksService: StocksService,
 		private readonly configService: ConfigService,
 		private readonly volumesService: VolumesService,
+
+		private readonly filtersRepository: FiltersRepository,
 	) {}
 
 	/**
@@ -56,13 +52,11 @@ export class FilterUnitService {
 	async createEmptyFilters() {
 		try {
 			// Drop collection before recreation
-			await this.filterModel.collection.drop().catch(() => {
-				this.logger.log('Filter collection do not exist yet.');
-			});
+			await this.filtersRepository.dropCollection();
 
 			const allIds = await this.stocksService.availableTickers();
 			for (const _id of allIds) {
-				await new this.filterModel({ _stock_id: _id }).save();
+				await this.filtersRepository.new({ _stock_id: _id }).save();
 			}
 		} catch (error) {
 			this.logger.error(`Error in ${this.createEmptyFilters.name}`, error);
@@ -83,7 +77,7 @@ export class FilterUnitService {
 	) {
 		try {
 			// Find filter for _stock_id
-			const filter = await this.filterModel.findOne({ _stock_id });
+			const filter = await this.filtersRepository.findOne({ _stock_id });
 			if (filter) {
 				// If it is existing - update
 				await filter.updateOne({
@@ -91,7 +85,7 @@ export class FilterUnitService {
 				});
 			} else {
 				// If not - create
-				const newFilter = new this.filterModel({
+				const newFilter = this.filtersRepository.new({
 					_stock_id,
 					[key]: value,
 				});
@@ -120,45 +114,19 @@ export class FilterUnitService {
 		try {
 			// Convert filter keys to object like {key: true, ...}
 			const keyPairs = keys.reduce((ac, a) => ({ ...ac, [a]: true }), {});
-			const count: number = await this.filterModel.countDocuments(keyPairs);
+			const count: number = await this.filtersRepository.countDocuments(
+				keyPairs,
+			);
 
-			interface Aggregation extends IFilterDocument {
-				stock: Stock[];
-			}
+			const stocks =
+				await this.filtersRepository.findStocksByFilteringCondition(
+					keyPairs,
+					limit,
+					skip,
+					sort,
+				);
 
-			const aggregation = (await this.filterModel
-				.aggregate([
-					// 1 stage: find matches
-					{ $match: keyPairs },
-					// 2 stage: lookup for their filters
-					// ! this.stockModel => Stock.name
-					{
-						$lookup: {
-							from: this.stockModel.collection.name,
-							localField: '_stock_id',
-							foreignField: '_id',
-							as: 'stock',
-						},
-					},
-					// 3 stage: sort and paginate aggregated data
-					{ $sort: { [`stock.${sort.field}`]: sort.dir === 'asc' ? 1 : -1 } },
-					{ $limit: skip + limit },
-					{ $skip: skip },
-					// 4 stage: hide unsafe keys from aggregation
-					{
-						$project: {
-							stock: { _id: false, _stock_id: false, __v: false },
-						},
-					},
-				])
-				.exec()) as Aggregation[];
-
-			// 5 stage: map array to get only stocks collection
-			const sortedStocks: Stock[] = aggregation.map((e) => {
-				return e.stock[0];
-			});
-
-			return { count, stocks: sortedStocks };
+			return { count, stocks };
 		} catch (error) {
 			this.logger.error(`Error in ${this.getFilter.name}`, error);
 			throw new InternalServerErrorException();

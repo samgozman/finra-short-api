@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 import { FilterUnitService } from '../filters/filter-unit.service';
 import { FiltersService } from '../filters/filters.service';
+import { FiltersRepository } from '../filters/repositories/filters.repository';
 import { FilterModelDefinition } from '../filters/schemas/filter.schema';
 import { StockModelDefinition } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
@@ -27,6 +28,7 @@ import { ParseService } from './parse.service';
 		PassportModule.register({ defaultStrategy: 'jwt' }),
 	],
 	providers: [
+		FiltersRepository,
 		CollectionService,
 		ParseService,
 		FilterUnitService,
