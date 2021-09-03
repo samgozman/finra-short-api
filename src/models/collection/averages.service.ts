@@ -4,6 +4,7 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { StocksRepository } from '../stocks/repositories/stocks.repository';
 import { Stock, StockModel } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
 import {
@@ -30,8 +31,7 @@ const avgVol = (
 export class AveragesService {
 	private readonly logger = new Logger(AveragesService.name);
 	constructor(
-		@InjectModel(Stock.name)
-		private readonly stockModel: StockModel,
+		private readonly stocksRepository: StocksRepository,
 		@InjectModel(Volume.name)
 		private readonly volumeModel: VolumeModel,
 		private volumesService: VolumesService,
@@ -45,7 +45,7 @@ export class AveragesService {
 			const latestDate = await this.volumesService.lastDateTime();
 
 			for (const _id of allIds) {
-				const stock = (await this.stockModel.findById(_id))!;
+				const stock = (await this.stocksRepository.findById(_id))!;
 				const volume = await this.volumeModel.aggregate<IVolumeDocument>([
 					{ $match: { _stock_id: _id } },
 					{ $sort: { date: -1 } },

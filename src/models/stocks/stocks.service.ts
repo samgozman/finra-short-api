@@ -1,21 +1,12 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { AnyKeys, AnyObject, Types } from 'mongoose';
+import { Types } from 'mongoose';
 import { GetStockDto } from './dtos/get-stock.dto';
-import { StockDto } from './dtos/stock.dto';
-import { IStockDocument, Stock, StockModel } from './schemas/stock.schema';
+import { StocksRepository } from './repositories/stocks.repository';
 
 @Injectable()
 export class StocksService {
 	private readonly logger = new Logger(StocksService.name);
-	constructor(
-		@InjectModel(Stock.name)
-		private readonly stockModel: StockModel,
-	) {}
-
-	/** Create new Stock instance */
-	create = (doc?: AnyKeys<IStockDocument> & AnyObject) =>
-		new this.stockModel(doc);
+	constructor(private readonly stocksRepository: StocksRepository) {}
 
 	/**
 	 * Get array of all available stocks id's
@@ -23,7 +14,7 @@ export class StocksService {
 	 * @returns Promise array of stocks ObjectId's
 	 */
 	async availableTickers(): Promise<Types.ObjectId[]> {
-		const stocks = await this.stockModel.find({});
+		const stocks = await this.stocksRepository.find({});
 		return stocks.map((a) => a._id);
 	}
 
@@ -33,38 +24,14 @@ export class StocksService {
 	 */
 	async get(query: GetStockDto) {
 		try {
-			const stock = (await this.stockModel
-				.aggregate<StockDto>([
-					{ $match: { ticker: query.ticker } },
-					{ $limit: 1 },
-					{
-						$lookup: {
-							from: 'volumes',
-							let: { id: '$_id' },
-							pipeline: [
-								{ $match: { $expr: { $eq: ['$$id', '$_stock_id'] } } },
-								{ $sort: { date: query.sort === 'asc' ? 1 : -1 } },
-								{ $limit: query.limit },
-							],
-							as: 'volume',
-						},
-					},
-					{
-						$project: {
-							_id: false,
-							__v: false,
-							volume: { _id: false, _stock_id: false, __v: false },
-						},
-					},
-				])
-				.exec()) as StockDto[];
-
-			if (!stock || stock.length === 0) {
-				throw new Error();
-			}
-
+			const { ticker, limit, sort } = query;
+			const stock = await this.stocksRepository.getStockWithVolume(
+				{ ticker },
+				limit,
+				sort,
+			);
 			return {
-				...stock[0],
+				...stock,
 				version: process.env.npm_package_version,
 			};
 		} catch (error) {

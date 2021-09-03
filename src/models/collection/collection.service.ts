@@ -4,6 +4,7 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { StocksRepository } from '../stocks/repositories/stocks.repository';
 import { Stock, StockModel } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
 import {
@@ -23,6 +24,7 @@ export class CollectionService {
 		private readonly stockModel: StockModel,
 		@InjectModel(Volume.name)
 		private readonly volumeModel: VolumeModel,
+		private readonly stocksRepository: StocksRepository,
 	) {}
 
 	// ex processLines
@@ -41,7 +43,7 @@ export class CollectionService {
 
 				// If not - create
 				if (!stock) {
-					stock = this.stocksService.create({
+					stock = this.stocksRepository.new({
 						ticker: report,
 					});
 					await stock.save();

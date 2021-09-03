@@ -3,8 +3,7 @@ import {
 	InternalServerErrorException,
 	Logger,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { IStock, Stock, StockModel } from '../stocks/schemas/stock.schema';
+import { StocksRepository } from '../stocks/repositories/stocks.repository';
 import { GetFiltredStocksDto } from './dtos/get-filtred-stocks.dto';
 import { FilterUnitService } from './filter-unit.service';
 import { IFiltersList } from './schemas/filter.schema';
@@ -14,8 +13,7 @@ export class FiltersService {
 	private readonly logger = new Logger(FiltersService.name);
 	constructor(
 		private readonly fus: FilterUnitService,
-		@InjectModel(Stock.name)
-		private readonly stockModel: StockModel,
+		private readonly stocksRepository: StocksRepository,
 	) {}
 
 	/**
@@ -200,18 +198,13 @@ export class FiltersService {
 			return stocks;
 		} else {
 			// Get all by aggregation
-			const count = await this.stockModel.estimatedDocumentCount();
-			const stocks = await this.stockModel.aggregate<IStock>([
-				{ $match: {} },
-				{
-					$sort: {
-						[sortby]: sortdir === 'asc' ? 1 : -1,
-					},
-				},
-				{ $limit: skip + limit },
-				{ $skip: skip },
-				{ $project: { _id: false, _stock_id: false, __v: false } },
-			]);
+			const count = await this.stocksRepository.estimatedDocumentCount();
+			const stocks = await this.stocksRepository.getAllStocks(
+				limit,
+				skip,
+				sortby,
+				sortdir,
+			);
 
 			return { count, stocks };
 		}

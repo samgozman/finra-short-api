@@ -5,6 +5,7 @@ import { FilterUnitService } from '../filters/filter-unit.service';
 import { FiltersService } from '../filters/filters.service';
 import { FiltersRepository } from '../filters/repositories/filters.repository';
 import { FilterModelDefinition } from '../filters/schemas/filter.schema';
+import { StocksRepository } from '../stocks/repositories/stocks.repository';
 import { StockModelDefinition } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
 import { UserModelDefinition } from '../users/schemas/user.schema';
@@ -28,6 +29,7 @@ import { ParseService } from './parse.service';
 		PassportModule.register({ defaultStrategy: 'jwt' }),
 	],
 	providers: [
+		StocksRepository,
 		FiltersRepository,
 		CollectionService,
 		ParseService,
