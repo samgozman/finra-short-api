@@ -1,7 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AnyKeys, AnyObject, FilterQuery } from 'mongoose';
-import { Stock, StockModel } from 'src/models/stocks/schemas/stock.schema';
+import { Stock } from 'src/models/stocks/schemas/stock.schema';
+import { StocksService } from 'src/models/stocks/stocks.service';
 import { ISort } from '../filter-unit.service';
 import { Filter, FilterModel, IFilterDocument } from '../schemas/filter.schema';
 
@@ -11,8 +12,7 @@ export class FiltersRepository {
 	constructor(
 		@InjectModel(Filter.name)
 		private readonly filterModel: FilterModel,
-		@InjectModel(Stock.name)
-		private readonly stockModel: StockModel,
+		private readonly stocksService: StocksService,
 	) {}
 
 	/** Drop Filters collection */
@@ -70,7 +70,7 @@ export class FiltersRepository {
 				// ! this.stockModel => Stock.name
 				{
 					$lookup: {
-						from: this.stockModel.collection.name,
+						from: this.stocksService.collectionName,
 						localField: '_stock_id',
 						foreignField: '_id',
 						as: 'stock',

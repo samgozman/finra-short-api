@@ -3,7 +3,7 @@ import {
 	InternalServerErrorException,
 	Logger,
 } from '@nestjs/common';
-import { StocksRepository } from '../stocks/repositories/stocks.repository';
+import { StocksService } from '../stocks/stocks.service';
 import { GetFiltredStocksDto } from './dtos/get-filtred-stocks.dto';
 import { FilterUnitService } from './filter-unit.service';
 import { IFiltersList } from './schemas/filter.schema';
@@ -13,7 +13,7 @@ export class FiltersService {
 	private readonly logger = new Logger(FiltersService.name);
 	constructor(
 		private readonly fus: FilterUnitService,
-		private readonly stocksRepository: StocksRepository,
+		private readonly stocksService: StocksService,
 	) {}
 
 	/**
@@ -198,8 +198,8 @@ export class FiltersService {
 			return stocks;
 		} else {
 			// Get all by aggregation
-			const count = await this.stocksRepository.estimatedDocumentCount();
-			const stocks = await this.stocksRepository.getAllStocks(
+			const count = await this.stocksService.collectionDocsCount;
+			const stocks = await this.stocksService.getAllStocks(
 				limit,
 				skip,
 				sortby,

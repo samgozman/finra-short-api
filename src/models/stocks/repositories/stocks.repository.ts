@@ -15,6 +15,10 @@ import {
 @Injectable()
 export class StocksRepository {
 	private readonly logger = new Logger(StocksRepository.name);
+
+	/** Name of the Stock collection */
+	readonly name = this.stockModel.collection.name;
+
 	constructor(
 		@InjectModel(Stock.name)
 		private readonly stockModel: StockModel,
@@ -102,7 +106,7 @@ export class StocksRepository {
 		skip: number,
 		sortby: StockKeys,
 		sortdir: SortDirs,
-	) {
+	): Promise<IStock[]> {
 		return this.stockModel.aggregate<IStock>([
 			{ $match: {} },
 			{

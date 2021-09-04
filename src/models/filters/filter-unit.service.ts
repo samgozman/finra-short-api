@@ -8,7 +8,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { Tinkoff } from 'tinkoff-api-securities';
 import { VolumesService } from '../../models/volumes/volumes.service';
-import { StocksRepository } from '../stocks/repositories/stocks.repository';
 import { Stock } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
 import {
@@ -41,9 +40,7 @@ export class FilterUnitService {
 		private readonly stocksService: StocksService,
 		private readonly configService: ConfigService,
 		private readonly volumesService: VolumesService,
-
 		private readonly filtersRepository: FiltersRepository,
-		private readonly stocksRepository: StocksRepository,
 	) {}
 	/**
 	 * Create empty DB record for each stock
@@ -175,7 +172,7 @@ export class FilterUnitService {
 				for (const tink of onTinkoff) {
 					// Find Stock
 					const { ticker } = tink;
-					const stock = await this.stocksRepository.findOne({ ticker });
+					const stock = await this.stocksService.findOne({ ticker });
 					// Get ID
 					const _stock_id: Types.ObjectId = stock?.id;
 					// Create record

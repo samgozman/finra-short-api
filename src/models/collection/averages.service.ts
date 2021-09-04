@@ -4,7 +4,6 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { StocksRepository } from '../stocks/repositories/stocks.repository';
 import { StocksService } from '../stocks/stocks.service';
 import {
 	FinraReport,
@@ -30,7 +29,6 @@ const avgVol = (
 export class AveragesService {
 	private readonly logger = new Logger(AveragesService.name);
 	constructor(
-		private readonly stocksRepository: StocksRepository,
 		@InjectModel(Volume.name)
 		private readonly volumeModel: VolumeModel,
 		private volumesService: VolumesService,
@@ -44,7 +42,7 @@ export class AveragesService {
 			const latestDate = await this.volumesService.lastDateTime();
 
 			for (const _id of allIds) {
-				const stock = (await this.stocksRepository.findById(_id))!;
+				const stock = (await this.stocksService.findById(_id))!;
 				const volume = await this.volumeModel.aggregate<IVolumeDocument>([
 					{ $match: { _stock_id: _id } },
 					{ $sort: { date: -1 } },
