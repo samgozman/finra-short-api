@@ -9,7 +9,7 @@ import { Types } from 'mongoose';
 import { Tinkoff } from 'tinkoff-api-securities';
 import { VolumesService } from '../../models/volumes/volumes.service';
 import { StocksRepository } from '../stocks/repositories/stocks.repository';
-import { Stock, StockModel } from '../stocks/schemas/stock.schema';
+import { Stock } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
 import {
 	IVolumeDocument,

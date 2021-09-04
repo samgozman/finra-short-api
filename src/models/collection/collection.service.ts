@@ -5,8 +5,6 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { StocksRepository } from '../stocks/repositories/stocks.repository';
-import { Stock, StockModel } from '../stocks/schemas/stock.schema';
-import { StocksService } from '../stocks/stocks.service';
 import {
 	FinraAssignedReports,
 	Volume,
@@ -19,9 +17,6 @@ export class CollectionService {
 	private readonly logger = new Logger(CollectionService.name);
 	constructor(
 		private parseService: ParseService,
-		private stocksService: StocksService,
-		@InjectModel(Stock.name)
-		private readonly stockModel: StockModel,
 		@InjectModel(Volume.name)
 		private readonly volumeModel: VolumeModel,
 		private readonly stocksRepository: StocksRepository,
@@ -37,7 +32,7 @@ export class CollectionService {
 			let mongoArr: Volume[] = [];
 			for (const report in reports) {
 				// Try to find existing
-				let stock = await this.stockModel.findOne({
+				let stock = await this.stocksRepository.findOne({
 					ticker: report,
 				});
 
