@@ -8,7 +8,7 @@ import { AuthenticationController } from './authentication.controller';
 import { UsersService } from '../models/users/users.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModelDefinition } from '../models/users/schemas/user.schema';
-import { UsersRepository } from 'src/models/users/repositories/users.repository';
+import { UsersRepository } from '../models/users/repositories/users.repository';
 
 @Module({
 	imports: [

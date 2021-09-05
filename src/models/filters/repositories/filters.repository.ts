@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AnyKeys, AnyObject, FilterQuery } from 'mongoose';
-import { Stock } from 'src/models/stocks/schemas/stock.schema';
-import { StocksService } from 'src/models/stocks/stocks.service';
+import { Stock } from '../../../models/stocks/schemas/stock.schema';
+import { StocksService } from '../../../models/stocks/stocks.service';
 import { ISort } from '../filter-unit.service';
 import { Filter, FilterModel, IFilterDocument } from '../schemas/filter.schema';
 

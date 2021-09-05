@@ -1,8 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AnyKeys, AnyObject, FilterQuery } from 'mongoose';
-import { Volume, VolumeModel } from 'src/models/volumes/schemas/volume.schema';
-import { VolumesService } from 'src/models/volumes/volumes.service';
+import { VolumesService } from '../../../models/volumes/volumes.service';
 import { StockDto } from '../dtos/stock.dto';
 import {
 	IStock,
