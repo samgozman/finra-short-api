@@ -3,13 +3,9 @@ import {
 	InternalServerErrorException,
 	Logger,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { StocksService } from '../stocks/stocks.service';
-import {
-	FinraAssignedReports,
-	Volume,
-	VolumeModel,
-} from '../volumes/schemas/volume.schema';
+import { FinraAssignedReports, Volume } from '../volumes/schemas/volume.schema';
+import { VolumesService } from '../volumes/volumes.service';
 import { ParseService } from './parse.service';
 
 @Injectable()
@@ -17,9 +13,8 @@ export class CollectionService {
 	private readonly logger = new Logger(CollectionService.name);
 	constructor(
 		private parseService: ParseService,
-		@InjectModel(Volume.name)
-		private readonly volumeModel: VolumeModel,
 		private readonly stocksService: StocksService,
+		private readonly volumesService: VolumesService,
 	) {}
 
 	// ex processLines
@@ -71,7 +66,7 @@ export class CollectionService {
 			for (const file in files) {
 				const reports = await this.parseService.getDataFromFile(files[file]);
 				const mongoArr = await this.createVolumeArray(reports);
-				await this.volumeModel.insertMany(mongoArr);
+				await this.volumesService.insertMany(mongoArr);
 			}
 		} catch (error) {
 			if (error.code !== 11000) {
@@ -113,7 +108,7 @@ export class CollectionService {
 		try {
 			const reports = await this.parseService.getDataFromFile(link);
 			const mongoArr = await this.createVolumeArray(reports);
-			await this.volumeModel.insertMany(mongoArr);
+			await this.volumesService.insertMany(mongoArr);
 		} catch (error) {
 			throw new InternalServerErrorException();
 		}

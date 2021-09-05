@@ -4,17 +4,11 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { InjectModel } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { Tinkoff } from 'tinkoff-api-securities';
 import { VolumesService } from '../../models/volumes/volumes.service';
 import { Stock } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
-import {
-	IVolumeDocument,
-	Volume,
-	VolumeModel,
-} from '../volumes/schemas/volume.schema';
 import { FiltersRepository } from './repositories/filters.repository';
 import { IFiltersList } from './schemas/filter.schema';
 
@@ -35,8 +29,6 @@ export type Filters = keyof IFiltersList & string;
 export class FilterUnitService {
 	private readonly logger = new Logger(FilterUnitService.name);
 	constructor(
-		@InjectModel(Volume.name)
-		private readonly volumeModel: VolumeModel,
 		private readonly stocksService: StocksService,
 		private readonly configService: ConfigService,
 		private readonly volumesService: VolumesService,
@@ -138,11 +130,12 @@ export class FilterUnitService {
 				const lastDay = await this.volumesService.lastDateTime();
 
 				for (const _id of allIds) {
-					const volume = await this.volumeModel.aggregate<IVolumeDocument>([
-						{ $match: { _stock_id: _id } },
-						{ $sort: { date: -1 } },
-						{ $limit: 5 },
-					]);
+					const volume = await this.volumesService.findMany(
+						{ _stock_id: _id },
+						{ date: -1 },
+						5,
+					);
+
 					// Checks
 					const volumeIsAtLeast5 = volume.length === 5;
 					if (volumeIsAtLeast5 && lastDay === volume[0].date.getTime()) {
@@ -198,11 +191,11 @@ export class FilterUnitService {
 			return async () => {
 				const allIds = await this.stocksService.availableTickers();
 				for (const _id of allIds) {
-					const volume = await this.volumeModel.aggregate<IVolumeDocument>([
-						{ $match: { _stock_id: _id } },
-						{ $sort: { date: -1 } },
-						{ $limit: period + 1 },
-					]);
+					const volume = await this.volumesService.findMany(
+						{ _stock_id: _id },
+						{ date: -1 },
+						period + 1,
+					);
 
 					// Check if populated volume exists
 					if (volume && volume.length > 1) {

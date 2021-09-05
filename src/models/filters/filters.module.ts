@@ -13,6 +13,7 @@ import { FilterModelDefinition } from './schemas/filter.schema';
 import { FilterUnitService } from './filter-unit.service';
 import { FiltersRepository } from './repositories/filters.repository';
 import { StocksRepository } from '../stocks/repositories/stocks.repository';
+import { VolumesRepository } from '../volumes/repositories/volumes.repository';
 
 @Module({
 	controllers: [FiltersController],
@@ -34,6 +35,7 @@ import { StocksRepository } from '../stocks/repositories/stocks.repository';
 		ConfigService,
 		FiltersRepository,
 		StocksRepository,
+		VolumesRepository,
 	],
 	exports: [FiltersService, FilterUnitService],
 })

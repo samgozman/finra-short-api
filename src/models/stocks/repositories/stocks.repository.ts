@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AnyKeys, AnyObject, FilterQuery } from 'mongoose';
 import { Volume, VolumeModel } from 'src/models/volumes/schemas/volume.schema';
+import { VolumesService } from 'src/models/volumes/volumes.service';
 import { StockDto } from '../dtos/stock.dto';
 import {
 	IStock,
@@ -22,9 +23,7 @@ export class StocksRepository {
 	constructor(
 		@InjectModel(Stock.name)
 		private readonly stockModel: StockModel,
-
-		@InjectModel(Volume.name)
-		private readonly volumeModel: VolumeModel,
+		private readonly volumesService: VolumesService,
 	) {}
 
 	/** Create new Stock instance */
@@ -74,7 +73,7 @@ export class StocksRepository {
 				{ $limit: 1 },
 				{
 					$lookup: {
-						from: this.volumeModel.collection.name,
+						from: this.volumesService.collectionName,
 						let: { id: '$_id' },
 						pipeline: [
 							{ $match: { $expr: { $eq: ['$$id', '$_stock_id'] } } },
