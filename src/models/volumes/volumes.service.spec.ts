@@ -1,19 +1,16 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
+import { VolumesRepository } from './repositories/volumes.repository';
 import { IVolumeDocument, Volume } from './schemas/volume.schema';
 import { VolumesService } from './volumes.service';
 
 const mockDate = new Date();
 let volume = { date: mockDate } as IVolumeDocument;
 
-class MockVolumeModel {
+class MockVolumesRepository {
 	findOne() {
-		return this;
-	}
-
-	sort() {
-		return volume;
+		return Promise.resolve(volume);
 	}
 }
 
@@ -25,8 +22,8 @@ describe('VolumesService', () => {
 			providers: [
 				VolumesService,
 				{
-					provide: getModelToken(Volume.name),
-					useClass: MockVolumeModel,
+					provide: VolumesRepository,
+					useClass: MockVolumesRepository,
 				},
 			],
 		}).compile();
