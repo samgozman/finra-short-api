@@ -1,6 +1,7 @@
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 import { Stock } from '../stocks/schemas/stock.schema';
+import { UsersRepository } from '../users/repositories/users.repository';
 import { User } from '../users/schemas/user.schema';
 import { UsersService } from '../users/users.service';
 import { IFiltredStocks } from './filter-unit.service';
@@ -36,6 +37,7 @@ describe('FiltersController', () => {
 					provide: getModelToken(User.name),
 					useClass: class MockUserModel {},
 				},
+				UsersRepository,
 				FiltersController,
 				{
 					provide: FiltersService,

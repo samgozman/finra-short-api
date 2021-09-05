@@ -1,8 +1,8 @@
-import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
-import { IStockDocument, Stock } from '../stocks/schemas/stock.schema';
+import { IStockDocument } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
-import { IVolumeDocument, Volume } from '../volumes/schemas/volume.schema';
+import { VolumesRepository } from '../volumes/repositories/volumes.repository';
+import { IVolumeDocument } from '../volumes/schemas/volume.schema';
 import { VolumesService } from '../volumes/volumes.service';
 import { AveragesService } from './averages.service';
 
@@ -26,35 +26,24 @@ describe('AveragesService', () => {
 			imports: [],
 			controllers: [],
 			providers: [
+				{ provide: VolumesRepository, useValue: {} },
 				{
-					provide: getModelToken(Stock.name),
+					provide: StocksService,
 					useValue: {
 						findById: (id: string) => {
 							return Promise.resolve(mockStockDoc);
 						},
+						availableTickers: () => Promise.resolve(mockIdsArr),
 					},
 				},
-				{
-					provide: getModelToken(Volume.name),
-					useValue: {
-						aggregate: () => {
-							return Promise.resolve(mockVolumeDocs);
-						},
-					},
-				},
-				AveragesService,
 				{
 					provide: VolumesService,
 					useValue: {
 						lastDateTime: () => Promise.resolve(latestDate.getTime()),
+						findMany: () => Promise.resolve(),
 					},
 				},
-				{
-					provide: StocksService,
-					useValue: {
-						availableTickers: () => Promise.resolve(mockIdsArr),
-					},
-				},
+				AveragesService,
 			],
 		}).compile();
 

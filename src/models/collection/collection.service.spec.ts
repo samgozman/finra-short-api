@@ -1,15 +1,12 @@
-import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
-import { fn } from 'moment';
 import {
-	IStock,
 	IStockDocument,
 	Stock,
 	StockModel,
-	StockModelDefinition,
 } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
-import { FinraAssignedReports, Volume } from '../volumes/schemas/volume.schema';
+import { FinraAssignedReports } from '../volumes/schemas/volume.schema';
+import { VolumesService } from '../volumes/volumes.service';
 import { CollectionService } from './collection.service';
 import { ParseService } from './parse.service';
 
@@ -55,23 +52,21 @@ class MockParseService {
 }
 
 class MockStocksService {
-	create(doc: any) {
+	createNewInstance(doc: any) {
 		return { ...mockStock(doc.ticker), save: jest.fn() };
 	}
-}
 
-const mockStockModel = {
-	findOne: jest.fn((filters?: { ticker: string }) => {
+	findOne = jest.fn((filters?: { ticker: string }) => {
 		const { ticker } = filters;
 		if (arrayOfTickers.includes(ticker)) {
 			return Promise.resolve({ ticker, _id: 'SomeId' } as IStockDocument);
 		} else {
 			return Promise.resolve(undefined);
 		}
-	}),
-};
+	});
+}
 
-class MockVolumeModel {
+class MockVolumesService {
 	insertMany() {
 		return Promise.resolve(undefined);
 	}
@@ -96,12 +91,8 @@ describe('CollectionService', () => {
 					useClass: MockStocksService,
 				},
 				{
-					provide: getModelToken(Stock.name),
-					useValue: mockStockModel,
-				},
-				{
-					provide: getModelToken(Volume.name),
-					useClass: MockVolumeModel,
+					provide: VolumesService,
+					useClass: MockVolumesService,
 				},
 			],
 		}).compile();

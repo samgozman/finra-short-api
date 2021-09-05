@@ -4,10 +4,10 @@ import {
 	ImATeapotException,
 	NotFoundException,
 } from '@nestjs/common';
-import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { FilterQuery } from 'mongoose';
-import { IUserDocument, User, UserPrivileges } from './schemas/user.schema';
+import { UsersRepository } from './repositories/users.repository';
+import { IUserDocument, UserPrivileges } from './schemas/user.schema';
 import { UsersService } from './users.service';
 
 // implements Partial<UserModel>
@@ -19,6 +19,13 @@ class MockUserModel {
 		public pass: string,
 		public roles: UserPrivileges[] = [],
 	) {}
+
+	save() {
+		return Promise.resolve(this);
+	}
+}
+
+class MockUsersRepository {
 	findOne(filter: FilterQuery<IUserDocument>): Promise<MockUserModel> {
 		const user = usersArr.filter((e) => {
 			return e.login === filter.login;
@@ -28,10 +35,6 @@ class MockUserModel {
 
 	find(filter: any): Promise<MockUserModel[]> {
 		return Promise.resolve(usersArr);
-	}
-
-	save() {
-		return Promise.resolve(this);
 	}
 }
 
@@ -57,10 +60,7 @@ describe('UsersService', () => {
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				UsersService,
-				{
-					provide: getModelToken(User.name),
-					useClass: MockUserModel,
-				},
+				{ provide: UsersRepository, useClass: MockUsersRepository },
 			],
 		}).compile();
 

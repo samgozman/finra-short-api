@@ -1,21 +1,15 @@
-import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
-import { IStock, Stock } from '../stocks/schemas/stock.schema';
+import { StocksRepository } from '../stocks/repositories/stocks.repository';
+import { IStock } from '../stocks/schemas/stock.schema';
+import { StocksService } from '../stocks/stocks.service';
 import { Filters, FilterUnitService } from './filter-unit.service';
 import { FiltersService } from './filters.service';
 
-const users: Partial<IStock>[] = [{ ticker: 'AAPL' }, { ticker: 'MSFT' }];
+const stocks: Partial<IStock>[] = [{ ticker: 'AAPL' }, { ticker: 'MSFT' }];
 
-class MockUser {
-	estimatedDocumentCount = () => Promise.resolve(users.length);
-
-	aggregate = jest.fn().mockImplementationOnce((pipe: [any]) => {
-		const fo: {} = pipe[0].$match;
-		if (Object.keys(fo).length === 0) {
-			return users;
-		}
-		return [];
-	});
+class MockStockRepository {
+	getAllStocks = (...any) => Promise.resolve(stocks);
+	estimatedDocumentCount = () => Promise.resolve(stocks.length);
 }
 
 class MockFilterUnitService implements Partial<FilterUnitService> {
@@ -36,7 +30,7 @@ class MockFilterUnitService implements Partial<FilterUnitService> {
 	getFilter(...any): any {
 		return Promise.resolve({
 			count: 1,
-			stocks: users.filter((e) => e.ticker === 'AAPL'),
+			stocks: stocks.filter((e) => e.ticker === 'AAPL'),
 		});
 	}
 }
@@ -50,9 +44,10 @@ describe('FiltersService', () => {
 			controllers: [],
 			providers: [
 				FiltersService,
+				StocksService,
 				{
-					provide: getModelToken(Stock.name),
-					useClass: MockUser,
+					provide: StocksRepository,
+					useClass: MockStockRepository,
 				},
 				{
 					provide: FilterUnitService,

@@ -1,8 +1,7 @@
-import { getModelToken } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 import { Test } from '@nestjs/testing';
 import { FiltersService } from '../filters/filters.service';
-import { User } from '../users/schemas/user.schema';
+import { UsersRepository } from '../users/repositories/users.repository';
 import { UsersService } from '../users/users.service';
 import { AveragesService } from './averages.service';
 import { CollectionController } from './collection.controller';
@@ -27,13 +26,13 @@ describe('CollectionController', () => {
 
 	beforeEach(async () => {
 		const moduleRef = await Test.createTestingModule({
-			imports: [PassportModule.register({ defaultStrategy: 'jwt' })], // Add
-			controllers: [], // Add
+			imports: [PassportModule.register({ defaultStrategy: 'jwt' })],
+			controllers: [],
 			providers: [
 				UsersService,
 				{
-					provide: getModelToken(User.name),
-					useClass: class MockUserModel {},
+					provide: UsersRepository,
+					useValue: {},
 				},
 				CollectionController,
 				{
@@ -48,7 +47,7 @@ describe('CollectionController', () => {
 					provide: FiltersService,
 					useClass: MockFiltersService,
 				},
-			], // Add
+			],
 		}).compile();
 
 		collectionController =

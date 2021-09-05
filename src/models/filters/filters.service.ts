@@ -198,7 +198,7 @@ export class FiltersService {
 			return stocks;
 		} else {
 			// Get all by aggregation
-			const count = await this.stocksService.collectionDocsCount;
+			const count = await this.stocksService.collectionDocsCount();
 			const stocks = await this.stocksService.getAllStocks(
 				limit,
 				skip,

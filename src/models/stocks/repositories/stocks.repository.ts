@@ -26,7 +26,8 @@ export class StocksRepository {
 
 	new = (doc?: AnyKeys<IStockDocument> & AnyObject) => new this.stockModel(doc);
 
-	estimatedDocumentCount = () => this.stockModel.estimatedDocumentCount();
+	estimatedDocumentCount = async () =>
+		await this.stockModel.estimatedDocumentCount();
 
 	async find(filter: FilterQuery<IStockDocument>) {
 		return this.stockModel.find(filter);

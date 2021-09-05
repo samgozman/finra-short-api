@@ -17,7 +17,8 @@ export class StocksService {
 	/** Name of the Stock collection */
 	readonly collectionName = this.stocksRepository.name;
 	/** Counts the number of documents in the collection. */
-	readonly collectionDocsCount = this.stocksRepository.estimatedDocumentCount();
+	readonly collectionDocsCount = async () =>
+		await this.stocksRepository.estimatedDocumentCount();
 
 	/**
 	 * Get array of all available stocks id's
@@ -90,6 +91,11 @@ export class StocksService {
 				limit,
 				sort,
 			);
+
+			if (!stock) {
+				throw new Error();
+			}
+
 			return {
 				...stock,
 				version: process.env.npm_package_version,

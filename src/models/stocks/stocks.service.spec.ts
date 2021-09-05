@@ -1,8 +1,9 @@
 import { NotFoundException } from '@nestjs/common';
-import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { FilterQuery } from 'mongoose';
-import { IStockDocument, Stock, StockModel } from './schemas/stock.schema';
+import { StockDto } from './dtos/stock.dto';
+import { StocksRepository } from './repositories/stocks.repository';
+import { IStockDocument } from './schemas/stock.schema';
 import { StocksService } from './stocks.service';
 
 class MockStock {
@@ -13,7 +14,13 @@ const mockStockAapl = new MockStock('1234', 'AAPL');
 const mockStockMsft = new MockStock('5678', 'MSFT');
 const stockArr = [mockStockAapl, mockStockMsft];
 
-class MockStockModel {
+const mockStockDtoAapl: Partial<StockDto> = {
+	ticker: 'AAPL',
+	version: '2.0.0',
+	volume: [],
+};
+
+class MockStocksRepository {
 	findOne(filter?: FilterQuery<IStockDocument>): any {
 		const stock = stockArr.filter((e) => e.ticker === filter.ticker)[0];
 		return stock;
@@ -23,12 +30,10 @@ class MockStockModel {
 		return Promise.resolve(stockArr);
 	}
 
-	aggregate = jest.fn().mockImplementationOnce((pipe: [any]) => ({
-		exec: async () => {
-			const res = this.findOne(pipe[0].$match);
-			return res ? [res] : [];
-		},
-	}));
+	getStockWithVolume(match: any, limit: number, sort: string) {
+		const stock = this.findOne({ ticker: match.ticker });
+		if (stock) return Promise.resolve(mockStockDtoAapl);
+	}
 }
 
 describe('StocksService', () => {
@@ -39,8 +44,8 @@ describe('StocksService', () => {
 			providers: [
 				StocksService,
 				{
-					provide: getModelToken(Stock.name),
-					useClass: MockStockModel,
+					provide: StocksRepository,
+					useClass: MockStocksRepository,
 				},
 			],
 		}).compile();
