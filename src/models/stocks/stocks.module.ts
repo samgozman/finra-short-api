@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UsersRepository } from '../users/repositories/users.repository';
 import { UserModelDefinition } from '../users/schemas/user.schema';
 import { UsersService } from '../users/users.service';
 import { VolumesRepository } from '../volumes/repositories/volumes.repository';
@@ -25,6 +26,7 @@ import { StocksService } from './stocks.service';
 		StocksRepository,
 		VolumesRepository,
 		VolumesService,
+		UsersRepository,
 	],
 	exports: [StocksService],
 })

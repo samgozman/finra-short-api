@@ -8,6 +8,7 @@ import { FilterModelDefinition } from '../filters/schemas/filter.schema';
 import { StocksRepository } from '../stocks/repositories/stocks.repository';
 import { StockModelDefinition } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
+import { UsersRepository } from '../users/repositories/users.repository';
 import { UserModelDefinition } from '../users/schemas/user.schema';
 import { UsersService } from '../users/users.service';
 import { VolumesRepository } from '../volumes/repositories/volumes.repository';
@@ -33,6 +34,7 @@ import { ParseService } from './parse.service';
 		StocksRepository,
 		FiltersRepository,
 		VolumesRepository,
+		UsersRepository,
 		CollectionService,
 		ParseService,
 		FilterUnitService,

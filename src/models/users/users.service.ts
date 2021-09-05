@@ -5,26 +5,28 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { randomBytes } from 'crypto';
 import { genSalt, hash } from 'bcrypt';
-import { FilterQuery } from 'mongoose';
-import { IUserDocument, User, UserModel } from './schemas/user.schema';
+import { AnyKeys, AnyObject, FilterQuery } from 'mongoose';
+import { IUserDocument } from './schemas/user.schema';
 import { UpdateRolesDto } from './dtos/update-roles.dto';
+import { UsersRepository } from './repositories/users.repository';
 
 @Injectable()
 export class UsersService {
-	constructor(
-		@InjectModel(User.name)
-		private readonly userModel: UserModel,
-	) {}
+	constructor(private readonly usersRepository: UsersRepository) {}
 
-	findOne(filter: FilterQuery<IUserDocument>) {
-		return this.userModel.findOne(filter);
+	/** Create new User instance */
+	createNewInstance(doc?: AnyKeys<IUserDocument> & AnyObject): IUserDocument {
+		return this.usersRepository.new(doc);
+	}
+
+	async findOne(filter: FilterQuery<IUserDocument>) {
+		return this.usersRepository.findOne(filter);
 	}
 
 	listAllUsers() {
-		return this.userModel.find({});
+		return this.usersRepository.find({});
 	}
 
 	async createApiKey(login: string) {
