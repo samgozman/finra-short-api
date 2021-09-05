@@ -10,7 +10,6 @@ import { IVolumeDocument, Volume, VolumeModel } from '../schemas/volume.schema';
 
 @Injectable()
 export class VolumesRepository {
-	/** Name of the Volume collection */
 	readonly name = this.volumeModel.collection.name;
 
 	constructor(
@@ -33,13 +32,6 @@ export class VolumesRepository {
 		return this.volumeModel.findOne(filter, projection, options);
 	}
 
-	/**
-	 * Find an array of Volume with math options
-	 * @param match match option object
-	 * @param sort sorting keys object (key: direction)
-	 * @param limit
-	 * @returns
-	 */
 	async findMany(match: {}, sort: {}, limit: number) {
 		return this.volumeModel.aggregate<IVolumeDocument>([
 			{ $match: match },
@@ -48,12 +40,6 @@ export class VolumesRepository {
 		]);
 	}
 
-	/**
-	 * Inserts one or more new Volume documents as a single insertMany call to the MongoDB server.
-	 * @param docs
-	 * @param options
-	 * @returns
-	 */
 	async insertMany(
 		docs: (IVolumeDocument | AnyObject)[],
 		options?: InsertManyOptions,

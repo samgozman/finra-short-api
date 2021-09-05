@@ -12,6 +12,7 @@ export class VolumesService {
 	private readonly logger = new Logger(VolumesService.name);
 	constructor(private readonly volumesRepository: VolumesRepository) {}
 
+	/** Name of the Volume collection */
 	readonly collectionName = this.volumesRepository.name;
 
 	/**
@@ -30,10 +31,23 @@ export class VolumesService {
 		}
 	}
 
+	/**
+	 * Find an array of Volume with math options
+	 * @param match match option object
+	 * @param sort sorting keys object (key: direction)
+	 * @param limit
+	 * @returns
+	 */
 	async findMany(match: {}, sort: {}, limit: number) {
 		return this.volumesRepository.findMany(match, sort, limit);
 	}
 
+	/**
+	 * Inserts one or more new Volume documents as a single insertMany call to the MongoDB server.
+	 * @param docs
+	 * @param options
+	 * @returns
+	 */
 	async insertMany(
 		docs: (IVolumeDocument | AnyObject)[],
 		options?: InsertManyOptions,

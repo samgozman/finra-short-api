@@ -17,7 +17,6 @@ import {
 export class StocksRepository {
 	private readonly logger = new Logger(StocksRepository.name);
 
-	/** Name of the Stock collection */
 	readonly name = this.stockModel.collection.name;
 
 	constructor(
@@ -26,35 +25,18 @@ export class StocksRepository {
 		private readonly volumesService: VolumesService,
 	) {}
 
-	/** Create new Stock instance */
 	new = (doc?: AnyKeys<IStockDocument> & AnyObject) => new this.stockModel(doc);
 
-	/** Counts the number of documents in the collection. */
 	estimatedDocumentCount = () => this.stockModel.estimatedDocumentCount();
 
-	/**
-	 * Creates a find query: gets a list of Stock documents that match `filter`.
-	 * @param filter
-	 * @returns
-	 */
 	async find(filter: FilterQuery<IStockDocument>) {
 		return this.stockModel.find(filter);
 	}
 
-	/**
-	 * Finds one Stock document.
-	 * @param filter
-	 * @returns
-	 */
 	async findOne(filter?: FilterQuery<IStockDocument>) {
 		return this.stockModel.findOne(filter);
 	}
 
-	/**
-	 * Finds a single Stock document by its _id field.
-	 * @param id
-	 * @returns IStockDocument
-	 */
 	async findById(id: any) {
 		return this.stockModel.findById(id);
 	}
