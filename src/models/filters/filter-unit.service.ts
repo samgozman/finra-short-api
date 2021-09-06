@@ -87,11 +87,12 @@ export class FilterUnitService {
 	}
 
 	/**
-	 * Get an array of Stocks ObjectId's matching the filtering condition's.
-	 * @param keys Filtering key names array. Multiple names to create union
-	 * @param limit Optional. Limit stocks per request
-	 * @param skip Optional. Number of stocks to skip
-	 * @returns Promise array of Stocks
+	 * Get an array of stocks matching the filter + receive total count
+	 * @param keys
+	 * @param limit
+	 * @param skip
+	 * @param sort
+	 * @returns
 	 */
 	async getFilter(
 		keys: Filters[],

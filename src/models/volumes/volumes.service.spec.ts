@@ -1,8 +1,7 @@
 import { InternalServerErrorException } from '@nestjs/common';
-import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { VolumesRepository } from './repositories/volumes.repository';
-import { IVolumeDocument, Volume } from './schemas/volume.schema';
+import { IVolumeDocument } from './schemas/volume.schema';
 import { VolumesService } from './volumes.service';
 
 const mockDate = new Date();
