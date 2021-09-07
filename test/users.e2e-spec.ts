@@ -9,6 +9,8 @@ import { AuthDto } from 'src/authentication/dtos/auth.dto';
 import { UserDto } from 'src/models/users/dtos/user.dto';
 import { ApiKeyDto } from 'src/models/users/dtos/apikey.dto';
 
+jest.setTimeout(30000);
+
 const testUser: AuthCredentialsDto = {
 	login: 'test-user-admin',
 	pass: 'TestPass1234',

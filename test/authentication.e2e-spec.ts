@@ -6,6 +6,8 @@ import { AppModule } from '../src/app.module';
 import { getConnectionToken } from '@nestjs/mongoose';
 import { AuthCredentialsDto } from 'src/authentication/dtos/auth-credentials.dto';
 
+jest.setTimeout(30000);
+
 const testUser: AuthCredentialsDto = {
 	login: 'test-user',
 	pass: 'TestPass1234',
