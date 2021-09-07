@@ -30,7 +30,7 @@ describe('Authentication System (e2e)', () => {
 
 		connection = await moduleFixture.get(getConnectionToken());
 		// Drop db before each
-		connection.dropDatabase();
+		await connection.dropDatabase();
 	});
 
 	it('/auth/register: reject in registration if request was without secret key', async () => {
