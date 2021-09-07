@@ -22,6 +22,10 @@ describe('Authentication System (e2e)', () => {
 	let app: INestApplication;
 	let connection: Connection;
 
+	afterEach(async () => {
+		await connection.close(true);
+	});
+
 	beforeEach(async () => {
 		const moduleFixture: TestingModule = await Test.createTestingModule({
 			imports: [AppModule],

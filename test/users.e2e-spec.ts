@@ -93,6 +93,10 @@ describe('Users route for authorized (e2e)', () => {
 		token = body.accessToken;
 	});
 
+	afterEach(async () => {
+		await connection.close(true);
+	});
+
 	it('/user/list: should get list of users', async () => {
 		await grantAdminRole();
 		const { body }: { body: UserDto[] } = await request(app.getHttpServer())
