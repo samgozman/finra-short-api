@@ -18,7 +18,8 @@ import { AuthenticationModule } from './authentication/authentication.module';
 		ConfigModule.forRoot({
 			isGlobal: true,
 			envFilePath: `config/.${process.env.NODE_ENV}.env`,
-			validationSchema: configValidationSchema,
+			validationSchema:
+				process.env.NODE_ENV !== 'github' ? configValidationSchema : undefined,
 		}),
 		ScheduleModule.forRoot(),
 		MongooseModule.forRootAsync({
