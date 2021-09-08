@@ -80,7 +80,7 @@ describe('Users route for authorized (e2e)', () => {
 		// Drop db before each
 		await connection.dropDatabase();
 
-		token = await createTestUser(app, connection, testUser, []);
+		token = (await createTestUser(app, connection, testUser, [])).accessToken;
 	});
 
 	afterEach(async () => {

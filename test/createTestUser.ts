@@ -5,6 +5,11 @@ import { AuthDto } from 'src/authentication/dtos/auth.dto';
 import { UserPrivileges } from 'src/models/users/schemas/user.schema';
 import request from 'supertest';
 
+interface ITokensTest {
+	accessToken: string;
+	apikey: string;
+}
+
 /**
  * Create test user in mongodb for e2e testing
  * @param app nestjs app
@@ -18,7 +23,7 @@ export const createTestUser = async (
 	connection: Connection,
 	user: AuthCredentialsDto,
 	roles: UserPrivileges[],
-): Promise<string> => {
+): Promise<ITokensTest> => {
 	// Register user
 	await request(app.getHttpServer())
 		.post('/auth/register')
@@ -35,5 +40,14 @@ export const createTestUser = async (
 		.post('/auth/login')
 		.send(user);
 
-	return body.accessToken;
+	// Get API key
+	const resApi = await request(app.getHttpServer())
+		.post('/user/api')
+		.set('Authorization', 'Bearer ' + body.accessToken)
+		.send({ login: user.login });
+
+	return {
+		accessToken: body.accessToken,
+		apikey: resApi.body.apikey,
+	};
 };
