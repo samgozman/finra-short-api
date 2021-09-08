@@ -8,6 +8,7 @@ import { AuthCredentialsDto } from 'src/authentication/dtos/auth-credentials.dto
 import { AuthDto } from 'src/authentication/dtos/auth.dto';
 import { UserDto } from 'src/models/users/dtos/user.dto';
 import { ApiKeyDto } from 'src/models/users/dtos/apikey.dto';
+import { createTestUser } from './createTestUser';
 
 jest.setTimeout(30000);
 
@@ -16,7 +17,7 @@ const testUser: AuthCredentialsDto = {
 	pass: 'TestPass1234',
 };
 
-describe('Users route for unauthorized (e2e)', () => {
+describe('UsersController route for unauthorized (e2e)', () => {
 	let app: INestApplication;
 
 	beforeEach(async () => {
@@ -79,18 +80,7 @@ describe('Users route for authorized (e2e)', () => {
 		// Drop db before each
 		await connection.dropDatabase();
 
-		// Register user
-		await request(app.getHttpServer())
-			.post('/auth/register')
-			.set('Authorization', 'Bearer ' + process.env.ADMIN_SECRET)
-			.send(testUser);
-
-		// Login user and get token
-		const { body }: { body: AuthDto } = await request(app.getHttpServer())
-			.post('/auth/login')
-			.send(testUser);
-
-		token = body.accessToken;
+		token = await createTestUser(app, connection, testUser, []);
 	});
 
 	afterEach(async () => {

@@ -18,7 +18,7 @@ const testUserTwo: AuthCredentialsDto = {
 	pass: 'TestPass1234',
 };
 
-describe('Authentication System (e2e)', () => {
+describe('AuthenticationController (e2e)', () => {
 	let app: INestApplication;
 	let connection: Connection;
 
