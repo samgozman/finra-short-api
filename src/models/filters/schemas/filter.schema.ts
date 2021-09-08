@@ -5,10 +5,13 @@ export interface IFilterDocument extends Filter, Document {}
 
 /** List of all avalible filters */
 export interface IFiltersList {
+	// ? Presets filters
 	/** Stock is available on Tinkoff broker */
 	onTinkoff: boolean;
 	/** Filter new stocks with no data or incomplete */
 	isNotGarbage: boolean;
+
+	// ? In-line sequence of 5d
 	/** Short volume is growing 5 days in a row */
 	shortVolGrows5D: boolean;
 	/** Short volume is decreasing 5 days in a row */
@@ -29,6 +32,8 @@ export interface IFiltersList {
 	shortExemptVolRatioGrows5D: boolean;
 	/** Short Exempt volume ratio is decreasing 5 days in a row */
 	shortExemptVolRatioDecreases5D: boolean;
+
+	// ? In-line sequence of 3d
 	/** Short volume is growing 3 days in a row */
 	shortVolGrows3D: boolean;
 	/** Short volume is decreasing 3 days in a row */
@@ -49,6 +54,20 @@ export interface IFiltersList {
 	shortExemptVolRatioGrows3D: boolean;
 	/** Short Exempt volume ratio is decreasing 3 days in a row */
 	shortExemptVolRatioDecreases3D: boolean;
+
+	// ? Abnormal volume
+	/** Abnormal short volume growing */
+	abnormalShortlVolGrows: boolean;
+	/** Abnormal short volume decreasing */
+	abnormalShortVolDecreases: boolean;
+	/** Abnormal total volume growing */
+	abnormalTotalVolGrows: boolean;
+	/** Abnormal total volume decreasing */
+	abnormalTotalVolDecreases: boolean;
+	/** Abnormal short exempt volume growing */
+	abnormalShortExemptVolGrows: boolean;
+	/** Abnormal short exempt volume decreasing */
+	abnormalShortExemptVolDecreases: boolean;
 }
 
 @Schema()
@@ -61,12 +80,14 @@ export class Filter implements IFiltersList {
 	})
 	_stock_id: Types.ObjectId;
 
+	// Presets filters
 	@Prop({ default: false })
 	onTinkoff: boolean;
 
 	@Prop({ default: false })
 	isNotGarbage: boolean;
 
+	// In-line sequence of 5d
 	@Prop({ default: false })
 	shortVolGrows5D: boolean;
 
@@ -97,6 +118,7 @@ export class Filter implements IFiltersList {
 	@Prop({ default: false })
 	shortExemptVolRatioDecreases5D: boolean;
 
+	// In-line sequence of 3d
 	@Prop({ default: false })
 	shortVolGrows3D: boolean;
 
@@ -126,6 +148,25 @@ export class Filter implements IFiltersList {
 
 	@Prop({ default: false })
 	shortExemptVolRatioDecreases3D: boolean;
+
+	// Abnormal volume
+	@Prop({ default: false })
+	abnormalShortlVolGrows: boolean;
+
+	@Prop({ default: false })
+	abnormalShortVolDecreases: boolean;
+
+	@Prop({ default: false })
+	abnormalTotalVolGrows: boolean;
+
+	@Prop({ default: false })
+	abnormalTotalVolDecreases: boolean;
+
+	@Prop({ default: false })
+	abnormalShortExemptVolGrows: boolean;
+
+	@Prop({ default: false })
+	abnormalShortExemptVolDecreases: boolean;
 }
 
 export const FilterSchema = SchemaFactory.createForClass(Filter);

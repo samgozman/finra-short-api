@@ -9,14 +9,22 @@ export interface IStockDocument extends Stock, Document {}
 /** Interface of main stock keys */
 export interface IStock {
 	ticker: string;
+	// Percent values
 	shortVolRatioLast: number;
 	shortExemptVolRatioLast: number;
-	totalVolLast: number;
 	shortVolRatio5DAVG: number;
 	shortExemptVolRatio5DAVG: number;
-	totalVol5DAVG: number;
 	shortVolRatio20DAVG: number;
 	shortExemptVolRatio20DAVG: number;
+	// Numeric
+	shortExemptVolLast: number;
+	shortExemptVol5DAVG: number;
+	shortExemptVol20DAVG: number;
+	shortVolLast: number;
+	shortVol5DAVG: number;
+	shortVol20DAVG: number;
+	totalVolLast: number;
+	totalVol5DAVG: number;
 	totalVol20DAVG: number;
 }
 
@@ -42,16 +50,10 @@ export class Stock implements IStock {
 	shortExemptVolRatioLast: number;
 
 	@Prop()
-	totalVolLast: number;
-
-	@Prop()
 	shortVolRatio5DAVG: number;
 
 	@Prop()
 	shortExemptVolRatio5DAVG: number;
-
-	@Prop()
-	totalVol5DAVG: number;
 
 	@Prop()
 	shortVolRatio20DAVG: number;
@@ -59,8 +61,33 @@ export class Stock implements IStock {
 	@Prop()
 	shortExemptVolRatio20DAVG: number;
 
+	// Numeric avg
+	@Prop()
+	totalVolLast: number;
+
+	@Prop()
+	totalVol5DAVG: number;
+
 	@Prop()
 	totalVol20DAVG: number;
+
+	@Prop()
+	shortExemptVolLast: number;
+
+	@Prop()
+	shortExemptVol5DAVG: number;
+
+	@Prop()
+	shortExemptVol20DAVG: number;
+
+	@Prop()
+	shortVolLast: number;
+
+	@Prop()
+	shortVol5DAVG: number;
+
+	@Prop()
+	shortVol20DAVG: number;
 }
 
 export const StockSchema = SchemaFactory.createForClass(Stock);

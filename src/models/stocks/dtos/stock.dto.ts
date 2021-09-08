@@ -2,7 +2,7 @@ import { Expose } from 'class-transformer';
 import { Volume } from '../../../models/volumes/schemas/volume.schema';
 import { IStock } from '../schemas/stock.schema';
 
-export class StockDto implements IStock {
+export class StockDto implements Partial<IStock> {
 	@Expose()
 	ticker: string;
 

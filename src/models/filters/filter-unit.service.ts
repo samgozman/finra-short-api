@@ -25,6 +25,11 @@ export interface IFiltredStocks {
 /** Filter keys */
 export type Filters = keyof IFiltersList & string;
 
+type VolumeType = 'shortVolume' | 'shortExemptVolume' | 'totalVolume';
+type VolumeShortType = 'shortVol' | 'shortExemptVol' | 'totalVol';
+
+type Momentum = 'growing' | 'decreasing';
+
 @Injectable()
 export class FilterUnitService {
 	private readonly logger = new Logger(FilterUnitService.name);
@@ -183,8 +188,8 @@ export class FilterUnitService {
 
 	volumeFilter(
 		filter: Filters,
-		volType: 'shortVolume' | 'shortExemptVolume' | 'totalVolume',
-		momentum: 'growing' | 'decreasing',
+		volType: VolumeType,
+		momentum: Momentum,
 		period: number = 5,
 		ratio: boolean = false,
 	): () => Promise<void> {
@@ -220,5 +225,39 @@ export class FilterUnitService {
 			this.logger.error(`Error in ${this.volumeFilter.name}`, error);
 			throw new InternalServerErrorException();
 		}
+	}
+
+	// ! 1D AVG > 20D AVG
+	// ! 3D AVG > 20D AVG
+	// ! 5D AVG > 20D AVG
+	/** Abnormal volume => more than triple the 20d average */
+	abnormalVolumeFilter(
+		filter: Filters,
+		volType: VolumeShortType,
+		momentum: Momentum,
+	): () => Promise<void> {
+		return async () => {
+			try {
+				// Get all stocks documents
+				const stocks = await this.stocksService.findMany({});
+				for (const stock of stocks) {
+					let multiplier: number;
+
+					if (momentum === 'growing') {
+						multiplier = stock[`${volType}Last`] / stock[`${volType}20DAVG`];
+					} else {
+						multiplier = stock[`${volType}20DAVG`] / stock[`${volType}Last`];
+					}
+
+					// If difference between current volume and 20D AVG is greater than 3
+					const value = multiplier >= 3 ? true : false;
+
+					await this.updateFilter(stock._id, filter, value);
+				}
+			} catch (error) {
+				this.logger.error(`Error in ${this.abnormalVolumeFilter.name}`, error);
+				throw new InternalServerErrorException();
+			}
+		};
 	}
 }

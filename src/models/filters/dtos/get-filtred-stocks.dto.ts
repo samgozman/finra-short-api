@@ -44,9 +44,15 @@ const filtersObject: IFiltersList = {
 	shortExemptVolDecreases3D: false,
 	shortExemptVolRatioGrows3D: false,
 	shortExemptVolRatioDecreases3D: false,
+	abnormalShortlVolGrows: false,
+	abnormalShortVolDecreases: false,
+	abnormalTotalVolGrows: false,
+	abnormalTotalVolDecreases: false,
+	abnormalShortExemptVolGrows: false,
+	abnormalShortExemptVolDecreases: false,
 };
 
-const sortObject: IStock = {
+const sortObject: Partial<IStock> = {
 	ticker: '',
 	shortVolRatioLast: 0,
 	shortExemptVolRatioLast: 0,

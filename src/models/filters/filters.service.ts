@@ -154,6 +154,37 @@ export class FiltersService {
 				3,
 				true,
 			),
+			// Abnormal volume
+			abnormalShortlVolGrows: this.fus.abnormalVolumeFilter(
+				'abnormalShortlVolGrows',
+				'shortVol',
+				'growing',
+			),
+			abnormalShortVolDecreases: this.fus.abnormalVolumeFilter(
+				'abnormalShortVolDecreases',
+				'shortVol',
+				'decreasing',
+			),
+			abnormalTotalVolGrows: this.fus.abnormalVolumeFilter(
+				'abnormalTotalVolGrows',
+				'totalVol',
+				'growing',
+			),
+			abnormalTotalVolDecreases: this.fus.abnormalVolumeFilter(
+				'abnormalTotalVolDecreases',
+				'totalVol',
+				'decreasing',
+			),
+			abnormalShortExemptVolGrows: this.fus.abnormalVolumeFilter(
+				'abnormalShortExemptVolGrows',
+				'shortExemptVol',
+				'growing',
+			),
+			abnormalShortExemptVolDecreases: this.fus.abnormalVolumeFilter(
+				'abnormalShortExemptVolDecreases',
+				'shortExemptVol',
+				'decreasing',
+			),
 		};
 
 		return updaters;

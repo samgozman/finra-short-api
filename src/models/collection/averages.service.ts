@@ -51,6 +51,8 @@ export class AveragesService {
 				) {
 					// last day (copy just to be able to sort faster without population)
 					stock.totalVolLast = volume[0].totalVolume;
+					stock.shortVolLast = volume[0].shortVolume;
+					stock.shortExemptVolLast = volume[0].shortExemptVolume;
 					stock.shortVolRatioLast =
 						(volume[0].shortVolume / volume[0].totalVolume) * 100;
 					stock.shortExemptVolRatioLast =
@@ -59,28 +61,28 @@ export class AveragesService {
 					// 5 days
 					const vol5 = volume.slice(0, 5);
 					stock.totalVol5DAVG = avgVol(vol5, 'totalVolume');
+					stock.shortVol5DAVG = avgVol(vol5, 'shortVolume');
+					stock.shortExemptVol5DAVG = avgVol(vol5, 'shortExemptVolume');
 					stock.shortVolRatio5DAVG =
-						(avgVol(vol5, 'shortVolume') / stock.totalVol5DAVG) * 100;
+						(stock.shortVol5DAVG / stock.totalVol5DAVG) * 100;
 					stock.shortExemptVolRatio5DAVG =
-						(avgVol(vol5, 'shortExemptVolume') / stock.totalVol5DAVG) * 100;
+						(stock.shortExemptVol5DAVG / stock.totalVol5DAVG) * 100;
 
 					// 20 days
 					stock.totalVol20DAVG = avgVol(volume, 'totalVolume');
+					stock.shortVol20DAVG = avgVol(volume, 'shortVolume');
+					stock.shortExemptVol20DAVG = avgVol(volume, 'shortExemptVolume');
 					stock.shortVolRatio20DAVG =
-						(avgVol(volume, 'shortVolume') / stock.totalVol20DAVG) * 100;
+						(stock.shortVol20DAVG / stock.totalVol20DAVG) * 100;
 					stock.shortExemptVolRatio20DAVG =
-						(avgVol(volume, 'shortExemptVolume') / stock.totalVol20DAVG) * 100;
+						(stock.shortExemptVol20DAVG / stock.totalVol20DAVG) * 100;
 				} else {
-					// Clear statistics
-					stock.totalVolLast = 0;
-					stock.shortVolRatioLast = 0;
-					stock.shortExemptVolRatioLast = 0;
-					stock.totalVol5DAVG = 0;
-					stock.shortVolRatio5DAVG = 0;
-					stock.shortExemptVolRatio5DAVG = 0;
-					stock.totalVol20DAVG = 0;
-					stock.shortVolRatio20DAVG = 0;
-					stock.shortExemptVolRatio20DAVG = 0;
+					// Clear averages
+					for (const key in stock) {
+						if (typeof stock[key] === 'number') {
+							stock[key] = 0;
+						}
+					}
 				}
 				await stock.save();
 			}
