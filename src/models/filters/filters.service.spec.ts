@@ -8,26 +8,30 @@ import { FiltersService } from './filters.service';
 const stocks: Partial<IStock>[] = [{ ticker: 'AAPL' }, { ticker: 'MSFT' }];
 
 class MockStockRepository {
-	getAllStocks = (...any) => Promise.resolve(stocks);
+	getAllStocks = () => Promise.resolve(stocks);
 	estimatedDocumentCount = () => Promise.resolve(stocks.length);
 }
 
 class MockFilterUnitService implements Partial<FilterUnitService> {
-	tinkoffFilter(filter?: Filters) {
+	tinkoffFilter() {
 		return async () => {};
 	}
 
-	isNotGarbageFilter(filter?: Filters) {
+	isNotGarbageFilter() {
 		return async () => {};
 	}
 
-	volumeFilter(...any) {
+	volumeFilter() {
+		return async () => {};
+	}
+
+	abnormalVolumeFilter() {
 		return async () => {};
 	}
 
 	createEmptyFilters = () => Promise.resolve();
 
-	getFilter(...any): any {
+	getFilter(): any {
 		return Promise.resolve({
 			count: 1,
 			stocks: stocks.filter((e) => e.ticker === 'AAPL'),
