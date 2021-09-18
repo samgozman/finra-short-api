@@ -49,7 +49,10 @@ async function bootstrap() {
 		.addTag('filter')
 		.addTag('auth')
 		.addTag('user')
-		.addTag('collection')
+		.addTag(
+			'collection',
+			'Methods for DB regeneration. Only for authorized users with `admin` role.',
+		)
 		.addTag('health')
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
@@ -57,6 +60,7 @@ async function bootstrap() {
 
 	app.use(helmet());
 	app.use(compression());
+
 	await app.listen(port);
 }
 bootstrap();

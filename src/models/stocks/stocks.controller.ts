@@ -1,5 +1,10 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import { ApiOkResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import {
+	ApiOkResponse,
+	ApiOperation,
+	ApiSecurity,
+	ApiTags,
+} from '@nestjs/swagger';
 import { SkipThrottle } from '@nestjs/throttler';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
@@ -19,6 +24,7 @@ export class StocksController {
 	@UseGuards(RolesGuard)
 	@Serialize(StockDto)
 	@ApiSecurity('user-api-token')
+	@ApiOperation({ summary: 'Find one stock object (with volumes) by ticker' })
 	@ApiOkResponse({ description: 'Stock response object', type: StockDto })
 	getStock(@Query() query: GetStockDto) {
 		return this.stocksService.get(query);

@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
 	HealthCheck,
 	HealthCheckService,
@@ -18,6 +18,7 @@ export class HealthController {
 
 	@Get()
 	@HealthCheck()
+	@ApiOperation({ summary: 'Health check, ping check for DB, FINRA etc.' })
 	check() {
 		return this.health.check([
 			() =>

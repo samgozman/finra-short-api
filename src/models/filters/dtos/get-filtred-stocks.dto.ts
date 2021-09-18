@@ -71,7 +71,7 @@ const filtersArray = [...Object.keys(filtersObject), ''];
 const sortKeysObject = [...Object.keys(sortObject)];
 
 export class GetFiltredStocksDto {
-	@ApiProperty({ required: false })
+	@ApiProperty({ required: false, description: 'Limit stocks per response' })
 	@IsOptional()
 	@IsInt()
 	@Min(1)
@@ -79,7 +79,10 @@ export class GetFiltredStocksDto {
 	@Type(() => Number)
 	limit: number = 25;
 
-	@ApiProperty({ required: false })
+	@ApiProperty({
+		required: false,
+		description: 'The number of stocks to skip from the start (pagination)',
+	})
 	@IsOptional()
 	@IsInt()
 	@Min(0)
@@ -87,19 +90,26 @@ export class GetFiltredStocksDto {
 	@Type(() => Number)
 	skip: number = 0;
 
-	@ApiProperty({ required: false })
+	@ApiProperty({ required: false, description: 'Sort by key of Stock object' })
 	@IsOptional()
 	@IsIn(sortKeysObject)
 	sortby: StockKeys = 'ticker';
 
-	@ApiProperty({ required: false })
+	@ApiProperty({
+		required: false,
+		description: 'Sort direction (`asc` or `desc`)',
+	})
 	@IsOptional()
 	@IsEnum(SortDirection, {
 		message: `sort direction can be 'asc' or 'desc' only`,
 	})
 	sortdir: SortDirs = 'asc';
 
-	@ApiProperty({ isArray: true, required: false })
+	@ApiProperty({
+		isArray: true,
+		required: false,
+		description: 'Array of filters',
+	})
 	@IsOptional()
 	@IsArray()
 	@IsString({ each: true })

@@ -1,7 +1,7 @@
 import { Controller, Get, Logger, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Cron } from '@nestjs/schedule';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
 import { FiltersService } from '../filters/filters.service';
@@ -24,6 +24,10 @@ export class CollectionController {
 	@Get('/recreate')
 	@Roles('admin')
 	@UseGuards(RolesGuard)
+	@ApiOperation({
+		summary:
+			'Recreate full database from the start (parse tons of FINRA reports at once)',
+	})
 	recreateCollection() {
 		return this.collectionService.recreateFullDatabase();
 	}
@@ -31,6 +35,7 @@ export class CollectionController {
 	@Get('/update/lastday')
 	@Roles('admin')
 	@UseGuards(RolesGuard)
+	@ApiOperation({ summary: 'Fetch last trading days from FINRA' })
 	updateLastDay() {
 		return this.collectionService.updateLastTradingDays();
 	}
@@ -38,6 +43,7 @@ export class CollectionController {
 	@Get('/update/filters')
 	@Roles('admin')
 	@UseGuards(RolesGuard)
+	@ApiOperation({ summary: 'Update filters' })
 	updateFilters() {
 		return this.filtersService.updateAll();
 	}
@@ -45,14 +51,18 @@ export class CollectionController {
 	@Get('/update/averages')
 	@Roles('admin')
 	@UseGuards(RolesGuard)
+	@ApiOperation({ summary: 'Update volume averages (for faster sorting)' })
 	updateAverages() {
 		return this.averagesService.averages();
 	}
 
-	/** Update collection directly from the FINRA report txt file by link */
 	@Get('/update/link')
 	@Roles('admin')
 	@UseGuards(RolesGuard)
+	@ApiOperation({
+		summary:
+			'Update collection directly from the FINRA report txt file by link',
+	})
 	updateVolumesByLink(@Query() query: GetLinkDto) {
 		return this.collectionService.updateVolumesByLink(query.link);
 	}

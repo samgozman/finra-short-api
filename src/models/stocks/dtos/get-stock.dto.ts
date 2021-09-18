@@ -15,7 +15,7 @@ import { SortDirection } from '../../filters/enums/SortDirection';
 import { SortDirs } from '../schemas/stock.schema';
 
 export class GetStockDto {
-	@ApiProperty()
+	@ApiProperty({ description: 'Stock ticker' })
 	@IsString()
 	@IsNotEmpty()
 	@MaxLength(16)
@@ -25,7 +25,7 @@ export class GetStockDto {
 	@Transform(({ value }) => value.toUpperCase())
 	ticker: string;
 
-	@ApiProperty({ required: false })
+	@ApiProperty({ required: false, description: 'Max volume elements' })
 	@IsOptional()
 	@IsInt()
 	@Min(1)
@@ -33,7 +33,10 @@ export class GetStockDto {
 	@Type(() => Number)
 	limit: number = 10000;
 
-	@ApiProperty({ required: false })
+	@ApiProperty({
+		required: false,
+		description: 'Sort stock volume by date (`asc` or `desc` direction)',
+	})
 	@IsOptional()
 	@IsEnum(SortDirection, {
 		message: `sort direction can be 'asc' or 'desc' only`,
