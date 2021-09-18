@@ -43,6 +43,7 @@
 		"@nestjs/platform-express": "^8.0.6",
 		"@nestjs/schedule": "^1.0.1",
 		"@nestjs/terminus": "^8.0.0",
+		"@nestjs/throttler": "^2.0.0",
 		"bcrypt": "^5.0.1",
 		"bcryptjs": "^2.4.3",
 		"class-transformer": "^0.4.0",

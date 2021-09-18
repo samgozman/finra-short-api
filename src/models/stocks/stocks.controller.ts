@@ -1,4 +1,5 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { SkipThrottle } from '@nestjs/throttler';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Serialize } from '../../interceptors/serialize.interceptor';
@@ -11,6 +12,7 @@ export class StocksController {
 	constructor(private stocksService: StocksService) {}
 
 	@Get()
+	@SkipThrottle()
 	@Roles('stockInfo')
 	@UseGuards(RolesGuard)
 	@Serialize(StockDto)

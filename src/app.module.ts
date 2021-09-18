@@ -1,6 +1,6 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_PIPE, APP_FILTER } from '@nestjs/core';
+import { APP_PIPE, APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AppService } from './app.service';
@@ -13,6 +13,7 @@ import { CollectionModule } from './models/collection/collection.module';
 import { MongoExceptionFilter } from './exceptions/mongo-exception.filter';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { HealthModule } from './health/health.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
 	imports: [
@@ -34,6 +35,10 @@ import { HealthModule } from './health/health.module';
 					useFindAndModify: false,
 				};
 			},
+		}),
+		ThrottlerModule.forRoot({
+			ttl: 30,
+			limit: 10,
 		}),
 		UsersModule,
 		StocksModule,
@@ -61,6 +66,10 @@ import { HealthModule } from './health/health.module';
 		{
 			provide: APP_FILTER,
 			useClass: MongoExceptionFilter,
+		},
+		{
+			provide: APP_GUARD,
+			useClass: ThrottlerGuard,
 		},
 	],
 })
