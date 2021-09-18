@@ -37,8 +37,8 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 			},
 		}),
 		ThrottlerModule.forRoot({
-			ttl: 30,
-			limit: 10,
+			ttl: 60,
+			limit: 50,
 		}),
 		UsersModule,
 		StocksModule,
