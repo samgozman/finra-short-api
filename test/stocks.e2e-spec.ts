@@ -16,7 +16,7 @@ const testUser: AuthCredentialsDto = {
 	pass: 'KekTestPass1234',
 };
 
-const testStock: IStock = {
+const testStock: Partial<IStock> = {
 	ticker: 'AAPL',
 	shortVolRatioLast: 39.389942332818286,
 	shortExemptVolRatioLast: 0.27084895447165275,
