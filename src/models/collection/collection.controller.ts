@@ -1,6 +1,7 @@
 import { Controller, Get, Logger, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Cron } from '@nestjs/schedule';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
 import { FiltersService } from '../filters/filters.service';
@@ -8,7 +9,9 @@ import { AveragesService } from './averages.service';
 import { CollectionService } from './collection.service';
 import { GetLinkDto } from './dtos/get-link.dto';
 
+@ApiTags('collection')
 @Controller('collection')
+@ApiBearerAuth('auth-with-admin-role')
 @UseGuards(AuthGuard())
 export class CollectionController {
 	private readonly logger = new Logger(CollectionController.name);

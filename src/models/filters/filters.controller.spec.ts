@@ -4,11 +4,11 @@ import { Stock } from '../stocks/schemas/stock.schema';
 import { UsersRepository } from '../users/repositories/users.repository';
 import { User } from '../users/schemas/user.schema';
 import { UsersService } from '../users/users.service';
-import { IFiltredStocks } from './filter-unit.service';
+import { FiltredStocksDto } from './dtos/filtred-stocks.dto';
 import { FiltersController } from './filters.controller';
 import { FiltersService } from './filters.service';
 
-const mockFilterStocks: Partial<IFiltredStocks> = {
+const mockFilterStocks: Partial<FiltredStocksDto> = {
 	count: 2,
 	stocks: [
 		{

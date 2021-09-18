@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Serialize } from '../../interceptors/serialize.interceptor';
@@ -9,8 +10,10 @@ import { UpdateRolesDto } from './dtos/update-roles.dto';
 import { UserDto } from './dtos/user.dto';
 import { UsersService } from './users.service';
 
+@ApiTags('user')
 @Controller('user')
 @UseGuards(AuthGuard())
+@ApiBearerAuth('auth-with-admin-role')
 export class UsersController {
 	constructor(private usersService: UsersService) {}
 

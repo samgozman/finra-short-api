@@ -1,4 +1,5 @@
 import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
 import { Document, Schema as SchemaMongoose, Model } from 'mongoose';
 
 export interface FinraReport {
@@ -23,23 +24,27 @@ export class Volume {
 	})
 	_stock_id: SchemaMongoose.Types.ObjectId;
 
+	@ApiProperty()
 	@Prop({
 		required: true,
 	})
 	date: Date;
 
+	@ApiProperty()
 	@Prop({
 		required: true,
 		default: 0,
 	})
 	shortVolume: number;
 
+	@ApiProperty()
 	@Prop({
 		required: true,
 		default: 0,
 	})
 	shortExemptVolume: number;
 
+	@ApiProperty()
 	@Prop({
 		required: true,
 		default: 0,

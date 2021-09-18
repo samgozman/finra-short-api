@@ -17,6 +17,7 @@ import {
 	SortDirs,
 	StockKeys,
 } from '../../../models/stocks/schemas/stock.schema';
+import { ApiProperty } from '@nestjs/swagger';
 
 // Duplication required for validation to work,
 // since an interface cannot be turned into an array in a TS,
@@ -70,6 +71,7 @@ const filtersArray = [...Object.keys(filtersObject), ''];
 const sortKeysObject = [...Object.keys(sortObject)];
 
 export class GetFiltredStocksDto {
+	@ApiProperty({ required: false })
 	@IsOptional()
 	@IsInt()
 	@Min(1)
@@ -77,6 +79,7 @@ export class GetFiltredStocksDto {
 	@Type(() => Number)
 	limit: number = 25;
 
+	@ApiProperty({ required: false })
 	@IsOptional()
 	@IsInt()
 	@Min(0)
@@ -84,16 +87,19 @@ export class GetFiltredStocksDto {
 	@Type(() => Number)
 	skip: number = 0;
 
+	@ApiProperty({ required: false })
 	@IsOptional()
 	@IsIn(sortKeysObject)
 	sortby: StockKeys = 'ticker';
 
+	@ApiProperty({ required: false })
 	@IsOptional()
 	@IsEnum(SortDirection, {
 		message: `sort direction can be 'asc' or 'desc' only`,
 	})
 	sortdir: SortDirs = 'asc';
 
+	@ApiProperty({ isArray: true, required: false })
 	@IsOptional()
 	@IsArray()
 	@IsString({ each: true })

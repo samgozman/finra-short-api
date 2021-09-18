@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Type, Transform } from 'class-transformer';
 import {
 	IsEnum,
@@ -14,6 +15,7 @@ import { SortDirection } from '../../filters/enums/SortDirection';
 import { SortDirs } from '../schemas/stock.schema';
 
 export class GetStockDto {
+	@ApiProperty()
 	@IsString()
 	@IsNotEmpty()
 	@MaxLength(16)
@@ -23,6 +25,7 @@ export class GetStockDto {
 	@Transform(({ value }) => value.toUpperCase())
 	ticker: string;
 
+	@ApiProperty({ required: false })
 	@IsOptional()
 	@IsInt()
 	@Min(1)
@@ -30,6 +33,7 @@ export class GetStockDto {
 	@Type(() => Number)
 	limit: number = 10000;
 
+	@ApiProperty({ required: false })
 	@IsOptional()
 	@IsEnum(SortDirection, {
 		message: `sort direction can be 'asc' or 'desc' only`,

@@ -1,4 +1,5 @@
 import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
 import { Document, Model } from 'mongoose';
 
 export type Virtuals = 'volume' | 'filter';
@@ -33,6 +34,7 @@ export type StockKeys = keyof IStock & string;
 
 @Schema({ toJSON: { virtuals: true } })
 export class Stock implements IStock {
+	@ApiProperty()
 	@Prop({
 		type: String,
 		required: true,
@@ -43,49 +45,64 @@ export class Stock implements IStock {
 	})
 	ticker: string;
 
+	@ApiProperty()
 	@Prop()
 	shortVolRatioLast: number;
 
+	@ApiProperty()
 	@Prop()
 	shortExemptVolRatioLast: number;
 
+	@ApiProperty()
 	@Prop()
 	shortVolRatio5DAVG: number;
 
+	@ApiProperty()
 	@Prop()
 	shortExemptVolRatio5DAVG: number;
 
+	@ApiProperty()
 	@Prop()
 	shortVolRatio20DAVG: number;
 
+	@ApiProperty()
 	@Prop()
 	shortExemptVolRatio20DAVG: number;
 
 	// Numeric avg
+	@ApiProperty()
 	@Prop()
 	totalVolLast: number;
 
+	@ApiProperty()
 	@Prop()
 	totalVol5DAVG: number;
 
+	@ApiProperty()
 	@Prop()
 	totalVol20DAVG: number;
 
+	@ApiProperty()
 	@Prop()
 	shortExemptVolLast: number;
 
+	@ApiProperty()
 	@Prop()
 	shortExemptVol5DAVG: number;
 
+	@ApiProperty()
 	@Prop()
 	shortExemptVol20DAVG: number;
 
+	@ApiProperty()
 	@Prop()
 	shortVolLast: number;
 
+	@ApiProperty()
 	@Prop()
 	shortVol5DAVG: number;
 
+	@ApiProperty()
 	@Prop()
 	shortVol20DAVG: number;
 }
