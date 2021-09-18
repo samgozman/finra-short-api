@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../models/users/users.service';
 import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
 import { JwtPayload } from './jwt-payload.interface';
+import { TokenDto } from './dtos/token.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -25,7 +26,7 @@ export class AuthenticationService {
 		return user.save();
 	}
 
-	async login(credentials: AuthCredentialsDto) {
+	async login(credentials: AuthCredentialsDto): Promise<TokenDto> {
 		const { login, pass } = credentials;
 		const user = await this.usersService.findOne({ login });
 

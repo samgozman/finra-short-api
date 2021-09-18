@@ -1,6 +1,11 @@
 import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+	ApiBearerAuth,
+	ApiOkResponse,
+	ApiOperation,
+	ApiTags,
+} from '@nestjs/swagger';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Serialize } from '../../interceptors/serialize.interceptor';
@@ -22,6 +27,10 @@ export class UsersController {
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	@ApiOperation({ summary: 'Get list of all users' })
+	@ApiOkResponse({
+		description: 'List of users response object',
+		type: [UserDto],
+	})
 	getUsersList() {
 		return this.usersService.listAllUsers();
 	}
@@ -33,6 +42,10 @@ export class UsersController {
 	@ApiOperation({
 		summary: 'Create API key for user to get access to the filtering',
 	})
+	@ApiOkResponse({
+		description: 'Object with new API key for user',
+		type: ApiKeyDto,
+	})
 	getApiKey(@Body() createApiDto: CreateUserApiKeyDto) {
 		return this.usersService.createApiKey(createApiDto.login);
 	}
@@ -42,6 +55,10 @@ export class UsersController {
 	@Serialize(UserDto)
 	@UseGuards(RolesGuard)
 	@ApiOperation({ summary: 'Add new roles for a user' })
+	@ApiOkResponse({
+		description: 'User with roles response object',
+		type: UserDto,
+	})
 	updateUserRoles(@Body() updateRolesDto: UpdateRolesDto) {
 		return this.usersService.updateRoles(updateRolesDto);
 	}
