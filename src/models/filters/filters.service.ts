@@ -4,6 +4,7 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { StocksService } from '../stocks/stocks.service';
+import { FiltredStocksDto } from './dtos/filtred-stocks.dto';
 import { GetFiltredStocksDto } from './dtos/get-filtred-stocks.dto';
 import { FilterUnitService } from './filter-unit.service';
 import { IFiltersList } from './schemas/filter.schema';
@@ -217,7 +218,7 @@ export class FiltersService {
 	 * Get filtred stocks by query
 	 * @param query GetFiltredStocksDto
 	 */
-	async get(query: GetFiltredStocksDto) {
+	async get(query: GetFiltredStocksDto): Promise<FiltredStocksDto> {
 		const { limit, skip, sortby, sortdir, filters } = query;
 
 		if (filters) {

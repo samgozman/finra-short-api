@@ -9,17 +9,13 @@ import { Tinkoff } from 'tinkoff-api-securities';
 import { VolumesService } from '../../models/volumes/volumes.service';
 import { Stock } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
+import { FiltredStocksDto } from './dtos/filtred-stocks.dto';
 import { FiltersRepository } from './repositories/filters.repository';
 import { IFiltersList } from './schemas/filter.schema';
 
 export interface ISort {
 	field: keyof Stock;
 	dir: 'asc' | 'desc';
-}
-
-export interface IFiltredStocks {
-	count: number;
-	stocks: Stock[];
 }
 
 /** Filter keys */
@@ -104,7 +100,7 @@ export class FilterUnitService {
 		limit: number,
 		skip: number,
 		sort: ISort,
-	): Promise<IFiltredStocks> {
+	): Promise<FiltredStocksDto> {
 		try {
 			// Convert filter keys to object like {key: true, ...}
 			const keyPairs = keys.reduce((ac, a) => ({ ...ac, [a]: true }), {});
