@@ -12,6 +12,7 @@ import { FiltersModule } from './models/filters/filters.module';
 import { CollectionModule } from './models/collection/collection.module';
 import { MongoExceptionFilter } from './exceptions/mongo-exception.filter';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
 	imports: [
@@ -40,6 +41,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 		FiltersModule,
 		CollectionModule,
 		AuthenticationModule,
+		HealthModule,
 	],
 	controllers: [],
 	providers: [
