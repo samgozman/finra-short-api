@@ -1,4 +1,11 @@
-import { Controller, Get, Logger, Query, UseGuards } from '@nestjs/common';
+import {
+	Controller,
+	Patch,
+	Post,
+	Logger,
+	Query,
+	UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Cron } from '@nestjs/schedule';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -21,7 +28,7 @@ export class CollectionController {
 		private filtersService: FiltersService,
 	) {}
 
-	@Get('/recreate')
+	@Patch('/recreate')
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	@ApiOperation({
@@ -32,7 +39,7 @@ export class CollectionController {
 		return this.collectionService.recreateFullDatabase();
 	}
 
-	@Get('/update/lastday')
+	@Patch('/update/lastday')
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	@ApiOperation({ summary: 'Fetch last trading days from FINRA' })
@@ -40,7 +47,7 @@ export class CollectionController {
 		return this.collectionService.updateLastTradingDays();
 	}
 
-	@Get('/update/filters')
+	@Patch('/update/filters')
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	@ApiOperation({ summary: 'Update filters' })
@@ -48,7 +55,7 @@ export class CollectionController {
 		return this.filtersService.updateAll();
 	}
 
-	@Get('/update/averages')
+	@Patch('/update/averages')
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	@ApiOperation({ summary: 'Update volume averages (for faster sorting)' })
@@ -56,7 +63,7 @@ export class CollectionController {
 		return this.averagesService.averages();
 	}
 
-	@Get('/update/link')
+	@Post('/update/link')
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	@ApiOperation({
