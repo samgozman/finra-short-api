@@ -1,6 +1,6 @@
 {
 	"name": "finra-short-api",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "",
 	"author": "Sam Gozman <sam@gozman.space>",
 	"private": true,
