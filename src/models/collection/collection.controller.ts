@@ -8,7 +8,13 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Cron } from '@nestjs/schedule';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+	ApiBearerAuth,
+	ApiForbiddenResponse,
+	ApiInternalServerErrorResponse,
+	ApiOperation,
+	ApiTags,
+} from '@nestjs/swagger';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
 import { FiltersService } from '../filters/filters.service';
@@ -19,6 +25,8 @@ import { GetLinkDto } from './dtos/get-link.dto';
 @ApiTags('collection')
 @Controller('collection')
 @ApiBearerAuth('auth-with-admin-role')
+@ApiForbiddenResponse()
+@ApiInternalServerErrorResponse()
 @UseGuards(AuthGuard())
 export class CollectionController {
 	private readonly logger = new Logger(CollectionController.name);

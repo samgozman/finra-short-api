@@ -1,5 +1,7 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import {
+	ApiForbiddenResponse,
+	ApiNotFoundResponse,
 	ApiOkResponse,
 	ApiOperation,
 	ApiSecurity,
@@ -26,6 +28,8 @@ export class StocksController {
 	@ApiSecurity('user-api-token')
 	@ApiOperation({ summary: 'Find one stock object (with volumes) by ticker' })
 	@ApiOkResponse({ description: 'Stock response object', type: StockDto })
+	@ApiForbiddenResponse()
+	@ApiNotFoundResponse()
 	getStock(@Query() query: GetStockDto) {
 		return this.stocksService.get(query);
 	}

@@ -12,7 +12,10 @@ async function bootstrap() {
 	// Config swagger
 	const config = new DocumentBuilder()
 		.setTitle('TightShorts API')
-		.setDescription('FINRA short volume parser')
+		.setDescription(
+			`FINRA short volume parser. Access to the TightShorts API is only possible for the owners. 
+			API keys are not issued to outsiders for now. The information is presented for your reference.`,
+		)
 		.setVersion(process.env.npm_package_version)
 		.setLicense(
 			'MIT',
@@ -45,15 +48,21 @@ async function bootstrap() {
 			},
 			'ADMIN_SECRET',
 		)
-		.addTag('stock')
-		.addTag('filter')
-		.addTag('auth')
-		.addTag('user')
+		.addTag('stock', 'Get stock info. Needs an `user-api-token` for request')
+		.addTag(
+			'filter',
+			'Get filtered stocks. Needs an `user-api-token` for request',
+		)
+		.addTag(
+			'auth',
+			'Signup / login for the new user. New signup is only possible with `ADMIN_SECRET` key for now.',
+		)
+		.addTag('user', 'Methods for API users')
 		.addTag(
 			'collection',
 			'Methods for DB regeneration. Only for authorized users with `admin` role.',
 		)
-		.addTag('health')
+		.addTag('health', 'Check app health')
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('api', app, document);

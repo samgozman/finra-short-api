@@ -1,7 +1,11 @@
 import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
+	ApiBadRequestResponse,
 	ApiBearerAuth,
+	ApiConflictResponse,
+	ApiForbiddenResponse,
+	ApiNotFoundResponse,
 	ApiOkResponse,
 	ApiOperation,
 	ApiTags,
@@ -19,6 +23,7 @@ import { UsersService } from './users.service';
 @Controller('user')
 @UseGuards(AuthGuard())
 @ApiBearerAuth('auth-with-admin-role')
+@ApiForbiddenResponse()
 export class UsersController {
 	constructor(private usersService: UsersService) {}
 
@@ -59,6 +64,9 @@ export class UsersController {
 		description: 'User with roles response object',
 		type: UserDto,
 	})
+	@ApiBadRequestResponse()
+	@ApiNotFoundResponse()
+	@ApiConflictResponse()
 	updateUserRoles(@Body() updateRolesDto: UpdateRolesDto) {
 		return this.usersService.updateRoles(updateRolesDto);
 	}

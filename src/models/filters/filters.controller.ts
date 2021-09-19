@@ -1,5 +1,6 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import {
+	ApiForbiddenResponse,
 	ApiOkResponse,
 	ApiOperation,
 	ApiSecurity,
@@ -24,6 +25,7 @@ export class FiltersController {
 		description: 'Filters response object',
 		type: FiltredStocksDto,
 	})
+	@ApiForbiddenResponse()
 	@ApiSecurity('user-api-token')
 	getFilter(@Query() query: GetFiltredStocksDto) {
 		return this.filtersService.get(query);
