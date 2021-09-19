@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Stock } from '../../../models/stocks/schemas/stock.schema';
+import { Stock } from '../../stocks/schemas/stock.schema';
 
-export class FiltredStocksDto {
+export class FilteredStocksDto {
 	@ApiProperty()
 	count: number;
 

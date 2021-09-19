@@ -5,7 +5,7 @@ import { Stock } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
 import { IVolumeDocument } from '../volumes/schemas/volume.schema';
 import { VolumesService } from '../volumes/volumes.service';
-import { FiltredStocksDto } from './dtos/filtred-stocks.dto';
+import { FilteredStocksDto } from './dtos/filtered-stocks.dto';
 import { FilterUnitService } from './filter-unit.service';
 import { FiltersRepository } from './repositories/filters.repository';
 import { IFilterDocument } from './schemas/filter.schema';
@@ -53,7 +53,7 @@ const mockVolume: IVolumeDocument[] = [
 	} as IVolumeDocument,
 ];
 
-const mockStocksFiltedTest: FiltredStocksDto = {
+const mockStocksFiltedTest: FilteredStocksDto = {
 	count: mockStocks.length,
 	stocks: [mockStocks[0], mockStocks[1]],
 };

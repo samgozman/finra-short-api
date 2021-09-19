@@ -8,9 +8,9 @@ import {
 } from '@nestjs/swagger';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
-import { GetFiltredStocksDto } from './dtos/get-filtred-stocks.dto';
+import { GetFilteredStocksDto } from './dtos/get-filtered-stocks.dto';
 import { FiltersService } from './filters.service';
-import { FiltredStocksDto } from './dtos/filtred-stocks.dto';
+import { FilteredStocksDto } from './dtos/filtered-stocks.dto';
 
 @ApiTags('filter')
 @Controller('filter')
@@ -20,14 +20,14 @@ export class FiltersController {
 	@Get()
 	@Roles('screener')
 	@UseGuards(RolesGuard)
-	@ApiOperation({ summary: 'Get filtred stocks by query' })
+	@ApiOperation({ summary: 'Get filtered stocks by query' })
 	@ApiOkResponse({
 		description: 'Filters response object',
-		type: FiltredStocksDto,
+		type: FilteredStocksDto,
 	})
 	@ApiForbiddenResponse()
 	@ApiSecurity('user-api-token')
-	getFilter(@Query() query: GetFiltredStocksDto) {
+	getFilter(@Query() query: GetFilteredStocksDto) {
 		return this.filtersService.get(query);
 	}
 }

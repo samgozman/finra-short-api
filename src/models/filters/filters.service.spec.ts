@@ -83,7 +83,7 @@ describe('FiltersService', () => {
 		expect(users.stocks).toContainEqual({ ticker: 'MSFT' });
 	});
 
-	it('should get only filtred stocks', async () => {
+	it('should get only filtered stocks', async () => {
 		const users = await filtersService.get({
 			limit: 25,
 			skip: 0,

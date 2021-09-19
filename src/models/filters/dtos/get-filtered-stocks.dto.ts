@@ -12,11 +12,7 @@ import {
 import { SortDirection } from '../enums/SortDirection';
 import { IFiltersList } from '../schemas/filter.schema';
 import { Filters } from '../filter-unit.service';
-import {
-	IStock,
-	SortDirs,
-	StockKeys,
-} from '../../../models/stocks/schemas/stock.schema';
+import { IStock, SortDirs, StockKeys } from '../../stocks/schemas/stock.schema';
 import { ApiProperty } from '@nestjs/swagger';
 
 // Duplication required for validation to work,
@@ -70,7 +66,7 @@ const sortObject: Partial<IStock> = {
 const filtersArray = [...Object.keys(filtersObject), ''];
 const sortKeysObject = [...Object.keys(sortObject)];
 
-export class GetFiltredStocksDto {
+export class GetFilteredStocksDto {
 	@ApiProperty({ required: false, description: 'Limit stocks per response' })
 	@IsOptional()
 	@IsInt()

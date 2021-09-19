@@ -4,11 +4,11 @@ import { Stock } from '../stocks/schemas/stock.schema';
 import { UsersRepository } from '../users/repositories/users.repository';
 import { User } from '../users/schemas/user.schema';
 import { UsersService } from '../users/users.service';
-import { FiltredStocksDto } from './dtos/filtred-stocks.dto';
+import { FilteredStocksDto } from './dtos/filtered-stocks.dto';
 import { FiltersController } from './filters.controller';
 import { FiltersService } from './filters.service';
 
-const mockFilterStocks: Partial<FiltredStocksDto> = {
+const mockFilterStocks: Partial<FilteredStocksDto> = {
 	count: 2,
 	stocks: [
 		{
@@ -53,7 +53,7 @@ describe('FiltersController', () => {
 		expect(filtersController).toBeDefined();
 	});
 
-	it('should get filtred stocks with count', async () => {
+	it('should get filtered stocks with count', async () => {
 		await expect(
 			filtersController.getFilter({
 				limit: 25,
