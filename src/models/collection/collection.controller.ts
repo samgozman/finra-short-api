@@ -74,8 +74,9 @@ export class CollectionController {
 		return this.collectionService.updateVolumesByLink(query.link);
 	}
 
-	// Run every day except Sunday at 6.30pm/12 ET (01:30/24 Moscow time) ('30 18 * * 1-6)
-	@Cron('30 18 * * 1-6', {
+	// Run at 18:30 (6.30pm/12 ET) on every day-of-week from Monday through Friday.
+	// (01:30/24 Moscow time) (30 18 * * 1-5)
+	@Cron('30 18 * * 1-5', {
 		timeZone: 'America/New_York',
 	})
 	async updateLastDayWithFiltersAndAverages() {
