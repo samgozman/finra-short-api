@@ -239,10 +239,20 @@ export class FilterUnitService {
 				for (const stock of stocks) {
 					let multiplier: number;
 
+					const average = stock[`${volType}20DAVG`];
+					const currrent = stock[`${volType}Last`];
+
+					if (!currrent || !average) {
+						this.logger.warn(
+							`Stock '${stock.ticker}' has no valid '${volType}' data`,
+						);
+						continue;
+					}
+
 					if (momentum === 'growing') {
-						multiplier = stock[`${volType}Last`] / stock[`${volType}20DAVG`];
+						multiplier = currrent / average;
 					} else {
-						multiplier = stock[`${volType}20DAVG`] / stock[`${volType}Last`];
+						multiplier = average / currrent;
 					}
 
 					// If difference between current volume and 20D AVG is greater than 3
