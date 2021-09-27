@@ -7,7 +7,7 @@ import {
 	ApiTags,
 	ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { AdminGuard } from 'src/guards/admin.guard';
+import { AdminGuard } from '../../src/guards/admin.guard';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthenticationService } from './authentication.service';
 import { AuthCredentialsDto } from './dtos/auth-credentials.dto';

@@ -47,7 +47,7 @@ describe('AuthenticationController (e2e)', () => {
 	});
 
 	it('/auth/register: reject in registration if request was empty', async () => {
-		return request(app.getHttpServer()).post('/auth/register').expect(400);
+		return request(app.getHttpServer()).post('/auth/register').expect(403);
 	});
 
 	it('/auth/register: register new user successfully ', async () => {
