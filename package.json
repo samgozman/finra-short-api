@@ -33,7 +33,7 @@
 	"homepage": "https://github.com/samgozman/finra-short-api#readme",
 	"dependencies": {
 		"@hapi/joi": "^17.1.1",
-		"@nestjs/axios": "^0.0.1",
+		"@nestjs/axios": "^0.0.2",
 		"@nestjs/common": "^8.0.7",
 		"@nestjs/config": "^1.0.1",
 		"@nestjs/core": "^8.0.7",
