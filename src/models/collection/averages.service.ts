@@ -3,6 +3,7 @@ import {
 	InternalServerErrorException,
 	Logger,
 } from '@nestjs/common';
+import { IStock } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
 import { FinraReport } from '../volumes/schemas/volume.schema';
 import { VolumesService } from '../volumes/volumes.service';
@@ -78,11 +79,28 @@ export class AveragesService {
 						(stock.shortExemptVol20DAVG / stock.totalVol20DAVG) * 100;
 				} else {
 					// Clear averages
-					for (const key in stock) {
-						if (typeof stock[key] === 'number') {
-							stock[key] = 0;
-						}
-					}
+					const zero_stock: IStock = {
+						ticker: stock.ticker,
+						// Percent values
+						shortVolRatioLast: 0,
+						shortExemptVolRatioLast: 0,
+						shortVolRatio5DAVG: 0,
+						shortExemptVolRatio5DAVG: 0,
+						shortVolRatio20DAVG: 0,
+						shortExemptVolRatio20DAVG: 0,
+						// Numeric
+						shortExemptVolLast: 0,
+						shortExemptVol5DAVG: 0,
+						shortExemptVol20DAVG: 0,
+						shortVolLast: 0,
+						shortVol5DAVG: 0,
+						shortVol20DAVG: 0,
+						totalVolLast: 0,
+						totalVol5DAVG: 0,
+						totalVol20DAVG: 0,
+					};
+
+					Object.assign(stock, zero_stock);
 				}
 				await stock.save();
 			}

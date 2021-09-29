@@ -242,13 +242,6 @@ export class FilterUnitService {
 					const average = stock[`${volType}20DAVG`];
 					const currrent = stock[`${volType}Last`];
 
-					if (!currrent || !average) {
-						this.logger.warn(
-							`Stock '${stock.ticker}' has no valid '${volType}' data`,
-						);
-						continue;
-					}
-
 					if (momentum === 'growing') {
 						multiplier = currrent / average;
 					} else {
