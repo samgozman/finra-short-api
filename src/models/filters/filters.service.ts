@@ -193,21 +193,29 @@ export class FiltersService {
 
 	/**
 	 * Regenerate all filters from the start
+	 * @param asynchronously - run filters generation asynchronously (all at once in Promise.all)
 	 */
-	async updateAll() {
+	async updateAll(asynchronously = false) {
 		try {
 			this.logger.warn('The filters regeneration process has started');
 			// Create empty filters before starting to update them in parallel
 			await this.fus.createEmptyFilters();
 			this.logger.warn('Previous filters have been removed');
 			const updaters = this.getFiltersUpdaters();
-			await Promise.all([...Object.values(updaters).map((e) => e())]).then(
-				() => {
-					this.logger.log(
-						'The filter collection has been successfully generated',
-					);
-				},
-			);
+			if (asynchronously) {
+				await Promise.all([...Object.values(updaters).map((e) => e())]).then(
+					() => {
+						this.logger.log(
+							'The filter collection has been successfully generated asynchronously',
+						);
+					},
+				);
+			} else {
+				Object.values(updaters).map(async (e) => await e());
+				this.logger.log(
+					'The filter collection has been successfully generated',
+				);
+			}
 		} catch (error) {
 			this.logger.error(`Error in ${this.updateAll.name}`, error);
 			throw new InternalServerErrorException();
