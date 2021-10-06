@@ -211,7 +211,9 @@ export class FiltersService {
 					},
 				);
 			} else {
-				Object.values(updaters).map(async (e) => await e());
+				for (const key in updaters) {
+					await updaters[key]();
+				}
 				this.logger.log(
 					'The filter collection has been successfully generated',
 				);

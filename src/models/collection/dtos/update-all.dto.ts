@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Transform } from 'class-transformer';
 import { IsBoolean } from 'class-validator';
 
 export class UpdateAllDto {
@@ -8,6 +8,6 @@ export class UpdateAllDto {
 			Requires a multi-core processor and more RAM for stable performance.`,
 	})
 	@IsBoolean()
-	@Type(() => Boolean)
+	@Transform(({ value }) => (value === 'true' ? true : false))
 	asynchronously? = false;
 }
