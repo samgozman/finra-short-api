@@ -32,6 +32,28 @@ export class FiltersRepository {
 	}
 
 	/**
+	 * Create array of blank filters
+	 * @returns IFilterDocument array
+	 */
+	async createBlankFiltersArray() {
+		const allIds = await this.stocksService.availableTickers();
+		const filters: IFilterDocument[] = [];
+		for (const _id of allIds) {
+			filters.push(this.new({ _stock_id: _id }));
+		}
+		return filters;
+	}
+
+	/**
+	 * Insert many filters in DB
+	 * @param filters Array of IFilterDocument
+	 * @returns
+	 */
+	insertMany(filters: IFilterDocument[]) {
+		return this.filterModel.insertMany(filters);
+	}
+
+	/**
 	 * Find one Filter object
 	 * @param filter search options
 	 * @returns Filter object

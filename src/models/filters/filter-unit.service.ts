@@ -7,11 +7,11 @@ import { ConfigService } from '@nestjs/config';
 import { Types } from 'mongoose';
 import { Tinkoff } from 'tinkoff-api-securities';
 import { VolumesService } from '../../models/volumes/volumes.service';
-import { Stock } from '../stocks/schemas/stock.schema';
+import { IStockDocument, Stock } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
 import { FilteredStocksDto } from './dtos/filtered-stocks.dto';
 import { FiltersRepository } from './repositories/filters.repository';
-import { IFiltersList } from './schemas/filter.schema';
+import { IFilterDocument, IFiltersList } from './schemas/filter.schema';
 
 export interface ISort {
 	field: keyof Stock;
@@ -29,28 +29,17 @@ type Momentum = 'growing' | 'decreasing';
 @Injectable()
 export class FilterUnitService {
 	private readonly logger = new Logger(FilterUnitService.name);
+	private stocks: Promise<IStockDocument[]>;
+	private filters: Promise<IFilterDocument[]>;
+
 	constructor(
 		private readonly stocksService: StocksService,
 		private readonly configService: ConfigService,
 		private readonly volumesService: VolumesService,
 		private readonly filtersRepository: FiltersRepository,
-	) {}
-	/**
-	 * Create empty DB record for each stock
-	 */
-	async createEmptyFilters() {
-		try {
-			// Drop collection before recreation
-			await this.filtersRepository.dropCollection();
-
-			const allIds = await this.stocksService.availableTickers();
-			for (const _id of allIds) {
-				await this.filtersRepository.new({ _stock_id: _id }).save();
-			}
-		} catch (error) {
-			this.logger.error(`Error in ${this.createEmptyFilters.name}`, error);
-			throw new InternalServerErrorException();
-		}
+	) {
+		this.stocks = this.stocksService.findMany({});
+		this.filters = this.filtersRepository.createBlankFiltersArray();
 	}
 
 	/**
@@ -65,24 +54,39 @@ export class FilterUnitService {
 		value: boolean = true,
 	) {
 		try {
-			// Find filter for _stock_id
-			const filter = await this.filtersRepository.findOne({ _stock_id });
-			if (filter) {
-				// If it is existing - update
-				await filter.updateOne({
-					[key]: value,
-				});
-			} else {
-				// If not - create
-				const newFilter = this.filtersRepository.new({
-					_stock_id,
-					[key]: value,
-				});
+			this.filters.then((filters) => {
+				// Find filter for _stock_id
+				const id = filters.findIndex(
+					(x) => String(x._stock_id) === String(_stock_id),
+				);
+				if (id >= 0) {
+					// If it is existing - update
+					filters[id][key] = value;
 
-				await newFilter.save();
-			}
+					// Update filters in class
+					this.filters = Promise.resolve(filters);
+				}
+			});
 		} catch (error) {
 			this.logger.error(`Error in ${this.updateFilter.name}`, error);
+			throw new InternalServerErrorException();
+		}
+	}
+
+	/**
+	 * Save filters in DB
+	 */
+	async saveFilters() {
+		try {
+			this.filters.then(async (filters) => {
+				// Drop old collection
+				this.filtersRepository.dropCollection();
+
+				// insert new collection
+				await this.filtersRepository.insertMany(filters);
+			});
+		} catch (error) {
+			this.logger.error(`Error in ${this.saveFilters.name}`, error);
 			throw new InternalServerErrorException();
 		}
 	}
@@ -128,8 +132,8 @@ export class FilterUnitService {
 	isNotGarbageFilter(filter: Filters = 'isNotGarbage'): () => Promise<void> {
 		try {
 			return async () => {
-				const allIds = await this.stocksService.availableTickers();
 				const lastDay = await this.volumesService.lastDateTime();
+				const allIds = (await this.stocks).map((e) => e._id);
 
 				for (const _id of allIds) {
 					const volume = await this.volumesService.findMany(
@@ -162,19 +166,21 @@ export class FilterUnitService {
 	tinkoffFilter(filter: Filters = 'onTinkoff'): () => Promise<void> {
 		try {
 			return async () => {
-				const tinkoff = new Tinkoff(this.configService.get('SANDBOX_TOKEN'));
-				const onTinkoff = await tinkoff.stocks('USD');
-				for (const tink of onTinkoff) {
-					// Find Stock
-					const { ticker } = tink;
-					const stock = await this.stocksService.findOne({ ticker });
-					// Get ID
-					const _stock_id: Types.ObjectId = stock?.id;
-					// Create record
-					if (_stock_id) {
-						await this.updateFilter(_stock_id, filter, true);
+				this.stocks.then(async (stocks) => {
+					const tinkoff = new Tinkoff(this.configService.get('SANDBOX_TOKEN'));
+					const onTinkoff = await tinkoff.stocks('USD');
+					for (const tink of onTinkoff) {
+						// Find Stock
+						const { ticker } = tink;
+						const stock = stocks.find((x) => x.ticker === ticker);
+						// Get ID
+						const _stock_id: Types.ObjectId = stock?.id;
+						// Create record
+						if (_stock_id) {
+							await this.updateFilter(_stock_id, filter, true);
+						}
 					}
-				}
+				});
 			};
 		} catch (error) {
 			this.logger.error(`Error in ${this.tinkoffFilter.name}`, error);
@@ -191,12 +197,13 @@ export class FilterUnitService {
 	): () => Promise<void> {
 		try {
 			return async () => {
-				const allIds = await this.stocksService.availableTickers();
+				const allIds = (await this.stocks).map((e) => e._id);
+
 				for (const _id of allIds) {
 					const volume = await this.volumesService.findMany(
 						{ _stock_id: _id },
 						{ date: -1 },
-						period + 1,
+						period,
 					);
 
 					// Check if populated volume exists
@@ -235,8 +242,7 @@ export class FilterUnitService {
 		return async () => {
 			try {
 				// Get all stocks documents
-				const stocks = await this.stocksService.findMany({});
-				for (const stock of stocks) {
+				for (const stock of await this.stocks) {
 					let multiplier: number;
 
 					const average = stock[`${volType}20DAVG`];

@@ -61,7 +61,7 @@ export class CollectionController {
 	@UseGuards(RolesGuard)
 	@ApiOperation({ summary: 'Update filters' })
 	updateFilters(@Query() query: UpdateAllDto) {
-		return this.filtersService.updateAll(query.asynchronously);
+		return this.filtersService.updateAll();
 	}
 
 	@Patch('/update/averages')
