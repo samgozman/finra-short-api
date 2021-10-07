@@ -61,6 +61,7 @@ const mockStocksFiltedTest: FilteredStocksDto = {
 class MockStocksService {
 	availableTickers = () => Promise.resolve(mockIdsArr);
 	findOne = () => Promise.resolve(mockStocks[0]);
+	findMany = () => Promise.resolve(mockStocks);
 }
 
 class MockVolumesService {
@@ -93,6 +94,10 @@ class MockFiltersRepository {
 
 	findStocksByFilteringCondition(...any) {
 		return [mockStocks[0], mockStocks[1]];
+	}
+
+	createBlankFiltersArray() {
+		return [];
 	}
 }
 
@@ -127,14 +132,15 @@ describe('FilterUnitService', () => {
 
 		filterUnitService = moduleRef.get<FilterUnitService>(FilterUnitService);
 		config = moduleRef.get<ConfigService>(ConfigService);
+
+		// Define private properties
+		Object.defineProperty(filterUnitService, 'filters', {
+			value: Promise.resolve([]),
+		});
 	});
 
 	it('should be defined', () => {
 		expect(filterUnitService).toBeDefined();
-	});
-
-	it('createEmptyFilters: should create empty filters', async () => {
-		await filterUnitService.createEmptyFilters();
 	});
 
 	it('getFilter: should get an array of stocks matching the filter', async () => {

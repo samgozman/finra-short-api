@@ -29,13 +29,15 @@ class MockFilterUnitService implements Partial<FilterUnitService> {
 		return async () => {};
 	}
 
-	createEmptyFilters = () => Promise.resolve();
-
 	getFilter(): any {
 		return Promise.resolve({
 			count: 1,
 			stocks: stocks.filter((e) => e.ticker === 'AAPL'),
 		});
+	}
+
+	saveFilters() {
+		return Promise.resolve(undefined);
 	}
 }
 
