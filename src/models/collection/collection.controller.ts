@@ -21,7 +21,6 @@ import { FiltersService } from '../filters/filters.service';
 import { AveragesService } from './averages.service';
 import { CollectionService } from './collection.service';
 import { GetLinkDto } from './dtos/get-link.dto';
-import { UpdateAllDto } from './dtos/update-all.dto';
 
 @ApiTags('collection')
 @Controller('collection')
@@ -60,7 +59,7 @@ export class CollectionController {
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	@ApiOperation({ summary: 'Update filters' })
-	updateFilters(@Query() query: UpdateAllDto) {
+	updateFilters() {
 		return this.filtersService.updateAll();
 	}
 
@@ -93,7 +92,7 @@ export class CollectionController {
 			this.logger.warn('(¬_¬) CRON updater task has started');
 			await this.updateLastDay();
 			await this.updateAverages();
-			await this.updateFilters({ asynchronously: false });
+			await this.updateFilters();
 			this.logger.log('(¬_¬) CRON updater task has finished');
 		} catch (error) {
 			this.logger.error('Error while on Cron updater', error);
