@@ -1,4 +1,4 @@
-name: finra-short-api Node.js
+name: Test finra-short-api
 
 on:
   push:
