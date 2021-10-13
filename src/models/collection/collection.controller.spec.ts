@@ -69,13 +69,7 @@ describe('CollectionController', () => {
 	});
 
 	it('should run updateFilters', async () => {
-		await expect(
-			collectionController.updateFilters({ asynchronously: false }),
-		).resolves.toBeUndefined();
-
-		await expect(
-			collectionController.updateFilters({ asynchronously: true }),
-		).resolves.toBeUndefined();
+		await expect(collectionController.updateFilters()).resolves.toBeUndefined();
 	});
 
 	it('should run updateAverages', async () => {

@@ -53,11 +53,6 @@ const mockVolume: IVolumeDocument[] = [
 	} as IVolumeDocument,
 ];
 
-const mockStocksFiltedTest: FilteredStocksDto = {
-	count: mockStocks.length,
-	stocks: [mockStocks[0], mockStocks[1]],
-};
-
 class MockStocksService {
 	availableTickers = () => Promise.resolve(mockIdsArr);
 	findOne = () => Promise.resolve(mockStocks[0]);
@@ -80,10 +75,6 @@ class MockFiltersRepository {
 
 	new(ops: Partial<IFilterDocument>) {
 		return new MockFilter(ops);
-	}
-
-	countDocuments(fl: any) {
-		return mockStocks.length;
 	}
 
 	findOne(filter?: FilterQuery<IFilterDocument>) {
@@ -144,12 +135,15 @@ describe('FilterUnitService', () => {
 	});
 
 	it('getFilter: should get an array of stocks matching the filter', async () => {
-		const res = await filterUnitService.getFilter(['isNotGarbage'], 1, 0, {
-			field: 'ticker',
-			dir: 'asc',
+		const res = await filterUnitService.getFilter({
+			limit: 1,
+			skip: 0,
+			sortby: 'ticker',
+			sortdir: 'asc',
+			filters: ['isNotGarbage'],
 		});
 
-		expect(res).toEqual(mockStocksFiltedTest);
+		expect(res).toEqual([mockStocks[0], mockStocks[1]]);
 	});
 
 	it('isNotGarbageFilter: should run without errors', async () => {

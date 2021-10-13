@@ -2,14 +2,17 @@ import { Test } from '@nestjs/testing';
 import { StocksRepository } from '../stocks/repositories/stocks.repository';
 import { IStock } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
-import { Filters, FilterUnitService } from './filter-unit.service';
+import { FilterUnitService } from './filter-unit.service';
 import { FiltersService } from './filters.service';
 
 const stocks: Partial<IStock>[] = [{ ticker: 'AAPL' }, { ticker: 'MSFT' }];
 
 class MockStockRepository {
-	getAllStocks = () => Promise.resolve(stocks);
-	estimatedDocumentCount = () => Promise.resolve(stocks.length);
+	getAllStocks = () =>
+		Promise.resolve({
+			count: 2,
+			stocks,
+		});
 }
 
 class MockFilterUnitService implements Partial<FilterUnitService> {
@@ -74,19 +77,19 @@ describe('FiltersService', () => {
 	});
 
 	it('should get all aggregated stocks', async () => {
-		const users = await filtersService.get({
+		const res = await filtersService.get({
 			limit: 25,
 			skip: 0,
 			sortby: 'ticker',
 			sortdir: 'asc',
 		});
 
-		expect(users.count).toBe(2);
-		expect(users.stocks).toContainEqual({ ticker: 'MSFT' });
+		expect(res.count).toBe(2);
+		expect(res.stocks).toContainEqual({ ticker: 'MSFT' });
 	});
 
 	it('should get only filtered stocks', async () => {
-		const users = await filtersService.get({
+		const res = await filtersService.get({
 			limit: 25,
 			skip: 0,
 			sortby: 'ticker',
@@ -94,7 +97,7 @@ describe('FiltersService', () => {
 			filters: ['isNotGarbage'],
 		});
 
-		expect(users.count).toBe(1);
-		expect(users.stocks).toContainEqual({ ticker: 'AAPL' });
+		expect(res.count).toBe(1);
+		expect(res.stocks).toContainEqual({ ticker: 'AAPL' });
 	});
 });
