@@ -120,7 +120,7 @@ export class FiltersRepository {
 					$count: 'count',
 				},
 			])
-		)[0];
+		)[0] || { count: 0 };
 
 		const aggregation: { stock: IStock }[] = await this.filterModel
 			.aggregate<{ stock: IStock }>([

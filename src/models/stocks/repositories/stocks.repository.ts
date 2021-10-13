@@ -103,7 +103,7 @@ export class StocksRepository {
 					$count: 'count',
 				},
 			])
-		)[0];
+		)[0] || { count: 0 };
 
 		const aggregation = await this.stockModel.aggregate<IStock>([
 			...pipeline,
