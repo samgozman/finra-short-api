@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AnyKeys, AnyObject, FilterQuery } from 'mongoose';
+import { FilteredStocksDto } from 'src/models/filters/dtos/filtered-stocks.dto';
 import { VolumesService } from '../../../models/volumes/volumes.service';
 import { StockDto } from '../dtos/stock.dto';
 import {
@@ -25,9 +26,6 @@ export class StocksRepository {
 	) {}
 
 	new = (doc?: AnyKeys<IStockDocument> & AnyObject) => new this.stockModel(doc);
-
-	estimatedDocumentCount = async () =>
-		await this.stockModel.estimatedDocumentCount();
 
 	async find(filter: FilterQuery<IStockDocument>) {
 		return this.stockModel.find(filter);
@@ -87,17 +85,32 @@ export class StocksRepository {
 		skip: number,
 		sortby: StockKeys,
 		sortdir: SortDirs,
-	): Promise<IStock[]> {
-		return this.stockModel.aggregate<IStock>([
-			{ $match: {} },
+		tickers: string[] = [],
+	): Promise<FilteredStocksDto> {
+		const pipeline = [
+			{ $match: tickers.length > 0 ? { ticker: { $in: tickers } } : {} },
 			{
 				$sort: {
 					[sortby]: sortdir === 'asc' ? 1 : -1,
 				},
 			},
+		];
+
+		const { count } = (
+			await this.stockModel.aggregate<{ count: number }>([
+				...pipeline,
+				{
+					$count: 'count',
+				},
+			])
+		)[0];
+
+		const aggregation = await this.stockModel.aggregate<IStock>([
+			...pipeline,
 			{ $limit: skip + limit },
 			{ $skip: skip },
 			{ $project: { _id: false, _stock_id: false, __v: false } },
 		]);
+		return { count, stocks: aggregation };
 	}
 }

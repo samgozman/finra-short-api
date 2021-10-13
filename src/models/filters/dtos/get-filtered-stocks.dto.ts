@@ -4,8 +4,10 @@ import {
 	IsEnum,
 	IsIn,
 	IsInt,
+	IsNotEmpty,
 	IsOptional,
 	IsString,
+	Matches,
 	Max,
 	Min,
 } from 'class-validator';
@@ -113,4 +115,24 @@ export class GetFilteredStocksDto {
 	@Transform(({ value }) => value.split(','))
 	@IsIn(filtersArray, { each: true })
 	filters?: Filters[];
+
+	@ApiProperty({
+		isArray: true,
+		required: false,
+		description: `A string with tickers separated by a comma.
+		 Restrict the initial search array to only the specified stocks. 
+		Useful for tracking restricted stocks.`,
+	})
+	@IsOptional()
+	@IsArray()
+	@IsString({ each: true })
+	@Type(() => String)
+	@Transform(({ value }: { value: string }) => value.toUpperCase().split(','))
+	@IsNotEmpty({ each: true })
+	@Matches(/^([a-zA-Z0-9]\.?)+$/s, {
+		message:
+			'the ticker string can only contain a set of alphanumeric values and a period, separated by a comma.',
+		each: true,
+	})
+	tickers?: string[];
 }

@@ -10,6 +10,7 @@ import { VolumesService } from '../../models/volumes/volumes.service';
 import { IStockDocument, Stock } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
 import { FilteredStocksDto } from './dtos/filtered-stocks.dto';
+import { GetFilteredStocksDto } from './dtos/get-filtered-stocks.dto';
 import { FiltersRepository } from './repositories/filters.repository';
 import { IFilterDocument, IFiltersList } from './schemas/filter.schema';
 
@@ -93,34 +94,31 @@ export class FilterUnitService {
 
 	/**
 	 * Get an array of stocks matching the filter + receive total count
-	 * @param keys
-	 * @param limit
-	 * @param skip
-	 * @param sort
+	 * @param query GetFilteredStocksDto
 	 * @returns
 	 */
-	async getFilter(
-		keys: Filters[],
-		limit: number,
-		skip: number,
-		sort: ISort,
-	): Promise<FilteredStocksDto> {
+	async getFilter(query: GetFilteredStocksDto): Promise<FilteredStocksDto> {
 		try {
+			const { limit, skip, sortby, sortdir, filters, tickers } = query;
+
 			// Convert filter keys to object like {key: true, ...}
-			const keyPairs = keys.reduce((ac, a) => ({ ...ac, [a]: true }), {});
-			const count: number = await this.filtersRepository.countDocuments(
-				keyPairs,
-			);
+			const keyPairs = filters.reduce((ac, a) => ({ ...ac, [a]: true }), {});
+
+			const sortOptions: ISort = {
+				field: sortby,
+				dir: sortdir,
+			};
 
 			const stocks =
 				await this.filtersRepository.findStocksByFilteringCondition(
 					keyPairs,
 					limit,
 					skip,
-					sort,
+					sortOptions,
+					tickers,
 				);
 
-			return { count, stocks };
+			return stocks;
 		} catch (error) {
 			this.logger.error(`Error in ${this.getFilter.name}`, error);
 			throw new InternalServerErrorException();

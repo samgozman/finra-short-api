@@ -1,5 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { AnyKeys, AnyObject, FilterQuery, Types } from 'mongoose';
+import { FilteredStocksDto } from '../filters/dtos/filtered-stocks.dto';
+import { GetFilteredStocksDto } from '../filters/dtos/get-filtered-stocks.dto';
 import { GetStockDto } from './dtos/get-stock.dto';
 import { StocksRepository } from './repositories/stocks.repository';
 import {
@@ -16,9 +18,6 @@ export class StocksService {
 
 	/** Name of the Stock collection */
 	readonly collectionName = this.stocksRepository.name;
-	/** Counts the number of documents in the collection. */
-	readonly collectionDocsCount = async () =>
-		await this.stocksRepository.estimatedDocumentCount();
 
 	/**
 	 * Get array of all available stocks id's
@@ -70,13 +69,15 @@ export class StocksService {
 	 * @param sortdir
 	 * @returns array of stocks
 	 */
-	async getAllStocks(
-		limit: number,
-		skip: number,
-		sortby: StockKeys,
-		sortdir: SortDirs,
-	): Promise<IStock[]> {
-		return this.stocksRepository.getAllStocks(limit, skip, sortby, sortdir);
+	async getAllStocks(query: GetFilteredStocksDto): Promise<FilteredStocksDto> {
+		const { limit, skip, sortby, sortdir, tickers } = query;
+		return this.stocksRepository.getAllStocks(
+			limit,
+			skip,
+			sortby,
+			sortdir,
+			tickers,
+		);
 	}
 
 	/**

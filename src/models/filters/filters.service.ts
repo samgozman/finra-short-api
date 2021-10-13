@@ -218,26 +218,16 @@ export class FiltersService {
 	 * @param query GetFilteredStocksDto
 	 */
 	async get(query: GetFilteredStocksDto): Promise<FilteredStocksDto> {
-		const { limit, skip, sortby, sortdir, filters } = query;
+		const { filters } = query;
 
 		if (filters) {
 			// Get filtered values
-			const stocks = await this.fus.getFilter(filters, limit, skip, {
-				field: sortby,
-				dir: sortdir,
-			});
+			const stocks = await this.fus.getFilter(query);
 			return stocks;
 		} else {
-			// Get all by aggregation
-			const count = await this.stocksService.collectionDocsCount();
-			const stocks = await this.stocksService.getAllStocks(
-				limit,
-				skip,
-				sortby,
-				sortdir,
-			);
-
-			return { count, stocks };
+			// Get all stocks without filters
+			const stocks = await this.stocksService.getAllStocks(query);
+			return stocks;
 		}
 	}
 }
