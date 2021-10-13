@@ -1,5 +1,6 @@
 import { Type, Transform } from 'class-transformer';
 import {
+	ArrayMaxSize,
 	IsArray,
 	IsEnum,
 	IsIn,
@@ -9,6 +10,7 @@ import {
 	IsString,
 	Matches,
 	Max,
+	MaxLength,
 	Min,
 } from 'class-validator';
 import { SortDirection } from '../enums/SortDirection';
@@ -129,6 +131,8 @@ export class GetFilteredStocksDto {
 	@Type(() => String)
 	@Transform(({ value }: { value: string }) => value.toUpperCase().split(','))
 	@IsNotEmpty({ each: true })
+	@MaxLength(16, { each: true })
+	@ArrayMaxSize(25)
 	@Matches(/^([a-zA-Z0-9]\.?)+$/s, {
 		message:
 			'the ticker string can only contain a set of alphanumeric values and a period, separated by a comma.',
