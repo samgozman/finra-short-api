@@ -5,7 +5,6 @@ import { AppModule } from './../src/app.module';
 import { Connection } from 'mongoose';
 import { getConnectionToken } from '@nestjs/mongoose';
 import { AuthCredentialsDto } from 'src/authentication/dtos/auth-credentials.dto';
-import { AuthDto } from 'src/authentication/dtos/auth.dto';
 import { UserDto } from 'src/models/users/dtos/user.dto';
 import { ApiKeyDto } from 'src/models/users/dtos/apikey.dto';
 import { createTestUser } from './createTestUser';

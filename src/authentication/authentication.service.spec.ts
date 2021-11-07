@@ -8,11 +8,6 @@ import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
 
 let user: MockUserModel;
 
-const credentials: AuthCredentialsDto = {
-	login: 'testuser',
-	pass: 'sAdSg1hjk',
-};
-
 class MockUserService implements Partial<UsersService> {
 	findOne(): any {
 		return Promise.resolve(user);

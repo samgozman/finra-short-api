@@ -5,7 +5,6 @@ import { Stock } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
 import { IVolumeDocument } from '../volumes/schemas/volume.schema';
 import { VolumesService } from '../volumes/volumes.service';
-import { FilteredStocksDto } from './dtos/filtered-stocks.dto';
 import { FilterUnitService } from './filter-unit.service';
 import { FiltersRepository } from './repositories/filters.repository';
 import { IFilterDocument } from './schemas/filter.schema';
