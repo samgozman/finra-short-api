@@ -4,12 +4,7 @@ import { FilteredStocksDto } from '../filters/dtos/filtered-stocks.dto';
 import { GetFilteredStocksDto } from '../filters/dtos/get-filtered-stocks.dto';
 import { GetStockDto } from './dtos/get-stock.dto';
 import { StocksRepository } from './repositories/stocks.repository';
-import {
-	IStock,
-	IStockDocument,
-	SortDirs,
-	StockKeys,
-} from './schemas/stock.schema';
+import { IStockDocument } from './schemas/stock.schema';
 
 @Injectable()
 export class StocksService {

@@ -55,19 +55,18 @@ export class FilterUnitService {
 		value: boolean = true,
 	) {
 		try {
-			this.filters.then((filters) => {
-				// Find filter for _stock_id
-				const id = filters.findIndex(
-					(x) => String(x._stock_id) === String(_stock_id),
-				);
-				if (id >= 0) {
-					// If it is existing - update
-					filters[id][key] = value;
+			const filters = await this.filters;
+			// Find filter for _stock_id
+			const id = filters.findIndex(
+				(x) => String(x._stock_id) === String(_stock_id),
+			);
+			if (id >= 0) {
+				// If it is existing - update
+				filters[id][key] = value;
 
-					// Update filters in class
-					this.filters = Promise.resolve(filters);
-				}
-			});
+				// Update filters in class
+				this.filters = Promise.resolve(filters);
+			}
 		} catch (error) {
 			this.logger.error(`Error in ${this.updateFilter.name}`, error);
 			throw new InternalServerErrorException();
@@ -79,13 +78,12 @@ export class FilterUnitService {
 	 */
 	async saveFilters() {
 		try {
-			this.filters.then(async (filters) => {
-				// Drop old collection
-				this.filtersRepository.dropCollection();
+			const filters = await this.filters;
+			// Drop old collection
+			this.filtersRepository.dropCollection();
 
-				// insert new collection
-				await this.filtersRepository.insertMany(filters);
-			});
+			// insert new collection
+			await this.filtersRepository.insertMany(filters);
 		} catch (error) {
 			this.logger.error(`Error in ${this.saveFilters.name}`, error);
 			throw new InternalServerErrorException();
@@ -109,16 +107,13 @@ export class FilterUnitService {
 				dir: sortdir,
 			};
 
-			const stocks =
-				await this.filtersRepository.findStocksByFilteringCondition(
-					keyPairs,
-					limit,
-					skip,
-					sortOptions,
-					tickers,
-				);
-
-			return stocks;
+			return this.filtersRepository.findStocksByFilteringCondition(
+				keyPairs,
+				limit,
+				skip,
+				sortOptions,
+				tickers,
+			);
 		} catch (error) {
 			this.logger.error(`Error in ${this.getFilter.name}`, error);
 			throw new InternalServerErrorException();

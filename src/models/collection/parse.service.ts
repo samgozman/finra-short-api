@@ -40,8 +40,7 @@ export class ParseService {
 			return dates;
 		}
 
-		const dates = getDatesPages(new Date(2018, 9, 10), new Date());
-		return dates;
+		return getDatesPages(new Date(2018, 9, 10), new Date());
 	}
 
 	/**

@@ -4,7 +4,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { User, UserPrivileges } from '../models/users/schemas/user.schema';
 import { UsersService } from '../models/users/users.service';
 import { AuthenticationService } from './authentication.service';
-import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
 
 let user: MockUserModel;
 

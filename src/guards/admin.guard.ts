@@ -17,7 +17,7 @@ export class AdminGuard implements CanActivate {
 		}
 
 		// ! For now, use this method only with secret key from *.env
-		const [a, token] = auth.split(' ');
+		const token = auth.split(' ')[1];
 		if (token !== this.configService.get('ADMIN_SECRET')) {
 			return false;
 		}

@@ -22,8 +22,7 @@ const mockStockDtoAapl: Partial<StockDto> = {
 
 class MockStocksRepository {
 	findOne(filter?: FilterQuery<IStockDocument>): any {
-		const stock = stockArr.filter((e) => e.ticker === filter.ticker)[0];
-		return stock;
+		return stockArr.filter((e) => e.ticker === filter.ticker)[0];
 	}
 
 	find(filter?: FilterQuery<IStockDocument>): any {

@@ -55,8 +55,6 @@ describe('UsersService', () => {
 	let userService: UsersService;
 
 	beforeEach(async () => {
-		const usersArr: IUserDocument[] = [];
-
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				UsersService,

@@ -80,7 +80,7 @@ describe('CollectionController', () => {
 
 	it('should run updateVolumesByLink', async () => {
 		await expect(
-			collectionController.updateVolumesByLink({ link: 'http://kek.com' }),
+			collectionController.updateVolumesByLink({ link: 'https://kek.com' }),
 		).resolves.toBeUndefined();
 	});
 

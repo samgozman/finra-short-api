@@ -93,7 +93,6 @@ class MockFiltersRepository {
 
 describe('FilterUnitService', () => {
 	let filterUnitService: FilterUnitService;
-	let config: ConfigService;
 
 	beforeEach(async () => {
 		const moduleRef = await Test.createTestingModule({
@@ -121,7 +120,6 @@ describe('FilterUnitService', () => {
 		}).compile();
 
 		filterUnitService = moduleRef.get<FilterUnitService>(FilterUnitService);
-		config = moduleRef.get<ConfigService>(ConfigService);
 
 		// Define private properties
 		Object.defineProperty(filterUnitService, 'filters', {

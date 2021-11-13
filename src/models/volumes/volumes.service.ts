@@ -21,10 +21,9 @@ export class VolumesService {
 	 */
 	async lastDateTime(): Promise<number> {
 		try {
-			const lastDate = (await this.volumesRepository.findOne({}, null, {
+			return (await this.volumesRepository.findOne({}, null, {
 				sort: { date: -1 },
 			}))!.date.getTime();
-			return lastDate;
 		} catch (error) {
 			this.logger.error(`Error in ${this.lastDateTime.name}`, error);
 			throw new InternalServerErrorException();

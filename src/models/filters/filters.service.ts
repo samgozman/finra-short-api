@@ -222,12 +222,10 @@ export class FiltersService {
 
 		if (filters) {
 			// Get filtered values
-			const stocks = await this.fus.getFilter(query);
-			return stocks;
+			return this.fus.getFilter(query);
 		} else {
 			// Get all stocks without filters
-			const stocks = await this.stocksService.getAllStocks(query);
-			return stocks;
+			return this.stocksService.getAllStocks(query);
 		}
 	}
 }

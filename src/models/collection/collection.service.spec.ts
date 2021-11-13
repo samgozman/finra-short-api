@@ -135,7 +135,7 @@ describe('CollectionService', () => {
 
 	it('updateVolumesByLink: should run volume ipdate by link without errors', async () => {
 		await expect(
-			collectionService.updateVolumesByLink('http://link.com'),
+			collectionService.updateVolumesByLink('https://link.com'),
 		).resolves.toEqual(undefined);
 	});
 });
