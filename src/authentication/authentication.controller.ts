@@ -13,7 +13,7 @@ import {
 	ApiTags,
 	ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { SentryInterceptor } from 'src/interceptors/sentry.interceptor';
+import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { AdminGuard } from '../guards/admin.guard';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthenticationService } from './authentication.service';
@@ -24,7 +24,7 @@ import { TokenDto } from './dtos/token.dto';
 @ApiTags('auth')
 @Controller('auth')
 @Serialize(AuthDto)
-@UseInterceptors(SentryInterceptor)
+@UseInterceptors(new SentryInterceptor())
 export class AuthenticationController {
 	constructor(private authService: AuthenticationService) {}
 

@@ -16,7 +16,7 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
-import { SentryInterceptor } from 'src/interceptors/sentry.interceptor';
+import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
 import { FiltersService } from '../filters/filters.service';
@@ -26,7 +26,7 @@ import { GetLinkDto } from './dtos/get-link.dto';
 
 @ApiTags('collection')
 @Controller('collection')
-@UseInterceptors(SentryInterceptor)
+@UseInterceptors(new SentryInterceptor())
 @ApiBearerAuth('auth-with-admin-role')
 @ApiForbiddenResponse()
 @ApiInternalServerErrorResponse()

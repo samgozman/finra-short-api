@@ -17,11 +17,11 @@ import { RolesGuard } from '../../guards/roles.guard';
 import { GetFilteredStocksDto } from './dtos/get-filtered-stocks.dto';
 import { FiltersService } from './filters.service';
 import { FilteredStocksDto } from './dtos/filtered-stocks.dto';
-import { SentryInterceptor } from 'src/interceptors/sentry.interceptor';
+import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 
 @ApiTags('filter')
 @Controller('filter')
-@UseInterceptors(SentryInterceptor)
+@UseInterceptors(new SentryInterceptor())
 export class FiltersController {
 	constructor(private filtersService: FiltersService) {}
 

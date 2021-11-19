@@ -1,6 +1,7 @@
 import {
 	Controller,
 	Get,
+	InternalServerErrorException,
 	Query,
 	UseGuards,
 	UseInterceptors,
@@ -14,7 +15,7 @@ import {
 	ApiTags,
 } from '@nestjs/swagger';
 import { SkipThrottle } from '@nestjs/throttler';
-import { SentryInterceptor } from 'src/interceptors/sentry.interceptor';
+import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Serialize } from '../../interceptors/serialize.interceptor';
@@ -24,7 +25,7 @@ import { StocksService } from './stocks.service';
 
 @ApiTags('stock')
 @Controller('stock')
-@UseInterceptors(SentryInterceptor)
+@UseInterceptors(new SentryInterceptor())
 export class StocksController {
 	constructor(private stocksService: StocksService) {}
 

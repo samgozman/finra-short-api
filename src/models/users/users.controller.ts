@@ -18,7 +18,7 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
-import { SentryInterceptor } from 'src/interceptors/sentry.interceptor';
+import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Serialize } from '../../interceptors/serialize.interceptor';
@@ -31,7 +31,7 @@ import { UsersService } from './users.service';
 @ApiTags('user')
 @Controller('user')
 @UseGuards(AuthGuard())
-@UseInterceptors(SentryInterceptor)
+@UseInterceptors(new SentryInterceptor())
 @ApiBearerAuth('auth-with-admin-role')
 @ApiForbiddenResponse()
 export class UsersController {
