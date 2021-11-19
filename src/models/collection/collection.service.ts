@@ -3,7 +3,6 @@ import {
 	InternalServerErrorException,
 	Logger,
 } from '@nestjs/common';
-import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
 import { StocksService } from '../stocks/stocks.service';
 import { FinraAssignedReports, Volume } from '../volumes/schemas/volume.schema';
 import { VolumesService } from '../volumes/volumes.service';
@@ -13,7 +12,6 @@ import { ParseService } from './parse.service';
 export class CollectionService {
 	private readonly logger = new Logger(CollectionService.name);
 	constructor(
-		@InjectSentry() private readonly sentry: SentryService,
 		private parseService: ParseService,
 		private readonly stocksService: StocksService,
 		private readonly volumesService: VolumesService,
