@@ -10,4 +10,5 @@ export const configValidationSchema = Joi.object({
 	ADMIN_SECRET: Joi.string().required(),
 	SANDBOX_TOKEN: Joi.string().required(),
 	SENTRY_DSN: Joi.string().required().uri(),
+	SENTRY_TRACE_RATE: Joi.number().required().default(1.0),
 });

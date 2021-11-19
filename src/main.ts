@@ -4,9 +4,11 @@ import compression from 'compression';
 import helmet from 'helmet';
 import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { SentryService } from '@ntegral/nestjs-sentry';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
+	const sentryService = app.get<SentryService>(SentryService);
 	const port = app.get<ConfigService>(ConfigService).get('PORT');
 
 	// Config swagger
@@ -67,6 +69,9 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('api', app, document);
 
+	// Capture routers performance with Sentry
+	app.use(sentryService.instance().Handlers.requestHandler());
+	app.use(sentryService.instance().Handlers.tracingHandler());
 	app.use(helmet());
 	app.use(compression());
 

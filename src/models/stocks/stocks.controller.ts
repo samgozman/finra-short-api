@@ -1,7 +1,6 @@
 import {
 	Controller,
 	Get,
-	InternalServerErrorException,
 	Query,
 	UseGuards,
 	UseInterceptors,

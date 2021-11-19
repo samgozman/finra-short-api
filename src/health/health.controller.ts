@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseInterceptors } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
 	HealthCheck,
@@ -6,9 +6,11 @@ import {
 	HttpHealthIndicator,
 	MongooseHealthIndicator,
 } from '@nestjs/terminus';
+import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 
 @ApiTags('health')
 @Controller('health')
+@UseInterceptors(new SentryInterceptor())
 export class HealthController {
 	constructor(
 		private health: HealthCheckService,
