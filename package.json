@@ -1,6 +1,6 @@
 {
 	"name": "finra-short-api",
-	"version": "2.0.8",
+	"version": "2.0.9",
 	"description": "API for TightShorts.ru - FINRA parser and screener",
 	"author": "Sam Gozman <sam@gozman.space>",
 	"private": true,
