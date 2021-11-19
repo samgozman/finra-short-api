@@ -1,4 +1,10 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Post,
+	UseGuards,
+	UseInterceptors,
+} from '@nestjs/common';
 import {
 	ApiBearerAuth,
 	ApiForbiddenResponse,
@@ -7,6 +13,7 @@ import {
 	ApiTags,
 	ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { SentryInterceptor } from 'src/interceptors/sentry.interceptor';
 import { AdminGuard } from '../guards/admin.guard';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthenticationService } from './authentication.service';
@@ -17,6 +24,7 @@ import { TokenDto } from './dtos/token.dto';
 @ApiTags('auth')
 @Controller('auth')
 @Serialize(AuthDto)
+@UseInterceptors(SentryInterceptor)
 export class AuthenticationController {
 	constructor(private authService: AuthenticationService) {}
 

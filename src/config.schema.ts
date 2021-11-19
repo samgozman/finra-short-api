@@ -9,4 +9,5 @@ export const configValidationSchema = Joi.object({
 	JWT_SECRET: Joi.string().required(),
 	ADMIN_SECRET: Joi.string().required(),
 	SANDBOX_TOKEN: Joi.string().required(),
+	SENTRY_DSN: Joi.string().required().uri(),
 });

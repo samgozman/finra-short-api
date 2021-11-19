@@ -14,6 +14,8 @@ import { MongoExceptionFilter } from './exceptions/mongo-exception.filter';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { HealthModule } from './health/health.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { SentryModule } from '@ntegral/nestjs-sentry';
+import { LogLevel } from '@sentry/types';
 
 @Module({
 	imports: [
@@ -39,6 +41,16 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 		ThrottlerModule.forRoot({
 			ttl: 60,
 			limit: 50,
+		}),
+		SentryModule.forRootAsync({
+			inject: [ConfigService],
+			useFactory: async (config: ConfigService) => ({
+				dsn: config.get('SENTRY_DSN'),
+				debug: true,
+				environment: process.env.NODE_ENV,
+				release: process.env.npm_package_version,
+				logLevel: LogLevel.Debug,
+			}),
 		}),
 		UsersModule,
 		StocksModule,

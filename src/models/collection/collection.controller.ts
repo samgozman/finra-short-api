@@ -5,6 +5,7 @@ import {
 	Logger,
 	Query,
 	UseGuards,
+	UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Cron } from '@nestjs/schedule';
@@ -15,6 +16,7 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
+import { SentryInterceptor } from 'src/interceptors/sentry.interceptor';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
 import { FiltersService } from '../filters/filters.service';
@@ -24,6 +26,7 @@ import { GetLinkDto } from './dtos/get-link.dto';
 
 @ApiTags('collection')
 @Controller('collection')
+@UseInterceptors(SentryInterceptor)
 @ApiBearerAuth('auth-with-admin-role')
 @ApiForbiddenResponse()
 @ApiInternalServerErrorResponse()

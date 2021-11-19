@@ -1,4 +1,10 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import {
+	Controller,
+	Get,
+	Query,
+	UseGuards,
+	UseInterceptors,
+} from '@nestjs/common';
 import {
 	ApiForbiddenResponse,
 	ApiOkResponse,
@@ -11,9 +17,11 @@ import { RolesGuard } from '../../guards/roles.guard';
 import { GetFilteredStocksDto } from './dtos/get-filtered-stocks.dto';
 import { FiltersService } from './filters.service';
 import { FilteredStocksDto } from './dtos/filtered-stocks.dto';
+import { SentryInterceptor } from 'src/interceptors/sentry.interceptor';
 
 @ApiTags('filter')
 @Controller('filter')
+@UseInterceptors(SentryInterceptor)
 export class FiltersController {
 	constructor(private filtersService: FiltersService) {}
 
