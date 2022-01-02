@@ -5,7 +5,7 @@ import {
 	ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { compare } from 'bcrypt';
+import { compare } from 'bcryptjs';
 import { User } from '../models/users/schemas/user.schema';
 import { UsersService } from '../models/users/users.service';
 

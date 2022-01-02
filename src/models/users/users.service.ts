@@ -6,7 +6,7 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { randomBytes } from 'crypto';
-import { genSalt, hash } from 'bcrypt';
+import { genSalt, hash } from 'bcryptjs';
 import { AnyKeys, AnyObject, FilterQuery } from 'mongoose';
 import { IUserDocument } from './schemas/user.schema';
 import { UpdateRolesDto } from './dtos/update-roles.dto';
