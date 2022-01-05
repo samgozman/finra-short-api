@@ -31,7 +31,6 @@ import { UsersService } from './users.service';
 
 @ApiTags('user')
 @Controller('user')
-@UseGuards(AuthGuard())
 @UseInterceptors(new SentryInterceptor())
 @ApiBearerAuth('auth-with-admin-role')
 @ApiForbiddenResponse()
@@ -42,6 +41,7 @@ export class UsersController {
 	@Serialize(UserDto)
 	@Roles('admin')
 	@UseGuards(AdminGuard)
+	@ApiBearerAuth('ADMIN_SECRET')
 	@ApiOperation({ summary: 'Get list of all users' })
 	@ApiOkResponse({
 		description: 'List of users response object',
@@ -54,6 +54,7 @@ export class UsersController {
 	@Post('/api')
 	@Serialize(ApiKeyDto)
 	@Roles('admin')
+	@UseGuards(AuthGuard())
 	@UseGuards(RolesGuard)
 	@ApiOperation({
 		summary: 'Create API key for user to get access to the filtering',
@@ -69,6 +70,7 @@ export class UsersController {
 	@Patch('/roles')
 	@Roles('admin')
 	@Serialize(UserDto)
+	@UseGuards(AuthGuard())
 	@UseGuards(RolesGuard)
 	@ApiOperation({ summary: 'Add new roles for a user' })
 	@ApiOkResponse({
