@@ -19,6 +19,7 @@ import {
 	ApiTags,
 } from '@nestjs/swagger';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
+import { AdminGuard } from '../../guards/admin.guard';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Serialize } from '../../interceptors/serialize.interceptor';
@@ -40,7 +41,7 @@ export class UsersController {
 	@Get('/list')
 	@Serialize(UserDto)
 	@Roles('admin')
-	@UseGuards(RolesGuard)
+	@UseGuards(AdminGuard)
 	@ApiOperation({ summary: 'Get list of all users' })
 	@ApiOkResponse({
 		description: 'List of users response object',
