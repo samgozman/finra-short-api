@@ -7,7 +7,6 @@ import {
 	UseGuards,
 	UseInterceptors,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import {
 	ApiBadRequestResponse,
 	ApiBearerAuth,
@@ -20,8 +19,6 @@ import {
 } from '@nestjs/swagger';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { AdminGuard } from '../../guards/admin.guard';
-import { Roles } from '../../decorators/roles.decorator';
-import { RolesGuard } from '../../guards/roles.guard';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { ApiKeyDto } from './dtos/apikey.dto';
 import { CreateUserApiKeyDto } from './dtos/create-user-api-key.dto';
@@ -39,7 +36,6 @@ export class UsersController {
 
 	@Get('/list')
 	@Serialize(UserDto)
-	@Roles('admin')
 	@UseGuards(AdminGuard)
 	@ApiBearerAuth('ADMIN_SECRET')
 	@ApiOperation({ summary: 'Get list of all users' })
@@ -53,9 +49,8 @@ export class UsersController {
 
 	@Post('/api')
 	@Serialize(ApiKeyDto)
-	@Roles('admin')
-	@UseGuards(AuthGuard())
-	@UseGuards(RolesGuard)
+	@UseGuards(AdminGuard)
+	@ApiBearerAuth('ADMIN_SECRET')
 	@ApiOperation({
 		summary: 'Create API key for user to get access to the filtering',
 	})
@@ -68,10 +63,9 @@ export class UsersController {
 	}
 
 	@Patch('/roles')
-	@Roles('admin')
 	@Serialize(UserDto)
-	@UseGuards(AuthGuard())
-	@UseGuards(RolesGuard)
+	@UseGuards(AdminGuard)
+	@ApiBearerAuth('ADMIN_SECRET')
 	@ApiOperation({ summary: 'Add new roles for a user' })
 	@ApiOkResponse({
 		description: 'User with roles response object',
