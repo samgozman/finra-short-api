@@ -62,9 +62,11 @@ export class UsersService {
 	async updateRoles(updateRolesDto: UpdateRolesDto) {
 		// Check roles. They should contains only predefined values
 		const { login, role } = updateRolesDto;
-		if (role === 'admin') {
-			throw new BadRequestException('You can not set admin roles via request');
-		}
+
+		// TODO: if role === 'admin' checks if one allready exists. Limit admin users by 1
+		// if (role === 'admin') {
+		// 	throw new BadRequestException('You can not set admin roles via request');
+		// }
 
 		const user = await this.findOne({ login });
 
