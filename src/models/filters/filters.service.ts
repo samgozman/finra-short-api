@@ -203,7 +203,7 @@ export class FiltersService {
 
 			this.logger.log(`Total filters: ${filters.length}`);
 
-			await Promise.all(filters);
+			await Promise.all(filters.map((filter) => filter()));
 
 			this.logger.warn('The filter collection has been successfully generated');
 
