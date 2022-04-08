@@ -199,9 +199,11 @@ export class FiltersService {
 			this.logger.warn('The filters regeneration process has started');
 			const updaters = this.getFiltersUpdaters();
 
-			await Promise.all(Object.values(updaters).map((e) => e())).catch(() => {
-				throw new Error('Error in filters generation process');
-			});
+			const filters = Object.values(updaters);
+
+			this.logger.log(`Total filters: ${filters.length}`);
+
+			await Promise.all(filters.map((filter) => filter()));
 
 			this.logger.warn('The filter collection has been successfully generated');
 

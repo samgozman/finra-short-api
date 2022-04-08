@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UpdateRolesDto } from './dtos/update-roles.dto';
@@ -39,6 +40,7 @@ describe('UsersController', () => {
 					provide: UsersService,
 					useClass: MockUserService,
 				},
+				ConfigService,
 			],
 		}).compile();
 

@@ -31,7 +31,13 @@ import { Integrations } from '@sentry/node';
 			inject: [ConfigService],
 			useFactory: (config: ConfigService) => {
 				return {
-					uri: config.get('MONGODB_CONNECTION_URL'),
+					uri: `mongodb://${config.get(
+						'MONGO_INITDB_ROOT_USERNAME',
+					)}:${config.get('MONGO_INITDB_ROOT_PASSWORD')}@${config.get(
+						'MONGODB_URL',
+					)}:27017/${config.get(
+						'MONGODB_NAME',
+					)}?authSource=admin&readPreference=primary&ssl=false`,
 					useNewUrlParser: true,
 					useUnifiedTopology: true,
 					useCreateIndex: true,

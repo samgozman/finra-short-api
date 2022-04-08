@@ -1,4 +1,4 @@
-name: Node CI deploy
+name: Publish to remote server
 
 on:
   push:
