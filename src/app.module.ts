@@ -15,7 +15,6 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { HealthModule } from './health/health.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { SentryModule } from '@ntegral/nestjs-sentry';
-import { LogLevel } from '@sentry/types';
 import { Integrations } from '@sentry/node';
 
 @Module({
@@ -56,7 +55,6 @@ import { Integrations } from '@sentry/node';
 				debug: true,
 				environment: process.env.NODE_ENV,
 				release: process.env.npm_package_version,
-				logLevel: LogLevel.Debug,
 				integrations: [
 					// enable HTTP calls tracing
 					new Integrations.Http({ tracing: true }),
