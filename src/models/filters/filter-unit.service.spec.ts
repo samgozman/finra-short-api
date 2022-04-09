@@ -148,11 +148,6 @@ describe('FilterUnitService', () => {
 		await expect(filter()).resolves.toEqual(undefined);
 	});
 
-	it('tinkoffFilter: should run without errors', async () => {
-		const filter = filterUnitService.tinkoffFilter();
-		await expect(filter()).resolves.toEqual(undefined);
-	});
-
 	it('volumeFilter: should run without errors', async () => {
 		const filter = filterUnitService.volumeFilter(
 			'totalVolGrows3D',

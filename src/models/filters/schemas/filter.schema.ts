@@ -6,8 +6,6 @@ export interface IFilterDocument extends Filter, Document {}
 /** List of all avalible filters */
 export interface IFiltersList {
 	// ? Presets filters
-	/** Stock is available on Tinkoff broker */
-	onTinkoff: boolean;
 	/** Filter new stocks with no data or incomplete */
 	isNotGarbage: boolean;
 
@@ -81,8 +79,6 @@ export class Filter implements IFiltersList {
 	_stock_id: Types.ObjectId;
 
 	// Presets filters
-	@Prop({ default: false })
-	onTinkoff: boolean;
 
 	@Prop({ default: false })
 	isNotGarbage: boolean;

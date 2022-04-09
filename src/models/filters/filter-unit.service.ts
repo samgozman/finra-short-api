@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Types } from 'mongoose';
-import { Tinkoff } from 'tinkoff-api-securities';
 import { VolumesService } from '../../models/volumes/volumes.service';
 import { IStockDocument, Stock } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
@@ -152,31 +151,6 @@ export class FilterUnitService {
 			};
 		} catch (error) {
 			this.logger.error(`Error in ${this.isNotGarbageFilter.name}`, error);
-			throw new InternalServerErrorException();
-		}
-	}
-
-	tinkoffFilter(filter: Filters = 'onTinkoff'): () => Promise<void> {
-		try {
-			return async () => {
-				this.stocks.then(async (stocks) => {
-					const tinkoff = new Tinkoff(this.configService.get('SANDBOX_TOKEN'));
-					const onTinkoff = await tinkoff.stocks('USD');
-					for (const tink of onTinkoff) {
-						// Find Stock
-						const { ticker } = tink;
-						const stock = stocks.find((x) => x.ticker === ticker);
-						// Get ID
-						const _stock_id: Types.ObjectId = stock?.id;
-						// Create record
-						if (_stock_id) {
-							await this.updateFilter(_stock_id, filter, true);
-						}
-					}
-				});
-			};
-		} catch (error) {
-			this.logger.error(`Error in ${this.tinkoffFilter.name}`, error);
 			throw new InternalServerErrorException();
 		}
 	}

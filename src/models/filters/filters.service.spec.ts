@@ -16,10 +16,6 @@ class MockStockRepository {
 }
 
 class MockFilterUnitService implements Partial<FilterUnitService> {
-	tinkoffFilter() {
-		return async () => {};
-	}
-
 	isNotGarbageFilter() {
 		return async () => {};
 	}

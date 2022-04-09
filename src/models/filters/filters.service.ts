@@ -23,7 +23,6 @@ export class FiltersService {
 	 */
 	private getFiltersUpdaters() {
 		const updaters: { [key in keyof IFiltersList]: () => Promise<void> } = {
-			onTinkoff: this.fus.tinkoffFilter(),
 			isNotGarbage: this.fus.isNotGarbageFilter(),
 			// 5 days
 			shortVolGrows5D: this.fus.volumeFilter(
