@@ -3,7 +3,6 @@ import { Test } from '@nestjs/testing';
 import { FilterQuery } from 'mongoose';
 import { Stock } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
-import { IVolumeDocument } from '../volumes/schemas/volume.schema';
 import { VolumesService } from '../volumes/volumes.service';
 import { FilterUnitService } from './filter-unit.service';
 import { FiltersRepository } from './repositories/filters.repository';
@@ -17,51 +16,13 @@ const mockStocks: Stock[] = [
 	{ ticker: 'PLTR' } as Stock,
 ];
 
-const lastDate = new Date();
-
-const mockVolume: IVolumeDocument[] = [
-	{
-		date: lastDate,
-		shortVolume: 11000,
-		shortExemptVolume: 100,
-		totalVolume: 20000,
-	} as IVolumeDocument,
-	{
-		date: lastDate,
-		shortVolume: 11000,
-		shortExemptVolume: 0,
-		totalVolume: 18000,
-	} as IVolumeDocument,
-	{
-		date: lastDate,
-		shortVolume: 11000,
-		shortExemptVolume: 0,
-		totalVolume: 20000,
-	} as IVolumeDocument,
-	{
-		date: lastDate,
-		shortVolume: 17000,
-		shortExemptVolume: 1000,
-		totalVolume: 25000,
-	} as IVolumeDocument,
-	{
-		date: lastDate,
-		shortVolume: 15000,
-		shortExemptVolume: 150,
-		totalVolume: 21000,
-	} as IVolumeDocument,
-];
-
 class MockStocksService {
 	availableTickers = () => Promise.resolve(mockIdsArr);
 	findOne = () => Promise.resolve(mockStocks[0]);
 	findMany = () => Promise.resolve(mockStocks);
 }
 
-class MockVolumesService {
-	lastDateTime = () => Promise.resolve(lastDate.getTime());
-	findMany = () => Promise.resolve(mockVolume);
-}
+class MockVolumesService {}
 
 class MockFilter {
 	constructor(public ops: Partial<IFilterDocument>) {}
@@ -141,25 +102,5 @@ describe('FilterUnitService', () => {
 		});
 
 		expect(res).toEqual([mockStocks[0], mockStocks[1]]);
-	});
-
-	it('isNotGarbageFilter: should run without errors', async () => {
-		const filter = filterUnitService.isNotGarbageFilter();
-		await expect(filter()).resolves.toEqual(undefined);
-	});
-
-	it('tinkoffFilter: should run without errors', async () => {
-		const filter = filterUnitService.tinkoffFilter();
-		await expect(filter()).resolves.toEqual(undefined);
-	});
-
-	it('volumeFilter: should run without errors', async () => {
-		const filter = filterUnitService.volumeFilter(
-			'totalVolGrows3D',
-			'totalVolume',
-			'growing',
-			3,
-		);
-		await expect(filter()).resolves.toEqual(undefined);
 	});
 });

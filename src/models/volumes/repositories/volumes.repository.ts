@@ -32,14 +32,6 @@ export class VolumesRepository {
 		return this.volumeModel.findOne(filter, projection, options);
 	}
 
-	async findMany(match: {}, sort: {}, limit: number) {
-		return this.volumeModel.aggregate<IVolumeDocument>([
-			{ $match: match },
-			{ $sort: sort },
-			{ $limit: limit },
-		]);
-	}
-
 	async insertMany(
 		docs: (IVolumeDocument | AnyObject)[],
 		options?: InsertManyOptions,

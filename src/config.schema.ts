@@ -8,7 +8,6 @@ export const configValidationSchema = Joi.object({
 	MONGO_INITDB_ROOT_PASSWORD: Joi.string().default('admin').required(),
 	JWT_SECRET: Joi.string().required(),
 	ADMIN_SECRET: Joi.string().required(),
-	SANDBOX_TOKEN: Joi.string().required(),
 	SENTRY_DSN: Joi.string().required().uri(),
 	SENTRY_TRACE_RATE: Joi.number().required().default(1.0),
 });

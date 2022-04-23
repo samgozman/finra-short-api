@@ -33,12 +33,6 @@ export class HealthController {
 					'FINRA txt volume (test 20210901)',
 					'https://cdn.finra.org/equity/regsho/daily/CNMSshvol20210901.txt',
 				),
-			() =>
-				this.http.pingCheck(
-					'Tinkoff API',
-					'wss://api-invest.tinkoff.ru/openapi/md/v1/md-openapi/ws',
-					{ validateStatus: (status) => status === 401 },
-				),
 			() => this.db.pingCheck('mongodb'),
 		]);
 	}

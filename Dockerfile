@@ -15,7 +15,6 @@ ARG MONGO_INITDB_ROOT_USERNAME=admin
 ARG MONGO_INITDB_ROOT_PASSWORD=secret
 ARG JWT_SECRET=SomeRandomString
 ARG ADMIN_SECRET=RandomSecretForUserCreationRoute
-ARG SANDBOX_TOKEN=TinkoffApiSandboxToken
 ARG SENTRY_DSN=https://public@sentry.example.com/1
 ARG SENTRY_TRACE_RATE=0.25
 

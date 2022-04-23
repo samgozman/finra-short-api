@@ -1,4 +1,4 @@
-name: Publish to remote server
+name: Publish image to ghcr.io
 
 on:
   push:

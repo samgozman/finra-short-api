@@ -23,7 +23,6 @@ import { ApiProperty } from '@nestjs/swagger';
 // since an interface cannot be turned into an array in a TS,
 // and an Enum cannot be protected from missing keys
 const filtersObject: IFiltersList = {
-	onTinkoff: false,
 	isNotGarbage: false,
 	shortVolGrows5D: false,
 	shortVolDecreases5D: false,
