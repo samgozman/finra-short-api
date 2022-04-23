@@ -16,27 +16,11 @@ class MockStockRepository {
 }
 
 class MockFilterUnitService implements Partial<FilterUnitService> {
-	isNotGarbageFilter() {
-		return async () => {};
-	}
-
-	volumeFilter() {
-		return async () => {};
-	}
-
-	abnormalVolumeFilter() {
-		return async () => {};
-	}
-
 	getFilter(): any {
 		return Promise.resolve({
 			count: 1,
 			stocks: stocks.filter((e) => e.ticker === 'AAPL'),
 		});
-	}
-
-	saveFilters() {
-		return Promise.resolve(undefined);
 	}
 }
 
@@ -66,10 +50,6 @@ describe('FiltersService', () => {
 
 	it('should be defined', () => {
 		expect(filtersService).toBeDefined();
-	});
-
-	it('updateAll: should generate filters collection without errors', async () => {
-		await expect(filtersService.updateAll()).resolves.toBe(undefined);
 	});
 
 	it('should get all aggregated stocks', async () => {

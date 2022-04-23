@@ -21,8 +21,6 @@ import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { map } from 'rxjs/operators';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
-import { FiltersService } from '../filters/filters.service';
-import { AveragesService } from './averages.service';
 import { CollectionService } from './collection.service';
 import { GetLinkDto } from './dtos/get-link.dto';
 
@@ -37,8 +35,6 @@ export class CollectionController {
 	private readonly logger = new Logger(CollectionController.name);
 	constructor(
 		private collectionService: CollectionService,
-		private averagesService: AveragesService,
-		private filtersService: FiltersService,
 		private httpService: HttpService,
 	) {}
 
@@ -65,7 +61,7 @@ export class CollectionController {
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	@ApiOperation({ summary: 'Update filters and averages' })
-	updateFilters() {
+	async updateFilters() {
 		return this.httpService
 			.get('http://analyzer:8000/run', {
 				headers: {
@@ -73,15 +69,6 @@ export class CollectionController {
 				},
 			})
 			.pipe(map((response) => response.data));
-		// return this.filtersService.updateAll();
-	}
-
-	@Patch('/update/averages')
-	@Roles('admin')
-	@UseGuards(RolesGuard)
-	@ApiOperation({ summary: 'Update volume averages (for faster sorting)' })
-	updateAverages() {
-		return this.averagesService.averages();
 	}
 
 	@Post('/update/link')
@@ -104,7 +91,6 @@ export class CollectionController {
 		try {
 			this.logger.warn('(¬_¬) CRON updater task has started');
 			await this.updateLastDay();
-			// await this.updateAverages();
 			await this.updateFilters();
 			this.logger.log('(¬_¬) CRON updater task has finished');
 		} catch (error) {

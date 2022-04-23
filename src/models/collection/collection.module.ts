@@ -15,7 +15,6 @@ import { UsersService } from '../users/users.service';
 import { VolumesRepository } from '../volumes/repositories/volumes.repository';
 import { VolumeModelDefinition } from '../volumes/schemas/volume.schema';
 import { VolumesService } from '../volumes/volumes.service';
-import { AveragesService } from './averages.service';
 import { CollectionController } from './collection.controller';
 import { CollectionService } from './collection.service';
 import { ParseService } from './parse.service';
@@ -30,7 +29,7 @@ import { ParseService } from './parse.service';
 			FilterModelDefinition,
 		]),
 		PassportModule.register({ defaultStrategy: 'jwt' }),
-		HttpModule
+		HttpModule,
 	],
 	providers: [
 		StocksRepository,
@@ -41,7 +40,6 @@ import { ParseService } from './parse.service';
 		ParseService,
 		FilterUnitService,
 		FiltersService,
-		AveragesService,
 		UsersService,
 		StocksService,
 		VolumesService,

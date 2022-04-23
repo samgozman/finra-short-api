@@ -58,10 +58,7 @@ export class StocksService {
 
 	/**
 	 * Get all stocks by query
-	 * @param limit
-	 * @param skip
-	 * @param sortby
-	 * @param sortdir
+	 * @param query
 	 * @returns array of stocks
 	 */
 	async getAllStocks(query: GetFilteredStocksDto): Promise<FilteredStocksDto> {

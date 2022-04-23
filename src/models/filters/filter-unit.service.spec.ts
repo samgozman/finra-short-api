@@ -58,10 +58,7 @@ class MockStocksService {
 	findMany = () => Promise.resolve(mockStocks);
 }
 
-class MockVolumesService {
-	lastDateTime = () => Promise.resolve(lastDate.getTime());
-	findMany = () => Promise.resolve(mockVolume);
-}
+class MockVolumesService {}
 
 class MockFilter {
 	constructor(public ops: Partial<IFilterDocument>) {}
@@ -141,20 +138,5 @@ describe('FilterUnitService', () => {
 		});
 
 		expect(res).toEqual([mockStocks[0], mockStocks[1]]);
-	});
-
-	it('isNotGarbageFilter: should run without errors', async () => {
-		const filter = filterUnitService.isNotGarbageFilter();
-		await expect(filter()).resolves.toEqual(undefined);
-	});
-
-	it('volumeFilter: should run without errors', async () => {
-		const filter = filterUnitService.volumeFilter(
-			'totalVolGrows3D',
-			'totalVolume',
-			'growing',
-			3,
-		);
-		await expect(filter()).resolves.toEqual(undefined);
 	});
 });

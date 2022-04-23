@@ -3,7 +3,6 @@ import { Test } from '@nestjs/testing';
 import { FiltersService } from '../filters/filters.service';
 import { UsersRepository } from '../users/repositories/users.repository';
 import { UsersService } from '../users/users.service';
-import { AveragesService } from './averages.service';
 import { CollectionController } from './collection.controller';
 import { CollectionService } from './collection.service';
 
@@ -13,13 +12,7 @@ class MockCollectionService implements Partial<CollectionService> {
 	updateVolumesByLink = () => Promise.resolve(undefined);
 }
 
-class MockAveragesService implements Partial<AveragesService> {
-	averages = () => Promise.resolve(undefined);
-}
-
-class MockFiltersService implements Partial<FiltersService> {
-	updateAll = () => Promise.resolve(undefined);
-}
+class MockFiltersService implements Partial<FiltersService> {}
 
 describe('CollectionController', () => {
 	let collectionController: CollectionController;
@@ -38,10 +31,6 @@ describe('CollectionController', () => {
 				{
 					provide: CollectionService,
 					useClass: MockCollectionService,
-				},
-				{
-					provide: AveragesService,
-					useClass: MockAveragesService,
 				},
 				{
 					provide: FiltersService,
@@ -70,12 +59,6 @@ describe('CollectionController', () => {
 
 	it('should run updateFilters', async () => {
 		await expect(collectionController.updateFilters()).resolves.toBeUndefined();
-	});
-
-	it('should run updateAverages', async () => {
-		await expect(
-			collectionController.updateAverages(),
-		).resolves.toBeUndefined();
 	});
 
 	it('should run updateVolumesByLink', async () => {
