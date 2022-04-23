@@ -63,7 +63,7 @@ export class CollectionController {
 	@ApiOperation({ summary: 'Update filters and averages' })
 	async updateFilters() {
 		return this.httpService
-			.get('http://analyzer:8000/run', {
+			.get('http://analyzer:3030/run', {
 				headers: {
 					Accept: 'application/json',
 				},
