@@ -1,3 +1,4 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
@@ -29,6 +30,7 @@ import { ParseService } from './parse.service';
 			FilterModelDefinition,
 		]),
 		PassportModule.register({ defaultStrategy: 'jwt' }),
+		HttpModule
 	],
 	providers: [
 		StocksRepository,

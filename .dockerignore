@@ -6,3 +6,4 @@ docker-compose.yaml
 .gitignore
 test/
 config/
+/data
