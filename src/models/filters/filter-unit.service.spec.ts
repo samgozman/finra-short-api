@@ -3,7 +3,6 @@ import { Test } from '@nestjs/testing';
 import { FilterQuery } from 'mongoose';
 import { Stock } from '../stocks/schemas/stock.schema';
 import { StocksService } from '../stocks/stocks.service';
-import { IVolumeDocument } from '../volumes/schemas/volume.schema';
 import { VolumesService } from '../volumes/volumes.service';
 import { FilterUnitService } from './filter-unit.service';
 import { FiltersRepository } from './repositories/filters.repository';
@@ -15,41 +14,6 @@ const mockStocks: Stock[] = [
 	{ ticker: 'AAPL' } as Stock,
 	{ ticker: 'MSFT' } as Stock,
 	{ ticker: 'PLTR' } as Stock,
-];
-
-const lastDate = new Date();
-
-const mockVolume: IVolumeDocument[] = [
-	{
-		date: lastDate,
-		shortVolume: 11000,
-		shortExemptVolume: 100,
-		totalVolume: 20000,
-	} as IVolumeDocument,
-	{
-		date: lastDate,
-		shortVolume: 11000,
-		shortExemptVolume: 0,
-		totalVolume: 18000,
-	} as IVolumeDocument,
-	{
-		date: lastDate,
-		shortVolume: 11000,
-		shortExemptVolume: 0,
-		totalVolume: 20000,
-	} as IVolumeDocument,
-	{
-		date: lastDate,
-		shortVolume: 17000,
-		shortExemptVolume: 1000,
-		totalVolume: 25000,
-	} as IVolumeDocument,
-	{
-		date: lastDate,
-		shortVolume: 15000,
-		shortExemptVolume: 150,
-		totalVolume: 21000,
-	} as IVolumeDocument,
 ];
 
 class MockStocksService {

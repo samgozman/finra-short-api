@@ -1,4 +1,3 @@
-import { InternalServerErrorException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { VolumesRepository } from './repositories/volumes.repository';
 import { IVolumeDocument } from './schemas/volume.schema';

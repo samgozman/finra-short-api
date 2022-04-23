@@ -1,11 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AnyObject, InsertManyOptions } from 'mongoose';
 import { VolumesRepository } from './repositories/volumes.repository';
 import { IVolumeDocument } from './schemas/volume.schema';
 
 @Injectable()
 export class VolumesService {
-	private readonly logger = new Logger(VolumesService.name);
 	constructor(private readonly volumesRepository: VolumesRepository) {}
 
 	/** Name of the Volume collection */
