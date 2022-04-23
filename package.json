@@ -1,6 +1,6 @@
 {
 	"name": "finra-short-api",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"description": "API for TightShorts.ru - FINRA parser and screener",
 	"author": "Sam Gozman <sam@gozman.space>",
 	"private": true,
@@ -60,7 +60,7 @@
 		"helmet": "^4.6.0",
 		"jsonwebtoken": "^8.5.1",
 		"moment-timezone": "^0.5.34",
-		"mongoose": "^5.13.10",
+		"mongoose": "^6.3.1",
 		"passport-jwt": "^4.0.0",
 		"reflect-metadata": "^0.1.13",
 		"rimraf": "^3.0.2",
