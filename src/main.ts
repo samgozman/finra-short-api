@@ -71,7 +71,8 @@ async function bootstrap() {
 
 	// Capture routers performance with Sentry
 	app.use(sentryService.instance().Handlers.requestHandler());
-	app.use(sentryService.instance().Handlers.tracingHandler());
+		// ! Sentry bug
+	// app.use(sentryService.instance().Handlers.tracingHandler());
 	app.use(helmet());
 	app.use(compression());
 
