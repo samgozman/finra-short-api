@@ -60,6 +60,7 @@ import { Integrations } from '@sentry/node';
 					new Integrations.Http({ tracing: true }),
 				],
 				tracesSampleRate: config.get('SENTRY_TRACE_RATE'),
+				logLevel: ['debug'],
 			}),
 		}),
 		UsersModule,
