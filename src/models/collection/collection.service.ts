@@ -1,8 +1,10 @@
+import { HttpService } from '@nestjs/axios';
 import {
 	Injectable,
 	InternalServerErrorException,
 	Logger,
 } from '@nestjs/common';
+import { firstValueFrom, map } from 'rxjs';
 import { StocksService } from '../stocks/stocks.service';
 import { FinraAssignedReports, Volume } from '../volumes/schemas/volume.schema';
 import { VolumesService } from '../volumes/volumes.service';
@@ -15,6 +17,7 @@ export class CollectionService {
 		private parseService: ParseService,
 		private readonly stocksService: StocksService,
 		private readonly volumesService: VolumesService,
+		private httpService: HttpService,
 	) {}
 
 	// ex processLines
@@ -88,6 +91,24 @@ export class CollectionService {
 			this.logger.log('Fetching last day data from FINRA has finished');
 		} catch (error) {
 			this.logger.error(`Error in ${this.updateLastTradingDays.name}`, error);
+			throw new InternalServerErrorException();
+		}
+	}
+
+	async updateFilters(): Promise<void> {
+		try {
+			this.logger.warn('Updating filters with Go service has started');
+			const observable = this.httpService
+				.get('http://analyzer:3030/run', {
+					headers: {
+						Accept: 'application/json',
+					},
+				})
+				.pipe(map((response) => response.data));
+			await firstValueFrom(observable);
+			this.logger.log('Updating filters with Go service has finished');
+		} catch (error) {
+			this.logger.error(`Error in ${this.updateFilters.name}`, error);
 			throw new InternalServerErrorException();
 		}
 	}

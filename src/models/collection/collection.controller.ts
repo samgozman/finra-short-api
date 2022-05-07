@@ -1,4 +1,3 @@
-import { HttpService } from '@nestjs/axios';
 import {
 	Controller,
 	Patch,
@@ -18,7 +17,6 @@ import {
 	ApiTags,
 } from '@nestjs/swagger';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
-import { map } from 'rxjs/operators';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
 import { CollectionService } from './collection.service';
@@ -33,10 +31,7 @@ import { GetLinkDto } from './dtos/get-link.dto';
 @UseGuards(AuthGuard())
 export class CollectionController {
 	private readonly logger = new Logger(CollectionController.name);
-	constructor(
-		private collectionService: CollectionService,
-		private httpService: HttpService,
-	) {}
+	constructor(private collectionService: CollectionService) {}
 
 	@Patch('/recreate')
 	@Roles('admin')
@@ -61,14 +56,8 @@ export class CollectionController {
 	@Roles('admin')
 	@UseGuards(RolesGuard)
 	@ApiOperation({ summary: 'Update filters and averages' })
-	async updateFilters() {
-		return this.httpService
-			.get('http://analyzer:3030/run', {
-				headers: {
-					Accept: 'application/json',
-				},
-			})
-			.pipe(map((response) => response.data));
+	updateFilters() {
+		return this.collectionService.updateFilters();
 	}
 
 	@Post('/update/link')
