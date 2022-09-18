@@ -34,7 +34,7 @@ import { Integrations } from '@sentry/node';
 						'MONGO_INITDB_ROOT_USERNAME',
 					)}:${config.get('MONGO_INITDB_ROOT_PASSWORD')}@${config.get(
 						'MONGODB_URL',
-					)}:27017/${config.get(
+					)}:${config.get('MONGODB_PORT')}/${config.get(
 						'MONGODB_NAME',
 					)}?authSource=admin&readPreference=primary&ssl=false`,
 					useNewUrlParser: true,
