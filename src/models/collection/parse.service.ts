@@ -1,5 +1,4 @@
 import got from 'got';
-import timezone from 'moment-timezone';
 import moment from 'moment';
 import {
 	Injectable,
@@ -7,8 +6,6 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { FinraAssignedReports } from '../volumes/schemas/volume.schema';
-
-timezone.tz.setDefault('America/New_York');
 
 /** Parse FINRA */
 @Injectable()

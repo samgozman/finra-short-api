@@ -72,10 +72,8 @@ export class CollectionController {
 	}
 
 	// Run at 18:30 (6.30pm/12 ET) on every day-of-week from Monday through Friday.
-	// (01:30/24 Moscow time) (30 18 * * 1-5)
-	@Cron('30 18 * * 1-5', {
-		timeZone: 'America/New_York',
-	})
+	// 22:30 UTC
+	@Cron('30 22 * * 1-5')
 	async updateLastDayWithFiltersAndAverages() {
 		try {
 			this.logger.warn('(¬_¬) CRON updater task has started');
