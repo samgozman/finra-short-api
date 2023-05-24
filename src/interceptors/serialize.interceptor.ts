@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 
 // Any class
 interface ClassConstructor {
-	new (...args: any[]): {};
+	new (...args: any[]);
 }
 
 // Custom decorator to make interceptor implementation more simple
