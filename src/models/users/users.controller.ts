@@ -5,7 +5,6 @@ import {
 	Patch,
 	Post,
 	UseGuards,
-	UseInterceptors,
 } from '@nestjs/common';
 import {
 	ApiBadRequestResponse,
@@ -17,7 +16,6 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
-import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { AdminGuard } from '../../guards/admin.guard';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { ApiKeyDto } from './dtos/apikey.dto';
@@ -28,7 +26,6 @@ import { UsersService } from './users.service';
 
 @ApiTags('user')
 @Controller('user')
-@UseInterceptors(new SentryInterceptor())
 @ApiBearerAuth('auth-with-admin-role')
 @ApiForbiddenResponse()
 export class UsersController {

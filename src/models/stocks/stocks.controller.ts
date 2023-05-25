@@ -3,7 +3,6 @@ import {
 	Get,
 	Query,
 	UseGuards,
-	UseInterceptors,
 } from '@nestjs/common';
 import {
 	ApiForbiddenResponse,
@@ -14,7 +13,6 @@ import {
 	ApiTags,
 } from '@nestjs/swagger';
 import { SkipThrottle } from '@nestjs/throttler';
-import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Serialize } from '../../interceptors/serialize.interceptor';
@@ -24,7 +22,6 @@ import { StocksService } from './stocks.service';
 
 @ApiTags('stock')
 @Controller('stock')
-@UseInterceptors(new SentryInterceptor())
 export class StocksController {
 	constructor(private stocksService: StocksService) {}
 

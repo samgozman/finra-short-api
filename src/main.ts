@@ -1,15 +1,15 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import compression from 'compression';
 import helmet from 'helmet';
 import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { SentryService } from '@ntegral/nestjs-sentry';
+import * as Sentry from '@sentry/node';
+import { SentryFilter } from './exceptions/sentry.filter';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
-	const sentryService = app.get<SentryService>(SentryService);
-	const port = app.get<ConfigService>(ConfigService).get('PORT');
+	const port = app.get<ConfigService>(ConfigService).get<number>('PORT');
 
 	// Config swagger
 	const config = new DocumentBuilder()
@@ -70,9 +70,22 @@ async function bootstrap() {
 	SwaggerModule.setup('api', app, document);
 
 	// Capture routers performance with Sentry
-	app.use(sentryService.instance().Handlers.requestHandler());
-	// ! Sentry bug
-	// app.use(sentryService.instance().Handlers.tracingHandler());
+	const sentryDsn = app.get<ConfigService>(ConfigService).get<string>('SENTRY_DSN');
+	const sentryTsr = app.get<ConfigService>(ConfigService).get<number>('SENTRY_TRACE_RATE');
+	Sentry.init({
+		dsn: sentryDsn,
+		debug: true,
+		environment: process.env.NODE_ENV,
+		release: process.env.npm_package_version,
+		integrations: [
+			// enable HTTP calls tracing
+			new Sentry.Integrations.Http({ tracing: true }),
+		],
+		tracesSampleRate: sentryTsr,
+	});	
+	const { httpAdapter } = app.get(HttpAdapterHost);
+	app.useGlobalFilters(new SentryFilter(httpAdapter));
+
 	app.use(helmet());
 	app.use(compression());
 
