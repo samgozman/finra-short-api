@@ -86,7 +86,9 @@ async function bootstrap() {
 	const { httpAdapter } = app.get(HttpAdapterHost);
 	app.useGlobalFilters(new SentryFilter(httpAdapter));
 
-	app.use(helmet());
+	app.use(helmet({
+		crossOriginEmbedderPolicy: false,
+	}));
 	app.use(compression());
 
 	await app.listen(port);
