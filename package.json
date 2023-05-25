@@ -16,7 +16,7 @@
     "start:debug": "export NODE_ENV=development && nest start --debug --watch",
     "start:prod": "export NODE_ENV=production && node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "export NODE_ENV=test jest",
+    "test": "export NODE_ENV=test && jest",
     "test:github": "export NODE_ENV=github && jest",
     "test:watch": "jest --clearCache && export NODE_ENV=test && jest --watch --runInBand",
     "test:cov": "export NODE_ENV=test && jest --coverage",
@@ -62,7 +62,7 @@
     "mongoose": "^7.2.1",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.1.13",
-    "rimraf": "=3.0.2",
+    "rimraf": "^5.0.1",
     "rxjs": "^7.8.1",
     "swagger-ui-express": "^4.6.3"
   },
