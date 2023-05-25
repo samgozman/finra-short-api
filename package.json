@@ -54,6 +54,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "0.14.0",
     "compression": "^1.7.4",
+    "date-fns": "^2.30.0",
     "got": "^12.6.0",
     "helmet": "^7.0.0",
     "joi": "^17.9.2",

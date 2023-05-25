@@ -1,5 +1,5 @@
 import { got, HTTPError } from 'got';
-import moment from 'moment';
+import { format, getDay, parse } from 'date-fns';
 import {
 	Injectable,
 	InternalServerErrorException,
@@ -22,11 +22,11 @@ export class ParseService {
 				return date;
 			};
 			while (currentDate <= endDate) {
-				const dayOfWeek = moment(currentDate).weekday();
+				const dayOfWeek = getDay(currentDate);
 
 				if (dayOfWeek !== 6 && dayOfWeek !== 0) {
 					// If not weekend
-					const d = moment(currentDate).format('YYYYMMDD');
+					const d = format(currentDate, 'yyyyMMdd');
 					dates.push(
 						`https://cdn.finra.org/equity/regsho/daily/CNMSshvol${d}.txt`,
 					);
@@ -63,7 +63,7 @@ export class ParseService {
 				// String format: Date|Symbol|ShortVolume|ShortExemptVolume|TotalVolume|Market
 				const strArr = str.split('|');
 				obj[strArr[1]] = {
-					date: new Date(moment(strArr[0], 'YYYYMMDD') as unknown as string),
+					date: parse(strArr[0], 'yyyyMMdd', new Date()),
 					shortVolume: +strArr[2],
 					shortExemptVolume: +strArr[3],
 					totalVolume: +strArr[4],
