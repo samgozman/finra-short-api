@@ -87,18 +87,15 @@ export class StocksRepository {
 		sortdir: SortDirs,
 		tickers: string[] = [],
 	): Promise<FilteredStocksDto> {
-		const pipeline = [
-			{ $match: tickers.length > 0 ? { ticker: { $in: tickers } } : {} },
-			{
-				$sort: {
-					[sortby]: sortdir === 'asc' ? 1 : -1,
-				},
-			},
-		];
 
 		const { count } = (
 			await this.stockModel.aggregate<{ count: number }>([
-				...pipeline,
+				{ $match: tickers.length > 0 ? { ticker: { $in: tickers } } : {} },
+				{
+					$sort: {
+						[sortby]: sortdir === 'asc' ? 1 : -1,
+					},
+				},
 				{
 					$count: 'count',
 				},
@@ -106,7 +103,12 @@ export class StocksRepository {
 		)[0] || { count: 0 };
 
 		const aggregation = await this.stockModel.aggregate<IStock>([
-			...pipeline,
+			{ $match: tickers.length > 0 ? { ticker: { $in: tickers } } : {} },
+			{
+				$sort: {
+					[sortby]: sortdir === 'asc' ? 1 : -1,
+				},
+			},
 			{ $limit: skip + limit },
 			{ $skip: skip },
 			{ $project: { _id: false, _stock_id: false, __v: false } },

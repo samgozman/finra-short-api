@@ -25,7 +25,7 @@ export class StocksService {
 	}
 
 	/** Create new Stock instance */
-	createNewInstance(doc?: AnyKeys<IStockDocument> & AnyObject): IStockDocument {
+	createNewInstance(doc?: AnyKeys<IStockDocument> & AnyObject) {
 		return this.stocksRepository.new(doc);
 	}
 
@@ -50,7 +50,7 @@ export class StocksService {
 	/**
 	 * Finds a single Stock document by its _id field.
 	 * @param id
-	 * @returns IStockDocument
+	 * @returns
 	 */
 	async findById(id: any) {
 		return this.stocksRepository.findById(id);
