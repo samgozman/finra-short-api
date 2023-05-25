@@ -2,7 +2,7 @@ name: Test finra-short-api
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main, dev, finra-short-api-3.0]
   pull_request:
     branches: [main, dev]
 
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['16']
+        node: ['18']
     name: Node ${{ matrix.node }} sample
     env:
       PORT: ${{ secrets.PORT }}
