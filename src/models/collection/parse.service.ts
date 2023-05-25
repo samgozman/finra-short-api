@@ -1,4 +1,4 @@
-import got from 'got';
+import { got, HTTPError } from 'got';
 import moment from 'moment';
 import {
 	Injectable,
@@ -51,14 +51,14 @@ export class ParseService {
 			const response = await got(url);
 
 			const text = response.body.toString();
-			let textArray = text.split(/\r?\n/);
+			const textArray = text.split(/\r?\n/);
 
 			// Remove first and last 2 lines of the array
 			textArray.shift();
 			textArray.pop();
 			textArray.pop();
 
-			let obj: FinraAssignedReports = {};
+			const obj: FinraAssignedReports = {};
 			textArray.forEach((str) => {
 				// String format: Date|Symbol|ShortVolume|ShortExemptVolume|TotalVolume|Market
 				const strArr = str.split('|');
@@ -71,7 +71,7 @@ export class ParseService {
 			});
 			return obj;
 		} catch (error) {
-			if (!(error instanceof got.HTTPError)) {
+			if (!(error instanceof HTTPError)) {
 				this.logger.error(`Error in ${this.getDataFromFile.name}`, error);
 				throw new InternalServerErrorException();
 			}

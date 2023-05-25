@@ -54,7 +54,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "0.14.0",
     "compression": "^1.7.4",
-    "got": "^11.8.6",
+    "got": "^12.6.0",
     "helmet": "^7.0.0",
     "joi": "^17.9.2",
     "jsonwebtoken": "9.0.0",
