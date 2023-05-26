@@ -7,9 +7,11 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "target": "es2017",
+    "target": "ES2022",
+    "noUncheckedIndexedAccess": true,
     "sourceMap": true,
     "outDir": "./dist",
+    "newLine": "lf",
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true
