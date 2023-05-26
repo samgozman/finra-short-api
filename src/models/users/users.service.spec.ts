@@ -49,7 +49,7 @@ const testUserTwo = new MockUserModel('TestTwo', '', ['stockInfo']);
 const testUserThree = new MockUserModel('TestThree', '', []);
 
 /** Define array of users instead of DB */
-let usersArr: MockUserModel[] = [testUserTwo, testUser, testUserThree];
+const usersArr: MockUserModel[] = [testUserTwo, testUser, testUserThree];
 
 describe('UsersService', () => {
 	let userService: UsersService;

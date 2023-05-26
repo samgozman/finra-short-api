@@ -1,4 +1,4 @@
-import { got, HTTPError } from 'got';
+import got, { HTTPError } from 'got';
 import { format, getDay, parse } from 'date-fns';
 import {
 	Injectable,
