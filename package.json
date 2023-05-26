@@ -7,7 +7,6 @@
   "license": "MIT",
   "type": "commonjs",
   "scripts": {
-    "prebuild": "rimraf dist",
     "build": "nest build",
     "build:docker:dev": "docker build . -t ghcr.io/samgozman/finra-short-api:dev ",
     "build:docker:latest": "docker build . -t ghcr.io/samgozman/finra-short-api:latest ",
@@ -63,7 +62,6 @@
     "mongoose": "^7.2.1",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.1.13",
-    "rimraf": "^5.0.1",
     "rxjs": "^7.8.1",
     "swagger-ui-express": "^4.6.3"
   },
