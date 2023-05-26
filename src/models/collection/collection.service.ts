@@ -27,7 +27,7 @@ export class CollectionService {
 				return [];
 			}
 
-			let mongoArr: Volume[] = [];
+			const mongoArr: Volume[] = [];
 			for (const report in reports) {
 				// Try to find existing
 				let stock = await this.stocksService.findOne({
@@ -61,7 +61,7 @@ export class CollectionService {
 	 * The script will stop at the first data duplication error.
 	 * @param reversed bypass an array of files from the last element
 	 */
-	private async fillDataBase(reversed: boolean = false) {
+	private async fillDataBase(reversed = false) {
 		try {
 			const files = reversed
 				? this.parseService.getAllDaysPages().reverse()
