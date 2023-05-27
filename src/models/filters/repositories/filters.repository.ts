@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { AnyKeys, AnyObject, FilterQuery } from 'mongoose';
+import { AnyKeys, AnyObject, FilterQuery, PipelineStage } from 'mongoose';
 import { IStock } from 'src/models/stocks/schemas/stock.schema';
 import { StocksService } from '../../../models/stocks/stocks.service';
 import { FilteredStocksDto } from '../dtos/filtered-stocks.dto';
@@ -73,13 +73,13 @@ export class FiltersRepository {
 	 * @returns
 	 */
 	async findStocksByFilteringCondition(
-		match: {},
+		match: object,
 		limit: number,
 		skip: number,
 		sort: ISort,
 		tickers: string[] = [],
 	): Promise<FilteredStocksDto> {
-		const pipeline = [
+		const pipeline: PipelineStage[] = [
 			// 1 stage: find matches
 			{ $match: match },
 			// 2 stage: lookup for their filters
