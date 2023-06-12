@@ -11,29 +11,29 @@ import { UserModelDefinition } from '../models/users/schemas/user.schema';
 import { UsersRepository } from '../models/users/repositories/users.repository';
 
 @Module({
-	imports: [
-		ConfigModule,
-		PassportModule.register({ defaultStrategy: 'jwt' }),
-		JwtModule.registerAsync({
-			imports: [ConfigModule],
-			inject: [ConfigService],
-			useFactory: async (configService: ConfigService) => ({
-				secret: configService.get('JWT_SECRET'),
-				signOptions: {
-					expiresIn: 3600,
-				},
-			}),
-		}),
-		MongooseModule.forFeature([UserModelDefinition]),
-	],
-	providers: [
-		AuthenticationService,
-		JwtStrategy,
-		UsersService,
-		ConfigService,
-		UsersRepository,
-	],
-	controllers: [AuthenticationController],
-	exports: [JwtStrategy, PassportModule],
+  imports: [
+    ConfigModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get('JWT_SECRET'),
+        signOptions: {
+          expiresIn: 3600,
+        },
+      }),
+    }),
+    MongooseModule.forFeature([UserModelDefinition]),
+  ],
+  providers: [
+    AuthenticationService,
+    JwtStrategy,
+    UsersService,
+    ConfigService,
+    UsersRepository,
+  ],
+  controllers: [AuthenticationController],
+  exports: [JwtStrategy, PassportModule],
 })
 export class AuthenticationModule {}

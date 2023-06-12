@@ -20,29 +20,29 @@ import { CollectionService } from './collection.service';
 import { ParseService } from './parse.service';
 
 @Module({
-	controllers: [CollectionController],
-	imports: [
-		MongooseModule.forFeature([
-			UserModelDefinition,
-			StockModelDefinition,
-			VolumeModelDefinition,
-			FilterModelDefinition,
-		]),
-		PassportModule.register({ defaultStrategy: 'jwt' }),
-		HttpModule,
-	],
-	providers: [
-		StocksRepository,
-		FiltersRepository,
-		VolumesRepository,
-		UsersRepository,
-		CollectionService,
-		ParseService,
-		FilterUnitService,
-		FiltersService,
-		UsersService,
-		StocksService,
-		VolumesService,
-	],
+  controllers: [CollectionController],
+  imports: [
+    MongooseModule.forFeature([
+      UserModelDefinition,
+      StockModelDefinition,
+      VolumeModelDefinition,
+      FilterModelDefinition,
+    ]),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    HttpModule,
+  ],
+  providers: [
+    StocksRepository,
+    FiltersRepository,
+    VolumesRepository,
+    UsersRepository,
+    CollectionService,
+    ParseService,
+    FilterUnitService,
+    FiltersService,
+    UsersService,
+    StocksService,
+    VolumesService,
+  ],
 })
 export class CollectionModule {}

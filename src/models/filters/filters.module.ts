@@ -17,28 +17,28 @@ import { VolumesRepository } from '../volumes/repositories/volumes.repository';
 import { UsersRepository } from '../users/repositories/users.repository';
 
 @Module({
-	controllers: [FiltersController],
-	imports: [
-		ConfigModule,
-		MongooseModule.forFeature([
-			UserModelDefinition,
-			FilterModelDefinition,
-			StockModelDefinition,
-			VolumeModelDefinition,
-		]),
-	],
-	providers: [
-		UsersService,
-		FiltersService,
-		FilterUnitService,
-		StocksService,
-		VolumesService,
-		ConfigService,
-		FiltersRepository,
-		StocksRepository,
-		VolumesRepository,
-		UsersRepository,
-	],
-	exports: [FiltersService, FilterUnitService],
+  controllers: [FiltersController],
+  imports: [
+    ConfigModule,
+    MongooseModule.forFeature([
+      UserModelDefinition,
+      FilterModelDefinition,
+      StockModelDefinition,
+      VolumeModelDefinition,
+    ]),
+  ],
+  providers: [
+    UsersService,
+    FiltersService,
+    FilterUnitService,
+    StocksService,
+    VolumesService,
+    ConfigService,
+    FiltersRepository,
+    StocksRepository,
+    VolumesRepository,
+    UsersRepository,
+  ],
+  exports: [FiltersService, FilterUnitService],
 })
 export class FiltersModule {}

@@ -9,19 +9,11 @@ import { StocksController } from './stocks.controller';
 import { StocksService } from './stocks.service';
 
 @Module({
-	controllers: [StocksController],
-	imports: [
-		MongooseModule.forFeature([
-			UserModelDefinition,
-			StockModelDefinition,
-		]),
-	],
-	providers: [
-		StocksService,
-		UsersService,
-		StocksRepository,
-		UsersRepository,
-	],
-	exports: [StocksService],
+  controllers: [StocksController],
+  imports: [
+    MongooseModule.forFeature([UserModelDefinition, StockModelDefinition]),
+  ],
+  providers: [StocksService, UsersService, StocksRepository, UsersRepository],
+  exports: [StocksService],
 })
 export class StocksModule {}

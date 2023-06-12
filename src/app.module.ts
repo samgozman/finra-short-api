@@ -16,63 +16,63 @@ import { HealthModule } from './health/health.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
-	imports: [
-		ConfigModule.forRoot({
-			isGlobal: true,
-			envFilePath: `config/.${process.env.NODE_ENV}.env`,
-			validationSchema:
-				process.env.NODE_ENV !== 'github' ? configValidationSchema : undefined,
-		}),
-		ScheduleModule.forRoot(),
-		MongooseModule.forRootAsync({
-			inject: [ConfigService],
-			useFactory: (config: ConfigService) => {
-				return {
-					uri: `mongodb://${config.get(
-						'MONGO_INITDB_ROOT_USERNAME',
-					)}:${config.get('MONGO_INITDB_ROOT_PASSWORD')}@${config.get(
-						'MONGODB_URL',
-					)}:${config.get('MONGODB_PORT')}/${config.get(
-						'MONGODB_NAME',
-					)}?authSource=admin&readPreference=primary&ssl=false`,
-				};
-			},
-		}),
-		ThrottlerModule.forRoot({
-			ttl: 60,
-			limit: 50,
-		}),
-		UsersModule,
-		StocksModule,
-		VolumesModule,
-		FiltersModule,
-		CollectionModule,
-		AuthenticationModule,
-		HealthModule,
-	],
-	controllers: [],
-	providers: [
-		AppService,
-		// Apply this pipe on any request that flows into the application (instead of main.ts file)
-		{
-			provide: APP_PIPE,
-			useValue: new ValidationPipe({
-				// Enable transformation in validation process
-				transform: true,
-				// Check that incoming request don't have unexpected keys (removes them)
-				whitelist: true,
-				// Throw an error on forbiden request
-				forbidNonWhitelisted: true,
-			}),
-		},
-		{
-			provide: APP_FILTER,
-			useClass: MongoExceptionFilter,
-		},
-		{
-			provide: APP_GUARD,
-			useClass: ThrottlerGuard,
-		},
-	],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `config/.${process.env.NODE_ENV}.env`,
+      validationSchema:
+        process.env.NODE_ENV !== 'github' ? configValidationSchema : undefined,
+    }),
+    ScheduleModule.forRoot(),
+    MongooseModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          uri: `mongodb://${config.get(
+            'MONGO_INITDB_ROOT_USERNAME',
+          )}:${config.get('MONGO_INITDB_ROOT_PASSWORD')}@${config.get(
+            'MONGODB_URL',
+          )}:${config.get('MONGODB_PORT')}/${config.get(
+            'MONGODB_NAME',
+          )}?authSource=admin&readPreference=primary&ssl=false`,
+        };
+      },
+    }),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 50,
+    }),
+    UsersModule,
+    StocksModule,
+    VolumesModule,
+    FiltersModule,
+    CollectionModule,
+    AuthenticationModule,
+    HealthModule,
+  ],
+  controllers: [],
+  providers: [
+    AppService,
+    // Apply this pipe on any request that flows into the application (instead of main.ts file)
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        // Enable transformation in validation process
+        transform: true,
+        // Check that incoming request don't have unexpected keys (removes them)
+        whitelist: true,
+        // Throw an error on forbiden request
+        forbidNonWhitelisted: true,
+      }),
+    },
+    {
+      provide: APP_FILTER,
+      useClass: MongoExceptionFilter,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
