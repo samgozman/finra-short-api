@@ -85,7 +85,7 @@ export class FiltersRepository {
 			// 2 stage: lookup for their filters
 			{
 				$lookup: {
-					from: this.stocksService.collectionName,
+					from: 'stock',
 					let: { id: '$_stock_id' },
 					pipeline: [
 						{

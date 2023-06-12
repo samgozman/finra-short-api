@@ -11,9 +11,6 @@ export class StocksService {
 	private readonly logger = new Logger(StocksService.name);
 	constructor(private readonly stocksRepository: StocksRepository) {}
 
-	/** Name of the Stock collection */
-	readonly collectionName = this.stocksRepository.name;
-
 	/**
 	 * Get array of all available stocks id's
 	 * @async

@@ -7,9 +7,6 @@ import { IVolumeDocument } from './schemas/volume.schema';
 export class VolumesService {
 	constructor(private readonly volumesRepository: VolumesRepository) {}
 
-	/** Name of the Volume collection */
-	readonly collectionName = this.volumesRepository.name;
-
 	/**
 	 * Inserts one or more new Volume documents as a single insertMany call to the MongoDB server.
 	 * @param docs

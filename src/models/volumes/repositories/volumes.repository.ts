@@ -15,8 +15,6 @@ export class VolumesRepository {
 		private readonly volumeModel: VolumeModel,
 	) {}
 
-	readonly name = this.volumeModel.collection.name;
-
 	/**
 	 * Find one Volume object
 	 * @param filter search options
