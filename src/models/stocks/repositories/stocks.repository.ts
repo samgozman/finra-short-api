@@ -15,15 +15,14 @@ import {
 
 @Injectable()
 export class StocksRepository {
-	private readonly logger = new Logger(StocksRepository.name);
-
-	readonly name = this.stockModel.collection.name;
-
 	constructor(
 		@InjectModel(Stock.name)
 		private readonly stockModel: StockModel,
 		private readonly volumesService: VolumesService,
 	) {}
+	
+	private readonly logger = new Logger(StocksRepository.name);
+	readonly name = this.stockModel.collection.name;
 
 	new = (doc?: AnyKeys<IStockDocument> & AnyObject) => new this.stockModel(doc);
 
@@ -46,7 +45,7 @@ export class StocksRepository {
 	 * @param sort
 	 * @returns
 	 */
-	async getStockWithVolume(match: {}, limit: number, sort: string) {
+	async getStockWithVolume(match: FilterQuery<any>, limit: number, sort: string) {
 		const stock = (await this.stockModel
 			.aggregate<StockDto>([
 				{ $match: match },

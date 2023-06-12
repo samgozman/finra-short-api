@@ -10,12 +10,12 @@ import { IVolumeDocument, Volume, VolumeModel } from '../schemas/volume.schema';
 
 @Injectable()
 export class VolumesRepository {
-	readonly name = this.volumeModel.collection.name;
-
 	constructor(
 		@InjectModel(Volume.name)
 		private readonly volumeModel: VolumeModel,
 	) {}
+
+	readonly name = this.volumeModel.collection.name;
 
 	/**
 	 * Find one Volume object
