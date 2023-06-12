@@ -85,7 +85,7 @@ export class FiltersRepository {
       // 2 stage: lookup for their filters
       {
         $lookup: {
-          from: 'stock',
+          from: 'stocks',
           let: { id: '$_stock_id' },
           pipeline: [
             {

@@ -53,7 +53,7 @@ export class StocksRepository {
         { $limit: 1 },
         {
           $lookup: {
-            from: 'volume',
+            from: 'volumes',
             let: { id: '$_id' },
             pipeline: [
               { $match: { $expr: { $eq: ['$$id', '$_stock_id'] } } },
