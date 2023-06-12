@@ -18,7 +18,6 @@ jobs:
       MONGODB_CONNECTION_URL: ${{ secrets.MONGODB_CONNECTION_URL }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
-      SANDBOX_TOKEN: ${{ secrets.SANDBOX_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - name: Setup node
