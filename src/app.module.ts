@@ -35,10 +35,6 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 					)}:${config.get('MONGODB_PORT')}/${config.get(
 						'MONGODB_NAME',
 					)}?authSource=admin&readPreference=primary&ssl=false`,
-					useNewUrlParser: true,
-					useUnifiedTopology: true,
-					useCreateIndex: true,
-					useFindAndModify: false,
 				};
 			},
 		}),
