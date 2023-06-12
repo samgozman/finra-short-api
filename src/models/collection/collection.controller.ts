@@ -75,7 +75,7 @@ export class CollectionController {
     try {
       this.logger.warn('(¬_¬) CRON updater task has started');
       await this.updateLastDay();
-      await this.updateFilters();
+      // await this.updateFilters(); // ! Uncomment this line to update filters
       this.logger.log('(¬_¬) CRON updater task has finished');
     } catch (error) {
       this.logger.error('Error while on Cron updater', error);
