@@ -9,7 +9,7 @@ export interface FinraReport {
 	totalVolume: number;
 }
 
-// Finra report assigned to each indiviual stock
+// Finra report assigned to each individual stock
 export interface FinraAssignedReports {
 	[ticker: string]: FinraReport;
 }
@@ -76,7 +76,7 @@ VolumeSchema.statics.findByStockId = async function (
 	_stock_id: string,
 ): Promise<IVolumeDocument> {
 	try {
-		let instance: IVolumeDocument = await this.findOne({
+		const instance: IVolumeDocument = await this.findOne({
 			_stock_id,
 		});
 
