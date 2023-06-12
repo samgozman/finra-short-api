@@ -1,14 +1,14 @@
-
-FROM node:18-alpine3.17
-
+FROM node:18-alpine3.17 AS build-env
 WORKDIR /app
-
 COPY package.json ./
-
 RUN npm install
-
 COPY . ./
+EXPOSE 3001
+RUN npm run build
 
+FROM gcr.io/distroless/nodejs18-debian11
+COPY --from=build-env /app /app
+WORKDIR /app
 ARG MONGODB_URL=mongodb
 ARG MONGODB_NAME=finra-short-api
 ARG MONGODB_PORT=27017
@@ -30,8 +30,4 @@ ENV SENTRY_DSN=${SENTRY_DSN}
 ENV SENTRY_TRACE_RATE=${SENTRY_TRACE_RATE}
 ENV PORT=3001
 
-EXPOSE 3001
-
-RUN npm run build
-
-CMD ["npm", "run", "start:prod"]
+CMD ["dist/main.js"]
