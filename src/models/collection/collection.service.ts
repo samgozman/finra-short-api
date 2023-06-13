@@ -101,10 +101,11 @@ export class CollectionService {
     try {
       this.logger.warn('Updating filters with Go service has started');
       const observable = this.httpService
-        .get(this.configService.get('ANALYZER_URL'), {
+        .post(this.configService.get('ANALYZER_URL'), {}, {
           headers: {
             Accept: 'application/json',
-          },
+            Authorization: `Bearer ${this.configService.get('ANALYZER_TOKEN')}`,
+          }
         })
         .pipe(map((response) => response.data));
       await firstValueFrom(observable);
