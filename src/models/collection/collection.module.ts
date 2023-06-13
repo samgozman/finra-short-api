@@ -2,6 +2,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
+import { ConfigModule } from '@nestjs/config';
 import { FilterUnitService } from '../filters/filter-unit.service';
 import { FiltersService } from '../filters/filters.service';
 import { FiltersRepository } from '../filters/repositories/filters.repository';
@@ -22,6 +23,7 @@ import { ParseService } from './parse.service';
 @Module({
   controllers: [CollectionController],
   imports: [
+    ConfigModule,
     MongooseModule.forFeature([
       UserModelDefinition,
       StockModelDefinition,
