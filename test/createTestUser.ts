@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import { AuthCredentialsDto } from 'src/authentication/dtos/auth-credentials.dto';
 import { AuthDto } from 'src/authentication/dtos/auth.dto';
-import { UserPrivileges } from 'src/models/users/schemas/user.schema';
+import { UserPrivileges } from 'src/modules/users/schemas/user.schema';
 import request from 'supertest';
 
 interface ITokensTest {

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { Volume } from '../../../models/volumes/schemas/volume.schema';
+import { Volume } from '../../volumes/schemas/volume.schema';
 import { IStock } from '../schemas/stock.schema';
 
 export class StockDto implements Partial<IStock> {

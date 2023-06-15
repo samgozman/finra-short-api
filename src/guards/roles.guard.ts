@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { compare } from 'bcryptjs';
-import { User } from '../models/users/schemas/user.schema';
-import { UsersService } from '../models/users/users.service';
+import { User } from '../modules/users/schemas/user.schema';
+import { UsersService } from '../modules/users/users.service';
 
 /** Denies access to the resource for users who have insufficient rights. */
 @Injectable()

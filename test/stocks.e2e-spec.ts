@@ -6,8 +6,8 @@ import request from 'supertest';
 import { getConnectionToken } from '@nestjs/mongoose';
 import { createTestUser } from './createTestUser';
 import { AuthCredentialsDto } from 'src/authentication/dtos/auth-credentials.dto';
-import { IStock } from 'src/models/stocks/schemas/stock.schema';
-import { StockDto } from 'src/models/stocks/dtos/stock.dto';
+import { IStock } from 'src/modules/stocks/schemas/stock.schema';
+import { StockDto } from 'src/modules/stocks/dtos/stock.dto';
 
 jest.setTimeout(30000);
 

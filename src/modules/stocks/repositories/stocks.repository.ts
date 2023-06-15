@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AnyKeys, AnyObject, FilterQuery } from 'mongoose';
-import { FilteredStocksDto } from 'src/models/filters/dtos/filtered-stocks.dto';
+import { FilteredStocksDto } from 'src/modules/filters/dtos/filtered-stocks.dto';
 import { StockDto } from '../dtos/stock.dto';
 import {
   IStock,
