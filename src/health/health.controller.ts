@@ -4,7 +4,6 @@ import {
   HealthCheck,
   HealthCheckService,
   HttpHealthIndicator,
-  MongooseHealthIndicator,
 } from '@nestjs/terminus';
 
 @ApiTags('health')
@@ -13,7 +12,6 @@ export class HealthController {
   constructor(
     private health: HealthCheckService,
     private http: HttpHealthIndicator,
-    private db: MongooseHealthIndicator,
   ) {}
 
   @Get()
@@ -31,7 +29,6 @@ export class HealthController {
           'FINRA txt volume (test 20210901)',
           'https://cdn.finra.org/equity/regsho/daily/CNMSshvol20210901.txt',
         ),
-      () => this.db.pingCheck('mongodb'),
     ]);
   }
 }

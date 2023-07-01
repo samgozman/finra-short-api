@@ -1,16 +1,10 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_PIPE, APP_FILTER, APP_GUARD } from '@nestjs/core';
-import { MongooseModule } from '@nestjs/mongoose';
+import { APP_PIPE, APP_GUARD } from '@nestjs/core';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AppService } from './app.service';
 import { configValidationSchema } from './config.schema';
-import { UsersModule } from './modules/users/users.module';
-import { StocksModule } from './modules/stocks/stocks.module';
-import { VolumesModule } from './modules/volumes/volumes.module';
-import { FiltersModule } from './modules/filters/filters.module';
-import { CollectionModule } from './modules/collection/collection.module';
-import { MongoExceptionFilter } from './exceptions/mongo-exception.filter';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { HealthModule } from './health/health.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
@@ -24,29 +18,24 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
         process.env.NODE_ENV !== 'github' ? configValidationSchema : undefined,
     }),
     ScheduleModule.forRoot(),
-    MongooseModule.forRootAsync({
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get('DB_HOST'),
+        port: +configService.get<number>('DB_PORT'),
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
+        entities: [],
+        synchronize: true,
+      }),
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        return {
-          uri: `mongodb://${config.get(
-            'MONGO_INITDB_ROOT_USERNAME',
-          )}:${config.get('MONGO_INITDB_ROOT_PASSWORD')}@${config.get(
-            'MONGODB_URL',
-          )}:${config.get('MONGODB_PORT')}/${config.get(
-            'MONGODB_NAME',
-          )}?authSource=admin&readPreference=primary&ssl=false`,
-        };
-      },
     }),
     ThrottlerModule.forRoot({
       ttl: 60,
       limit: 50,
     }),
-    UsersModule,
-    StocksModule,
-    VolumesModule,
-    FiltersModule,
-    CollectionModule,
     AuthenticationModule,
     HealthModule,
   ],
@@ -64,10 +53,6 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
         // Throw an error on forbiden request
         forbidNonWhitelisted: true,
       }),
-    },
-    {
-      provide: APP_FILTER,
-      useClass: MongoExceptionFilter,
     },
     {
       provide: APP_GUARD,

@@ -6,8 +6,7 @@ import { AuthenticationService } from './authentication.service';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthenticationController } from './authentication.controller';
 import { UsersService } from '../modules/users/users.service';
-import { MongooseModule } from '@nestjs/mongoose';
-import { UserModelDefinition } from '../modules/users/schemas/user.schema';
+import { UserModelDefinition } from '../modules/users/user.entity';
 import { UsersRepository } from '../modules/users/repositories/users.repository';
 
 @Module({
@@ -24,7 +23,6 @@ import { UsersRepository } from '../modules/users/repositories/users.repository'
         },
       }),
     }),
-    MongooseModule.forFeature([UserModelDefinition]),
   ],
   providers: [
     AuthenticationService,
