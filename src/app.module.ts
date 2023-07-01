@@ -8,6 +8,8 @@ import { configValidationSchema } from './config.schema';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { HealthModule } from './health/health.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { UsersModule } from './modules/users/users.module';
+import { User } from './modules/users/user.entity';
 
 @Module({
   imports: [
@@ -27,7 +29,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [],
+        entities: [User],
         synchronize: true,
       }),
       inject: [ConfigService],
@@ -38,6 +40,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
     }),
     AuthenticationModule,
     HealthModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [

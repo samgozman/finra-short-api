@@ -6,8 +6,6 @@ import { AuthenticationService } from './authentication.service';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthenticationController } from './authentication.controller';
 import { UsersService } from '../modules/users/users.service';
-import { UserModelDefinition } from '../modules/users/user.entity';
-import { UsersRepository } from '../modules/users/repositories/users.repository';
 
 @Module({
   imports: [
@@ -29,7 +27,6 @@ import { UsersRepository } from '../modules/users/repositories/users.repository'
     JwtStrategy,
     UsersService,
     ConfigService,
-    UsersRepository,
   ],
   controllers: [AuthenticationController],
   exports: [JwtStrategy, PassportModule],
