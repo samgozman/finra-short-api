@@ -8,5 +8,5 @@ export class ApiKeyDto {
 
   @ApiProperty()
   @Expose()
-  apikey: string;
+  apiKey: string;
 }
