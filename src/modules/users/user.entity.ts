@@ -18,10 +18,11 @@ export class User {
   })
   password: string;
 
-  @Column({
+  @Column('enum', {
     nullable: false,
     default: [UserRoles.stockInfo, UserRoles.screener],
     enum: UserRoles,
+    array: true,
   })
   roles: UserRoles[];
 
