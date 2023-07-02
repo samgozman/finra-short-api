@@ -44,19 +44,19 @@ export class RolesGuard implements CanActivate {
         return false;
       }
 
-      const userFromDb = await this.usersService.findOne({ login });
+      const userFromDb = await this.usersService.findOneByLogin(login);
       if (!userFromDb) {
         return false;
       }
 
-      if (!userFromDb.apikey) {
+      if (!userFromDb.apiKey) {
         throw new ForbiddenException('The user does not have an API key');
       }
 
       user = userFromDb;
 
       // Compare bcrypt token
-      const compareResult = await compare(token, user.apikey);
+      const compareResult = await compare(token, user.apiKey);
       if (!compareResult) {
         return false;
       }

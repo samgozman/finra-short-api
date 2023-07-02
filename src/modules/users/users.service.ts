@@ -36,6 +36,12 @@ export class UsersService {
     });
   }
 
+  async findOneById(id: string) {
+    return this.userRepository.findOne({
+      where: { id },
+    });
+  }
+
   async createApiKey(login: string) {
     // 1 - find user
     const user = await this.findOneByLogin(login);
