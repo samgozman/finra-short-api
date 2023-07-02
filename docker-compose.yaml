@@ -1,10 +1,10 @@
 version: '3.8'
 
 services:
-  mongodb:
-    image: 'mongo'
+  postgres:
+    image: 'postgres'
     volumes:
-      - ./data:/data/db
+      - ./data:/var/lib/postgresql/data
     env_file:
       - ./config/.production.env
 
@@ -15,14 +15,4 @@ services:
     env_file:
       - ./config/.production.env
     depends_on:
-      - mongodb
-
-  analyzer:
-    image: 'ghcr.io/samgozman/go-finra-short-sales-analyzer:latest'
-    restart: unless-stopped
-    ports:
-      - '3030:3030'
-    env_file:
-      - ./config/.production.env
-    depends_on:
-      - mongodb
+      - postgres

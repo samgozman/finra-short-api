@@ -2,11 +2,11 @@ import Joi from 'joi';
 
 // *.env validation
 export const configValidationSchema = Joi.object({
-  DB_HOST: Joi.string().required(),
-  DB_PORT: Joi.number().required(),
-  DB_USERNAME: Joi.string().required(),
-  DB_PASSWORD: Joi.string().required(),
-  DB_NAME: Joi.string().required(),
+  POSTGRES_HOST: Joi.string().required(),
+  POSTGRES_PORT: Joi.number().required(),
+  POSTGRES_USER: Joi.string().required(),
+  POSTGRES_PASSWORD: Joi.string().required(),
+  POSTGRES_DB: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
   ADMIN_SECRET: Joi.string().required(),
   SENTRY_DSN: Joi.string().required().uri(),
