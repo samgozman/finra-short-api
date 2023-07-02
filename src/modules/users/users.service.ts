@@ -79,11 +79,6 @@ export class UsersService {
     // Check roles. They should contains only predefined values
     const { login, role } = updateRolesDto;
 
-    // TODO: if role === 'admin' checks if one allReady exists. Limit admin users by 1
-    if (role === 'admin') {
-      throw new ConflictException('You can not set admin roles via request');
-    }
-
     const user = await this.findOneByLogin(login);
 
     if (!user) {
