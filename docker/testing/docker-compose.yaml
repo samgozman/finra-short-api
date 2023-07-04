@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: 'postgres'
+    env_file:
+      - ../../config/.development.env
+
+  finra-api:
+    build:
+      context: ../../
+      dockerfile: ./docker/testing/Dockerfile
+    ports:
+      - '3001:3001'
+    environment:
+      - TEST_MODE=${TEST_MODE}
+    env_file:
+      - ../../config/.development.env
+    depends_on:
+      - postgres

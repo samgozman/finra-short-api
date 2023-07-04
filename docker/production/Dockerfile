@@ -1,7 +1,7 @@
 FROM node:18-alpine3.17 AS build-env
 WORKDIR /app
-COPY package.json ./
-RUN npm install
+COPY package*.json ./
+RUN npm ci --include=dev
 COPY . ./
 RUN npm run build
 

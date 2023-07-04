@@ -4,6 +4,5 @@ docker-compose.yaml
 .git
 .github
 .gitignore
-test/
 config/
 /data
