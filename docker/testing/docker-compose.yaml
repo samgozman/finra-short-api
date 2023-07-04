@@ -16,5 +16,8 @@ services:
       - TEST_MODE=${TEST_MODE}
     env_file:
       - ../../config/.development.env
+    volumes:
+     - ../../src:/app/src
+     - ../../test:/app/test
     depends_on:
       - postgres
