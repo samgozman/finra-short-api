@@ -16,8 +16,7 @@ import { User } from './modules/users/user.entity';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `config/.${process.env.NODE_ENV}.env`,
-      validationSchema:
-        process.env.NODE_ENV !== 'github' ? configValidationSchema : undefined,
+      validationSchema: configValidationSchema,
     }),
     ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
