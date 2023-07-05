@@ -18,7 +18,8 @@ import { User } from './modules/users/user.entity';
       envFilePath: `config/.${process.env.NODE_ENV}.env`,
       validationSchema: configValidationSchema,
     }),
-    ScheduleModule.forRoot(),
+    // ! TODO: Check do I need this module?
+    // ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
