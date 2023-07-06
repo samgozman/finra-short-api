@@ -14,7 +14,7 @@
     "start:debug": "export NODE_ENV=development && nest start --debug --watch",
     "start:prod": "export NODE_ENV=production && node dist/main",
     "docker:run:prod": "docker compose -f docker/production/docker-compose.yaml up --build",
-    "docker:run:test:e2e": "export TEST_MODE=e2e && docker compose -f docker/testing/docker-compose.yaml up --build",
+    "docker:run:test:e2e": "export TEST_MODE=e2e && docker compose -f docker/testing/docker-compose.yaml up --build --exit-code-from finra-api",
     "docker:run:test:e2e:watch": "export TEST_MODE=e2e:watch && docker compose -f docker/testing/docker-compose.yaml up --build",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "export NODE_ENV=test && jest",
