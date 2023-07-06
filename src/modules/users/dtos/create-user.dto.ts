@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsEnum,
   IsString,
+  IsArray,
 } from 'class-validator';
 import { UserRoles } from '../enums/user-roles.enum';
 
@@ -22,5 +23,6 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsEnum(UserRoles, { each: true })
-  roles?: UserRoles[];
+  @IsArray()
+  roles?: (keyof typeof UserRoles)[];
 }

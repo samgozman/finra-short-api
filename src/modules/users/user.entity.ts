@@ -26,7 +26,7 @@ export class User {
     enum: UserRoles,
     array: true,
   })
-  roles: UserRoles[];
+  roles: (keyof typeof UserRoles)[];
 
   @Column({
     nullable: true,
