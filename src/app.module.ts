@@ -53,7 +53,7 @@ import { User } from './modules/users/user.entity';
         transform: true,
         // Check that incoming request don't have unexpected keys (removes them)
         whitelist: true,
-        // Throw an error on forbiden request
+        // Throw an error on forbidden request
         forbidNonWhitelisted: true,
       }),
     },
