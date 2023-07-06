@@ -2,7 +2,7 @@ name: Test finra-short-api
 
 on:
   push:
-    branches: [main, dev, finra-short-api-3.0]
+    branches: [main, dev]
   pull_request:
     branches: [main, dev]
 
