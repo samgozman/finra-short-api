@@ -1,7 +1,8 @@
 import request from 'supertest';
 import { Test } from '@nestjs/testing';
+import { APP_PIPE } from '@nestjs/core';
 import { UsersModule } from '../../src/modules/users/users.module';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -43,14 +44,24 @@ describe('/user controller', () => {
         UsersModule,
       ],
       controllers: [],
-      providers: [AppService],
+      providers: [
+        AppService,
+        {
+          provide: APP_PIPE,
+          useValue: new ValidationPipe({
+            transform: true,
+            whitelist: true,
+            forbidNonWhitelisted: true,
+          }),
+        },
+      ],
     }).compile();
 
     app = moduleRef.createNestApplication();
     await app.init();
 
-    configService = app.get<ConfigService>(ConfigService);
-    userService = app.get<UsersService>(UsersService);
+    configService = app.get(ConfigService);
+    userService = app.get(UsersService);
     userRepository = app.get('UserRepository');
   });
 
@@ -81,6 +92,101 @@ describe('/user controller', () => {
         .auth(configService.get('ADMIN_SECRET'), { type: 'bearer' })
         .expect(200)
         .expect([{ login: 'testUser', roles: ['stockInfo', 'screener'] }]);
+    });
+
+    it('should return 403 if admin secret is not provided', async () => {
+      return request(app.getHttpServer()).get('/user/list').expect(403);
+    });
+  });
+
+  describe('[POST] /api', () => {
+    it('should create api key for user', async () => {
+      await userService.create({
+        login: 'testUser',
+        password: 'testPassword',
+      });
+
+      const resutl = await request(app.getHttpServer())
+        .post('/user/api')
+        .send({ login: 'testUser' })
+        .auth(configService.get('ADMIN_SECRET'), { type: 'bearer' })
+        .expect(201);
+
+      expect(resutl.body).toEqual({
+        apiKey: expect.stringContaining('testUser:'),
+      });
+      expect(resutl.body.apiKey.length).toBeGreaterThan(32);
+    });
+
+    it('should return 404 if user is not found', async () => {
+      return request(app.getHttpServer())
+        .post('/user/api')
+        .send({ login: 'unfoundedUser' })
+        .auth(configService.get('ADMIN_SECRET'), { type: 'bearer' })
+        .expect(404);
+    });
+
+    it('should return 400 if login is not provided', async () => {
+      return request(app.getHttpServer())
+        .post('/user/api')
+        .send({})
+        .auth(configService.get('ADMIN_SECRET'), { type: 'bearer' })
+        .expect(400);
+    });
+
+    it('should return 403 if admin secret is not provided', async () => {
+      return request(app.getHttpServer())
+        .post('/user/api')
+        .send({ login: 'testUser' })
+        .expect(403);
+    });
+  });
+
+  describe('[PATCH] /roles', () => {
+    it('should add new role for the user', async () => {
+      await userService.create({
+        login: 'testUser',
+        password: 'testPassword',
+        roles: ['stockInfo'],
+      });
+
+      return request(app.getHttpServer())
+        .patch('/user/roles')
+        .send({ login: 'testUser', role: 'screener' })
+        .auth(configService.get('ADMIN_SECRET'), { type: 'bearer' })
+        .expect(200)
+        .expect({ login: 'testUser', roles: ['stockInfo', 'screener'] });
+    });
+
+    it('should return 404 if user is not found', async () => {
+      return request(app.getHttpServer())
+        .patch('/user/roles')
+        .send({ login: 'unfoundedUser', role: 'screener' })
+        .auth(configService.get('ADMIN_SECRET'), { type: 'bearer' })
+        .expect(404);
+    });
+
+    it('should return 400 if login is not provided', async () => {
+      return request(app.getHttpServer())
+        .patch('/user/roles')
+        .send({ role: 'screener' })
+        .auth(configService.get('ADMIN_SECRET'), { type: 'bearer' })
+        .expect(400);
+    });
+
+    it('should return 400 if role is not provided', async () => {
+      return request(app.getHttpServer())
+        .patch('/user/roles')
+        .send({ login: 'testUser' })
+        .auth(configService.get('ADMIN_SECRET'), { type: 'bearer' })
+        .expect(400);
+    });
+
+    it('should return 403 if admin secret is not provided', async () => {
+      return request(app.getHttpServer())
+        .patch('/user/roles')
+        .send({ login: 'testUser', role: 'screener' })
+        .expect(403);
     });
   });
 });
