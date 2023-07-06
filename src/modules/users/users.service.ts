@@ -92,6 +92,10 @@ export class UsersService {
     }
 
     user.roles.push(role);
-    return this.userRepository.update({ id: user.id }, user);
+    await this.userRepository.update({ id: user.id }, user);
+    return {
+      login: user.login,
+      roles: user.roles,
+    };
   }
 }
