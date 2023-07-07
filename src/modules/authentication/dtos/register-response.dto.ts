@@ -1,12 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
-export class AuthDto {
+export class RegisterResponseDto {
   @ApiProperty()
   @Expose()
   login: string;
-
-  @ApiProperty()
-  @Expose()
-  accessToken?: string;
 }
