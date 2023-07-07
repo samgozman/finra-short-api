@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_PIPE, APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
-import { AppService } from './app.service';
 import { configValidationSchema } from './config.schema';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { HealthModule } from './health/health.module';
@@ -44,7 +43,6 @@ import { User } from './modules/users/user.entity';
   ],
   controllers: [],
   providers: [
-    AppService,
     // Apply this pipe on any request that flows into the application (instead of main.ts file)
     {
       provide: APP_PIPE,
