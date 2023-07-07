@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { compare } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../modules/users/users.service';
+import { UsersService } from '../users/users.service';
 import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
 import { JwtPayload } from './jwt-payload.interface';
 import { TokenDto } from './dtos/token.dto';

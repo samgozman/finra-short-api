@@ -4,7 +4,7 @@ import { APP_PIPE, APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { configValidationSchema } from './config.schema';
-import { AuthenticationModule } from './authentication/authentication.module';
+import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { HealthModule } from './health/health.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { UsersModule } from './modules/users/users.module';
