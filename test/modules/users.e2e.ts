@@ -7,7 +7,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../src/modules/users/user.entity';
-import { AuthenticationModule } from '../../src/authentication/authentication.module';
 import { configValidationSchema } from '../../src/config.schema';
 import { UsersService } from '../../src/modules/users/users.service';
 
@@ -39,7 +38,6 @@ describe('/user controller', () => {
           }),
           inject: [ConfigService],
         }),
-        AuthenticationModule,
         UsersModule,
       ],
       controllers: [],
