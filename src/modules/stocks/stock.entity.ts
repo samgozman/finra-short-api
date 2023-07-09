@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Volume } from '../volumes/volume.entity';
 
 @Entity({
   name: 'stocks',
@@ -21,6 +22,9 @@ export class Stock {
     },
   })
   ticker: string;
+
+  @OneToMany(() => Volume, (volume) => volume.stock)
+  volumes: Volume[];
 
   // Ratios (percentages)
 
