@@ -34,11 +34,11 @@ export class GetStockDto {
 
   @ApiProperty({
     required: false,
-    description: 'Sort stock volume by date (`ASC` or `DESC` direction)',
+    description: 'Sort stock volume by date (`asc` or `desc` direction)',
   })
   @IsOptional()
   @IsEnum(SortDirection, {
-    message: `sort direction can be 'ASC' or 'DESC' only`,
+    message: `sort direction can be 'asc' or 'desc' only`,
   })
-  sort: keyof typeof SortDirection = 'ASC';
+  sort = 'asc';
 }
