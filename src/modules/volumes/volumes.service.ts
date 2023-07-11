@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Volume } from './volume.entity';
 import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class VolumesService {
-  constructor(private readonly volumesRepository: Repository<Volume>) {}
+  constructor(
+    @InjectRepository(Volume)
+    private readonly volumesRepository: Repository<Volume>,
+  ) {}
 
   async insertMany(volumes: Volume[]) {
     return this.volumesRepository
