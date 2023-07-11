@@ -11,6 +11,8 @@ import { UsersModule } from './modules/users/users.module';
 import { User } from './modules/users/user.entity';
 import { StocksModule } from './modules/stocks/stocks.module';
 import { VolumesModule } from './modules/volumes/volumes.module';
+import { Stock } from './modules/stocks/stock.entity';
+import { Volume } from './modules/volumes/volume.entity';
 
 @Module({
   imports: [
@@ -30,7 +32,7 @@ import { VolumesModule } from './modules/volumes/volumes.module';
         username: configService.get('POSTGRES_USER'),
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
-        entities: [User],
+        entities: [User, Stock, Volume],
         synchronize: true,
       }),
       inject: [ConfigService],
