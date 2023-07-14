@@ -30,37 +30,43 @@ export class Stock {
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   shortVolRatioLast: number;
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   shortExemptVolRatioLast: number;
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   shortVolRatio5dAvg: number;
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   shortExemptVolRatio5dAvg: number;
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   shortVolRatio20dAvg: number;
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   shortExemptVolRatio20dAvg: number;
 
@@ -68,55 +74,64 @@ export class Stock {
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   totalVolLast: number;
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   totalVol5dAvg: number;
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   totalVol20dAvg: number;
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   shortExemptVolLast: number;
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   shortExemptVol5dAvg: number;
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   shortExemptVol20dAvg: number;
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   shortVolLast: number;
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   shortVol5dAvg: number;
 
   @Column({
     type: 'float',
-    nullable: false,
+    nullable: true,
+    default: null,
   })
   shortVol20dAvg: number;
 
