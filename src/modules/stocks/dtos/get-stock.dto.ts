@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type, Transform } from 'class-transformer';
 import {
-  IsEnum,
   IsInt,
   IsOptional,
   IsString,
@@ -10,6 +9,7 @@ import {
   IsNotEmpty,
   Matches,
   MaxLength,
+  IsIn,
 } from 'class-validator';
 import { SortDirection } from '../enums/sort-direction.enum';
 
@@ -34,11 +34,11 @@ export class GetStockDto {
 
   @ApiProperty({
     required: false,
-    description: 'Sort stock volume by date (`asc` or `desc` direction)',
+    description: 'Sort stock volume by date (`ASC` or `DESC` direction)',
   })
   @IsOptional()
-  @IsEnum(SortDirection, {
-    message: `sort direction can be 'asc' or 'desc' only`,
+  @IsIn([SortDirection.ASC, SortDirection.DESC], {
+    message: `sort direction can be 'ASC' or 'DESC' only`,
   })
-  sort = 'asc';
+  sort: keyof typeof SortDirection = 'ASC';
 }
