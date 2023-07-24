@@ -1,6 +1,34 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Exclude, Transform, plainToInstance } from 'class-transformer';
 import { Stock } from '../stock.entity';
+import { Volume } from '../../../modules/volumes/volume.entity';
+
+class VolumeDto implements Volume {
+  @Exclude()
+  id: string;
+
+  @Exclude()
+  stockId: string;
+
+  @Exclude()
+  stock: Stock;
+
+  @ApiProperty()
+  @Expose()
+  date: Date;
+
+  @ApiProperty()
+  @Expose()
+  shortVolume: number;
+
+  @ApiProperty()
+  @Expose()
+  shortExemptVolume: number;
+
+  @ApiProperty()
+  @Expose()
+  totalVolume: number;
+}
 
 export class StockDto implements Partial<Stock> {
   @ApiProperty()
@@ -42,4 +70,11 @@ export class StockDto implements Partial<Stock> {
   @ApiProperty()
   @Expose()
   totalVol20DAVG: number;
+
+  @ApiProperty()
+  @Expose()
+  @Transform(({ obj }) => {
+    return plainToInstance(VolumeDto, obj.volumes);
+  })
+  volumes: VolumeDto[];
 }

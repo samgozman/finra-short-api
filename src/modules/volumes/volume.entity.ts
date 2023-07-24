@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Stock } from '../stocks/stock.entity';
 
 @Entity({
@@ -34,6 +40,12 @@ export class Volume {
   })
   totalVolume: number;
 
-  @ManyToOne(() => Stock, (stock) => stock.volumes)
+  @Column('uuid')
+  stockId: string;
+
+  @ManyToOne(() => Stock, (stock) => stock.volumes, {
+    createForeignKeyConstraints: false,
+  })
+  @JoinColumn({ name: 'stockId' })
   stock: Stock;
 }
