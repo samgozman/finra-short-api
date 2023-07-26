@@ -8,7 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { configValidationSchema } from '../../src/config.schema';
 import { UsersService } from '../../src/modules/users/users.service';
-import { StocksService } from '../../src/modules/stocks/stocks.service';
 import { Stock } from '../../src/modules/stocks/stock.entity';
 import { Volume } from '../../src/modules/volumes/volume.entity';
 import { User } from '../../src/modules/users/user.entity';
@@ -21,8 +20,6 @@ import { AuthenticationModule } from '../../src/modules/authentication/authentic
 
 describe('/stock controller', () => {
   let app: INestApplication;
-  let configService: ConfigService;
-  let stocksService: StocksService;
   let usersService: UsersService;
   let stocksRepository: Repository<Stock>;
   let usersRepository: Repository<User>;
@@ -72,13 +69,13 @@ describe('/stock controller', () => {
     app = moduleRef.createNestApplication();
     await app.init();
 
-    configService = app.get(ConfigService);
-    stocksService = app.get(StocksService);
     usersService = app.get(UsersService);
     stocksRepository = app.get('StockRepository');
     usersRepository = app.get('UserRepository');
     volumesRepository = app.get('VolumeRepository');
+  });
 
+  beforeEach(async () => {
     const user = await usersService.create({
       login: 'testUser',
       password: '^#q3Z&rTu*5WGVP',
@@ -125,7 +122,7 @@ describe('/stock controller', () => {
       const result = await request(app.getHttpServer())
         .get('/stock')
         .set('token', apiToken)
-        .query({ ticker: 'AAPL', limit: 2 })
+        .query({ ticker: 'AAPL', limit: 10 })
         .expect(200);
 
       expect(result.body).toBeDefined();
@@ -140,6 +137,13 @@ describe('/stock controller', () => {
       expect(result.body.volumes[1].shortVolume).toEqual(120);
       expect(result.body.volumes[1].shortExemptVolume).toEqual(30);
       expect(result.body.volumes[1].totalVolume).toEqual(150);
+    });
+    it('should return 404 if stock not found', async () => {
+      await request(app.getHttpServer())
+        .get('/stock')
+        .set('token', apiToken)
+        .query({ ticker: 'MSFT' })
+        .expect(404);
     });
   });
 });
