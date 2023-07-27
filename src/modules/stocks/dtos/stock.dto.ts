@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Exclude, Transform, plainToInstance } from 'class-transformer';
-import { Stock } from '../stock.entity';
+import { Stock, StockObject } from '../stock.entity';
 import { Volume } from '../../../modules/volumes/volume.entity';
 
 class VolumeDto implements Volume {
@@ -30,7 +30,7 @@ class VolumeDto implements Volume {
   totalVolume: number;
 }
 
-export class StockDto implements Partial<Stock> {
+export class StockDto implements StockObject {
   @ApiProperty()
   @Expose()
   ticker: string;
@@ -45,31 +45,55 @@ export class StockDto implements Partial<Stock> {
 
   @ApiProperty()
   @Expose()
+  shortVolRatio5dAvg: number;
+
+  @ApiProperty()
+  @Expose()
+  shortExemptVolRatio5dAvg: number;
+
+  @ApiProperty()
+  @Expose()
+  shortVolRatio20dAvg: number;
+
+  @ApiProperty()
+  @Expose()
+  shortExemptVolRatio20dAvg: number;
+
+  @ApiProperty()
+  @Expose()
+  shortExemptVolLast: number;
+
+  @ApiProperty()
+  @Expose()
+  shortExemptVol5dAvg: number;
+
+  @ApiProperty()
+  @Expose()
+  shortExemptVol20dAvg: number;
+
+  @ApiProperty()
+  @Expose()
+  shortVolLast: number;
+
+  @ApiProperty()
+  @Expose()
+  shortVol5dAvg: number;
+
+  @ApiProperty()
+  @Expose()
+  shortVol20dAvg: number;
+
+  @ApiProperty()
+  @Expose()
   totalVolLast: number;
 
   @ApiProperty()
   @Expose()
-  shortVolRatio5DAVG: number;
+  totalVol5dAvg: number;
 
   @ApiProperty()
   @Expose()
-  shortExemptVolRatio5DAVG: number;
-
-  @ApiProperty()
-  @Expose()
-  totalVol5DAVG: number;
-
-  @ApiProperty()
-  @Expose()
-  shortVolRatio20DAVG: number;
-
-  @ApiProperty()
-  @Expose()
-  shortExemptVolRatio20DAVG: number;
-
-  @ApiProperty()
-  @Expose()
-  totalVol20DAVG: number;
+  totalVol20dAvg: number;
 
   @ApiProperty()
   @Expose()
