@@ -305,3 +305,62 @@ export class Stock {
   })
   abnormalShortExemptVolDecreases: boolean;
 }
+
+/**
+ * Stock filter properties
+ */
+export type StockFilters = Pick<
+  Stock,
+  | 'isNotGarbage'
+  | 'shortVolGrows5D'
+  | 'shortVolDecreases5D'
+  | 'shortVolRatioGrows5D'
+  | 'shortVolRatioDecreases5D'
+  | 'totalVolGrows5D'
+  | 'totalVolDecreases5D'
+  | 'shortExemptVolGrows5D'
+  | 'shortExemptVolDecreases5D'
+  | 'shortExemptVolRatioGrows5D'
+  | 'shortExemptVolRatioDecreases5D'
+  | 'shortVolGrows3D'
+  | 'shortVolDecreases3D'
+  | 'shortVolRatioGrows3D'
+  | 'shortVolRatioDecreases3D'
+  | 'totalVolGrows3D'
+  | 'totalVolDecreases3D'
+  | 'shortExemptVolGrows3D'
+  | 'shortExemptVolDecreases3D'
+  | 'shortExemptVolRatioGrows3D'
+  | 'shortExemptVolRatioDecreases3D'
+  | 'abnormalShortVolGrows'
+  | 'abnormalShortVolDecreases'
+  | 'abnormalTotalVolGrows'
+  | 'abnormalTotalVolDecreases'
+  | 'abnormalShortExemptVolGrows'
+  | 'abnormalShortExemptVolDecreases'
+>;
+
+/**
+ * Stock object properties (for API)
+ */
+export type StockObject = Pick<
+  Stock,
+  | 'ticker'
+  // Percent values
+  | 'shortVolRatioLast'
+  | 'shortExemptVolRatioLast'
+  | 'shortVolRatio5dAvg'
+  | 'shortExemptVolRatio5dAvg'
+  | 'shortVolRatio20dAvg'
+  | 'shortExemptVolRatio20dAvg'
+  // Numeric
+  | 'shortExemptVolLast'
+  | 'shortExemptVol5dAvg'
+  | 'shortExemptVol20dAvg'
+  | 'shortVolLast'
+  | 'shortVol5dAvg'
+  | 'shortVol20dAvg'
+  | 'totalVolLast'
+  | 'totalVol5dAvg'
+  | 'totalVol20dAvg'
+>;
