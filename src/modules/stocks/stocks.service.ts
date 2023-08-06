@@ -1,9 +1,11 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Stock } from './stock.entity';
+import { Stock, StockFilters, sortKeysObject } from './stock.entity';
 import { GetStockDto } from './dtos/get-stock.dto';
 import { Volume } from '../volumes/volume.entity';
+import { FilteredStocksDto } from './dtos/filtered-stocks.dto';
+import { GetFilteredStocksDto } from './dtos/get-filtered-stocks.dto';
 
 @Injectable()
 export class StocksService {
@@ -34,5 +36,31 @@ export class StocksService {
     });
 
     return stock;
+  }
+
+  public async getFilteredStocks(
+    query: GetFilteredStocksDto,
+  ): Promise<FilteredStocksDto> {
+    const { limit, skip, sortby, sortDir, tickers, filters } = query;
+
+    const preparedFilters: Partial<StockFilters> = {};
+    if (filters && filters.length > 0) {
+      filters.forEach((filter) => {
+        preparedFilters[filter] = true;
+      });
+    }
+
+    const result = await this.stocksRepository.findAndCount({
+      select: sortKeysObject,
+      where: { ticker: tickers ? In(tickers) : undefined, ...preparedFilters },
+      order: { [sortby]: sortDir },
+      take: limit,
+      skip,
+    });
+
+    return {
+      stocks: result[0],
+      count: result[1],
+    };
   }
 }

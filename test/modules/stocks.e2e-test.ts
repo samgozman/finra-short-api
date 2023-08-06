@@ -79,7 +79,7 @@ describe('/stock controller', () => {
     const user = await usersService.create({
       login: 'testUser',
       password: '^#q3Z&rTu*5WGVP',
-      roles: ['stockInfo'],
+      roles: ['stockInfo', 'screener'],
     });
     const { apiKey } = await usersService.createApiKey(user.login);
     apiToken = apiKey;
@@ -96,7 +96,7 @@ describe('/stock controller', () => {
   });
 
   describe('GET /stock', () => {
-    it('should work', async () => {
+    it('should return stock with volumes', async () => {
       const stock = await stocksRepository.save({
         ticker: 'AAPL',
         shortVolRatioLast: 0.75,
@@ -145,5 +145,86 @@ describe('/stock controller', () => {
         .query({ ticker: 'MSFT' })
         .expect(404);
     });
+    // TODO: Should return 403 if user doesn't have access
+  });
+
+  describe('GET /stock/screener', () => {
+    it('should return filtered stocks', async () => {
+      await stocksRepository.save({
+        ticker: 'AAPL',
+        isNotGarbage: true,
+        totalVolLast: 150,
+      });
+      await stocksRepository.save({
+        ticker: 'MSFT',
+        isNotGarbage: true,
+        totalVolLast: 170,
+      });
+      await stocksRepository.save({
+        ticker: 'PLTR',
+        isNotGarbage: false,
+      });
+
+      const result = await request(app.getHttpServer())
+        .get('/stock/screener')
+        .set('token', apiToken)
+        .query({ filters: 'isNotGarbage' })
+        .expect(200);
+
+      expect(result.body).toBeDefined();
+      expect(result.body.stocks).toHaveLength(2);
+      expect(result.body.count).toEqual(2);
+
+      const aaplStock = result.body.stocks.find(
+        (stock) => stock.ticker === 'AAPL',
+      );
+      expect(aaplStock).toBeDefined();
+      expect(aaplStock).toStrictEqual({
+        ticker: 'AAPL',
+        shortVolRatioLast: null,
+        shortExemptVolRatioLast: null,
+        shortVolRatio5dAvg: null,
+        shortExemptVolRatio5dAvg: null,
+        shortVolRatio20dAvg: null,
+        shortExemptVolRatio20dAvg: null,
+        totalVolLast: 150,
+        totalVol5dAvg: null,
+        totalVol20dAvg: null,
+        shortExemptVolLast: null,
+        shortExemptVol5dAvg: null,
+        shortExemptVol20dAvg: null,
+        shortVolLast: null,
+        shortVol5dAvg: null,
+        shortVol20dAvg: null,
+      });
+
+      const msftStock = result.body.stocks.find(
+        (stock) => stock.ticker === 'MSFT',
+      );
+      expect(msftStock).toBeDefined();
+      expect(msftStock).toStrictEqual({
+        ticker: 'MSFT',
+        shortVolRatioLast: null,
+        shortExemptVolRatioLast: null,
+        shortVolRatio5dAvg: null,
+        shortExemptVolRatio5dAvg: null,
+        shortVolRatio20dAvg: null,
+        shortExemptVolRatio20dAvg: null,
+        totalVolLast: 170,
+        totalVol5dAvg: null,
+        totalVol20dAvg: null,
+        shortExemptVolLast: null,
+        shortExemptVol5dAvg: null,
+        shortExemptVol20dAvg: null,
+        shortVolLast: null,
+        shortVol5dAvg: null,
+        shortVol20dAvg: null,
+      });
+    });
+
+    // TODO: should paginate
+    // TODO: should return combined filters
+    // TODO: should return filtered by ticker name and filters
+    // TODO: Should return 403 if user doesn't have access
   });
 });

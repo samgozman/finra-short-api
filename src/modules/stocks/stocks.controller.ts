@@ -13,6 +13,8 @@ import { RolesGuard } from '../../guards/roles.guard';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { GetStockDto } from './dtos/get-stock.dto';
 import { StockDto } from './dtos/stock.dto';
+import { GetFilteredStocksDto } from './dtos/get-filtered-stocks.dto';
+import { FilteredStocksDto } from './dtos/filtered-stocks.dto';
 import { StocksService } from './stocks.service';
 
 @ApiTags('stock')
@@ -32,5 +34,19 @@ export class StocksController {
   @ApiNotFoundResponse()
   getStock(@Query() query: GetStockDto) {
     return this.stocksService.get(query);
+  }
+
+  @Get('/screener')
+  @Roles('screener')
+  @UseGuards(RolesGuard)
+  @ApiOperation({ summary: 'Get filtered stocks by query' })
+  @ApiOkResponse({
+    description: 'Filters response object',
+    type: FilteredStocksDto,
+  })
+  @ApiForbiddenResponse()
+  @ApiSecurity('user-api-token')
+  getFilter(@Query() query: GetFilteredStocksDto) {
+    return this.stocksService.getFilteredStocks(query);
   }
 }
