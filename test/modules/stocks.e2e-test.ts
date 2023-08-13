@@ -150,20 +150,22 @@ describe('/stock controller', () => {
 
   describe('GET /stock/screener', () => {
     it('should return filtered stocks', async () => {
-      await stocksRepository.save({
-        ticker: 'AAPL',
-        isNotGarbage: true,
-        totalVolLast: 150,
-      });
-      await stocksRepository.save({
-        ticker: 'MSFT',
-        isNotGarbage: true,
-        totalVolLast: 170,
-      });
-      await stocksRepository.save({
-        ticker: 'PLTR',
-        isNotGarbage: false,
-      });
+      await stocksRepository.insert([
+        {
+          ticker: 'AAPL',
+          isNotGarbage: true,
+          totalVolLast: 150,
+        },
+        {
+          ticker: 'MSFT',
+          isNotGarbage: true,
+          totalVolLast: 170,
+        },
+        {
+          ticker: 'PLTR',
+          isNotGarbage: false,
+        },
+      ]);
 
       const result = await request(app.getHttpServer())
         .get('/stock/screener')
@@ -221,10 +223,138 @@ describe('/stock controller', () => {
         shortVol20dAvg: null,
       });
     });
+    it('should paginate and sort', async () => {
+      await stocksRepository.insert([
+        {
+          ticker: 'AAPL',
+          shortVolLast: 100,
+        },
+        {
+          ticker: 'MSFT',
+          shortVolLast: 200,
+        },
+        {
+          ticker: 'PLTR',
+          shortVolLast: 300,
+        },
+        {
+          ticker: 'TSLA',
+          shortVolLast: 400,
+        },
+        {
+          ticker: 'AMZN',
+          shortVolLast: 500,
+        },
+      ]);
 
-    // TODO: should paginate
-    // TODO: should return combined filters
-    // TODO: should return filtered by ticker name and filters
-    // TODO: Should return 403 if user doesn't have access
+      const result = await request(app.getHttpServer())
+        .get('/stock/screener')
+        .set('token', apiToken)
+        .query({ limit: 2, skip: 1, sortby: 'shortVolLast', sortDir: 'DESC' })
+        .expect(200);
+
+      expect(result.body).toBeDefined();
+      expect(result.body.stocks).toHaveLength(2);
+      expect(result.body.count).toEqual(5);
+
+      const tslaStock = result.body.stocks.find(
+        (stock) => stock.ticker === 'TSLA',
+      );
+      expect(tslaStock).toBeDefined();
+      const pltrStock = result.body.stocks.find(
+        (stock) => stock.ticker === 'PLTR',
+      );
+      expect(pltrStock).toBeDefined();
+    });
+    it('should return combined filters', async () => {
+      await stocksRepository.insert([
+        {
+          ticker: 'AAPL',
+          isNotGarbage: true,
+          shortVolGrows3D: false,
+        },
+        {
+          ticker: 'MSFT',
+          isNotGarbage: true,
+          shortVolGrows3D: true,
+        },
+        {
+          ticker: 'PLTR',
+          isNotGarbage: false,
+          shortVolGrows3D: false,
+        },
+      ]);
+
+      const result = await request(app.getHttpServer())
+        .get('/stock/screener')
+        .set('token', apiToken)
+        .query({ filters: 'isNotGarbage,shortVolGrows3D' })
+        .expect(200);
+
+      expect(result.body).toBeDefined();
+      expect(result.body.stocks).toHaveLength(1);
+      expect(result.body.count).toEqual(1);
+      expect(result.body.stocks[0].ticker).toEqual('MSFT');
+    });
+    it('return filtered by ticker name and filters', async () => {
+      await stocksRepository.insert([
+        {
+          ticker: 'AAPL',
+          isNotGarbage: true,
+          shortVolGrows3D: true,
+        },
+        {
+          ticker: 'MSFT',
+          isNotGarbage: true,
+          shortVolGrows3D: true,
+        },
+        {
+          ticker: 'PLTR',
+          isNotGarbage: false,
+          shortVolGrows3D: true,
+        },
+      ]);
+
+      const result = await request(app.getHttpServer())
+        .get('/stock/screener')
+        .set('token', apiToken)
+        .query({ filters: 'isNotGarbage,shortVolGrows3D', tickers: 'MSFT' })
+        .expect(200);
+
+      expect(result.body).toBeDefined();
+      expect(result.body.stocks).toHaveLength(1);
+      expect(result.body.count).toEqual(1);
+      expect(result.body.stocks[0].ticker).toEqual('MSFT');
+    });
+    it('return empty if not found', async () => {
+      await stocksRepository.insert([
+        {
+          ticker: 'AAPL',
+        },
+      ]);
+
+      const result = await request(app.getHttpServer())
+        .get('/stock/screener')
+        .set('token', apiToken)
+        .query({ tickers: 'MSFT' })
+        .expect(200);
+
+      expect(result.body).toBeDefined();
+      expect(result.body.stocks).toHaveLength(0);
+      expect(result.body.count).toEqual(0);
+    });
+    it("should return 403 if user doesn't have access", async () => {
+      const user = await usersService.create({
+        login: 'testUser2',
+        password: '^#q3Z&rTu*5WGVP',
+        roles: ['stockInfo'],
+      });
+      const { apiKey } = await usersService.createApiKey(user.login);
+
+      await request(app.getHttpServer())
+        .get('/stock/screener')
+        .set('token', apiKey)
+        .expect(403);
+    });
   });
 });
