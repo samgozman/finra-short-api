@@ -13,6 +13,7 @@ import { StocksModule } from './modules/stocks/stocks.module';
 import { VolumesModule } from './modules/volumes/volumes.module';
 import { Stock } from './modules/stocks/stock.entity';
 import { Volume } from './modules/volumes/volume.entity';
+import { DataModule } from './modules/data/data.module';
 
 @Module({
   imports: [
@@ -21,8 +22,7 @@ import { Volume } from './modules/volumes/volume.entity';
       envFilePath: `config/.${process.env.NODE_ENV}.env`,
       validationSchema: configValidationSchema,
     }),
-    // ! TODO: Check do I need this module?
-    // ScheduleModule.forRoot(),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -46,6 +46,7 @@ import { Volume } from './modules/volumes/volume.entity';
     UsersModule,
     StocksModule,
     VolumesModule,
+    DataModule,
   ],
   controllers: [],
   providers: [
