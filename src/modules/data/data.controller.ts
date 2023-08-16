@@ -20,7 +20,7 @@ import { RolesGuard } from '../../guards/roles.guard';
 import { DataService } from './data.service';
 import { GetLinkDto } from './dtos/get-link.dto';
 
-@ApiTags('collection')
+@ApiTags('data')
 @ApiBearerAuth('auth-with-admin-role')
 @ApiForbiddenResponse()
 @ApiInternalServerErrorResponse()
@@ -28,7 +28,7 @@ import { GetLinkDto } from './dtos/get-link.dto';
 @Controller('data')
 export class DataController {
   private readonly logger = new Logger(DataController.name);
-  constructor(private collectionService: DataService) {}
+  constructor(private dataService: DataService) {}
 
   @Patch('/recreate')
   @Roles('admin')
@@ -38,7 +38,7 @@ export class DataController {
       'Recreate full database from the start (parse tons of FINRA reports at once)',
   })
   recreateCollection() {
-    return this.collectionService.recreateFullDatabase();
+    return this.dataService.recreateFullDatabase();
   }
 
   @Patch('/update/last-days')
@@ -46,7 +46,7 @@ export class DataController {
   @UseGuards(RolesGuard)
   @ApiOperation({ summary: 'Fetch last trading days from FINRA' })
   updateLastDays() {
-    return this.collectionService.updateLastTradingDays();
+    return this.dataService.updateLastTradingDays();
   }
 
   @Patch('/update/filters')
@@ -54,7 +54,7 @@ export class DataController {
   @UseGuards(RolesGuard)
   @ApiOperation({ summary: 'Update filters and averages' })
   updateFilters() {
-    return this.collectionService.updateFilters();
+    return this.dataService.updateFilters();
   }
 
   @Post('/update/link')
@@ -65,7 +65,7 @@ export class DataController {
       'Update collection directly from the FINRA report txt file by link',
   })
   updateVolumesByLink(@Query() query: GetLinkDto) {
-    return this.collectionService.updateVolumesByLink(query.link);
+    return this.dataService.updateVolumesByLink(query.link);
   }
 
   // Run at 18:30 (6.30pm/12 ET) on every day-of-week from Monday through Friday.
