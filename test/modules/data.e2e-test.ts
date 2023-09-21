@@ -121,7 +121,7 @@ describe('/data controller', () => {
 
   describe('[PATCH] /update/filters', () => {
     // TODO: Create test for the case were latestRecordTime is not equal to the current date
-    it.only('should update averages & filters', async () => {
+    it('should update averages & filters', async () => {
       const stock = await stocksRepository.save({
         ticker: 'AAPL',
         shortVolRatioLast: 0.75,
