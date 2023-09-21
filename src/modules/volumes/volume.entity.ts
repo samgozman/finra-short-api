@@ -14,6 +14,7 @@ export class Volume {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  // TODO: Add index to date to speed up queries
   @Column({
     type: 'date',
     nullable: false,

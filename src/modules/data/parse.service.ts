@@ -12,7 +12,7 @@ import { FinraAssignedReports } from './interfaces/finra-assigned-report.interfa
 export class ParseService {
   private readonly logger = new Logger(ParseService.name);
 
-  getAllDaysPages(): string[] {
+  public getAllDaysPages(): string[] {
     function getDatesPages(startDate: Date, endDate: Date) {
       const dates = [];
       let currentDate = startDate;
@@ -43,7 +43,7 @@ export class ParseService {
    * @param url Link to the report file (.txt)
    * @return Object promise: ticker: FinraReport
    */
-  async getDataFromFile(url: string): Promise<FinraAssignedReports> {
+  public async getDataFromFile(url: string): Promise<FinraAssignedReports> {
     try {
       const response = await got(url);
 

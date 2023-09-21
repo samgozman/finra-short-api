@@ -9,19 +9,23 @@ import { ParseService } from './parse.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Stock } from '../stocks/stock.entity';
 import { Repository } from 'typeorm';
+import { AnalyzerService } from './analyzer.service';
 
 @Injectable()
 export class DataService {
   private readonly logger = new Logger(DataService.name);
   constructor(
     private parseService: ParseService,
+    private analyzerService: AnalyzerService,
     @InjectRepository(Stock)
     private readonly stocksRepository: Repository<Stock>,
     @InjectRepository(Volume)
     private readonly volumesRepository: Repository<Volume>,
   ) {}
 
-  async createVolumeArray(reports: FinraAssignedReports): Promise<Partial<Volume>[]> {
+  async createVolumeArray(
+    reports: FinraAssignedReports,
+  ): Promise<Partial<Volume>[]> {
     if (Object.keys(reports).length === 0) {
       return [];
     }
@@ -97,7 +101,8 @@ export class DataService {
   async updateFilters(): Promise<void> {
     try {
       this.logger.warn('Updating filters has started');
-      // TODO: Replicate logic from Go service
+      // TODO: Rename it
+      await this.analyzerService.analyze();
       this.logger.log('Updating filters has finished');
     } catch (error) {
       this.logger.error(`Error in ${this.updateFilters.name}`, error);

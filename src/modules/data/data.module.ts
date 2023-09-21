@@ -8,6 +8,7 @@ import { Volume } from '../volumes/volume.entity';
 import { Stock } from '../stocks/stock.entity';
 import { PassportModule } from '@nestjs/passport';
 import { ParseService } from './parse.service';
+import { AnalyzerService } from './analyzer.service';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { ParseService } from './parse.service';
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   controllers: [DataController],
-  providers: [DataService, ParseService, UsersService],
+  providers: [DataService, ParseService, AnalyzerService, UsersService],
 })
 export class DataModule {}
