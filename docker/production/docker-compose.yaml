@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: 'postgres'
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    env_file:
+      - ../../config/.production.env
+
+  finra-api:
+    build:
+      context: ../../
+      dockerfile: ./docker/production/Dockerfile
+    ports:
+      - '3001:3001'
+    env_file:
+      - ../../config/.production.env
+    depends_on:
+      - postgres

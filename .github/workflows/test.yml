@@ -11,14 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['16']
+        node: ['18']
     name: Node ${{ matrix.node }} sample
-    env:
-      PORT: ${{ secrets.PORT }}
-      MONGODB_CONNECTION_URL: ${{ secrets.MONGODB_CONNECTION_URL }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
-      SANDBOX_TOKEN: ${{ secrets.SANDBOX_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - name: Setup node
@@ -27,5 +21,18 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm install
       - run: npm run build
-      - run: npm run test:github
-      # - run: npm run test:e2e:github
+      - name: Create .env file
+        run: |
+          touch ./config/.development.env
+          echo NODE_ENV=test >> ./config/.development.env
+          echo PORT=3001 >> ./config/.development.env
+          echo POSTGRES_HOST=postgres >> ./config/.development.env
+          echo POSTGRES_PORT=5432 >> ./config/.development.env
+          echo POSTGRES_USER=postgres >> ./config/.development.env
+          echo POSTGRES_PASSWORD=postgres >> ./config/.development.env
+          echo POSTGRES_DB=finra >> ./config/.development.env
+          echo JWT_SECRET=someSecret >> ./config/.development.env
+          echo ADMIN_SECRET=adminSecret >> ./config/.development.env
+          echo SENTRY_DSN=https://public@sentry.example.com/1 >> ./config/.development.env
+          echo SENTRY_TRACE_RATE=0 >> ./config/.development.env
+      - run: npm run docker:run:test:e2e

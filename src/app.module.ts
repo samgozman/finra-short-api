@@ -1,99 +1,71 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_PIPE, APP_FILTER, APP_GUARD } from '@nestjs/core';
-import { MongooseModule } from '@nestjs/mongoose';
+import { APP_PIPE, APP_GUARD } from '@nestjs/core';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
-import { AppService } from './app.service';
 import { configValidationSchema } from './config.schema';
-import { UsersModule } from './models/users/users.module';
-import { StocksModule } from './models/stocks/stocks.module';
-import { VolumesModule } from './models/volumes/volumes.module';
-import { FiltersModule } from './models/filters/filters.module';
-import { CollectionModule } from './models/collection/collection.module';
-import { MongoExceptionFilter } from './exceptions/mongo-exception.filter';
-import { AuthenticationModule } from './authentication/authentication.module';
+import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { HealthModule } from './health/health.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { SentryModule } from '@ntegral/nestjs-sentry';
-import { Integrations } from '@sentry/node';
+import { UsersModule } from './modules/users/users.module';
+import { User } from './modules/users/user.entity';
+import { StocksModule } from './modules/stocks/stocks.module';
+import { VolumesModule } from './modules/volumes/volumes.module';
+import { Stock } from './modules/stocks/stock.entity';
+import { Volume } from './modules/volumes/volume.entity';
+import { DataModule } from './modules/data/data.module';
 
 @Module({
-	imports: [
-		ConfigModule.forRoot({
-			isGlobal: true,
-			envFilePath: `config/.${process.env.NODE_ENV}.env`,
-			validationSchema:
-				process.env.NODE_ENV !== 'github' ? configValidationSchema : undefined,
-		}),
-		ScheduleModule.forRoot(),
-		MongooseModule.forRootAsync({
-			inject: [ConfigService],
-			useFactory: (config: ConfigService) => {
-				return {
-					uri: `mongodb://${config.get(
-						'MONGO_INITDB_ROOT_USERNAME',
-					)}:${config.get('MONGO_INITDB_ROOT_PASSWORD')}@${config.get(
-						'MONGODB_URL',
-					)}:${config.get('MONGODB_PORT')}/${config.get(
-						'MONGODB_NAME',
-					)}?authSource=admin&readPreference=primary&ssl=false`,
-					useNewUrlParser: true,
-					useUnifiedTopology: true,
-					useCreateIndex: true,
-					useFindAndModify: false,
-				};
-			},
-		}),
-		ThrottlerModule.forRoot({
-			ttl: 60,
-			limit: 50,
-		}),
-		SentryModule.forRootAsync({
-			inject: [ConfigService],
-			useFactory: async (config: ConfigService) => ({
-				dsn: config.get('SENTRY_DSN'),
-				debug: true,
-				environment: process.env.NODE_ENV,
-				release: process.env.npm_package_version,
-				integrations: [
-					// enable HTTP calls tracing
-					new Integrations.Http({ tracing: true }),
-				],
-				tracesSampleRate: config.get('SENTRY_TRACE_RATE'),
-				logLevel: ['debug'],
-			}),
-		}),
-		UsersModule,
-		StocksModule,
-		VolumesModule,
-		FiltersModule,
-		CollectionModule,
-		AuthenticationModule,
-		HealthModule,
-	],
-	controllers: [],
-	providers: [
-		AppService,
-		// Apply this pipe on any request that flows into the application (instead of main.ts file)
-		{
-			provide: APP_PIPE,
-			useValue: new ValidationPipe({
-				// Enable transformation in validation process
-				transform: true,
-				// Check that incoming request don't have unexpected keys (removes them)
-				whitelist: true,
-				// Throw an error on forbiden request
-				forbidNonWhitelisted: true,
-			}),
-		},
-		{
-			provide: APP_FILTER,
-			useClass: MongoExceptionFilter,
-		},
-		{
-			provide: APP_GUARD,
-			useClass: ThrottlerGuard,
-		},
-	],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `config/.${process.env.NODE_ENV}.env`,
+      validationSchema: configValidationSchema,
+    }),
+    ScheduleModule.forRoot(),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get('POSTGRES_HOST'),
+        port: +configService.get<number>('POSTGRES_PORT'),
+        username: configService.get('POSTGRES_USER'),
+        password: configService.get('POSTGRES_PASSWORD'),
+        database: configService.get('POSTGRES_DB'),
+        entities: [User, Stock, Volume],
+        synchronize: true,
+      }),
+      inject: [ConfigService],
+    }),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 50,
+    }),
+    AuthenticationModule,
+    HealthModule,
+    UsersModule,
+    StocksModule,
+    VolumesModule,
+    DataModule,
+  ],
+  controllers: [],
+  providers: [
+    // Apply this pipe on any request that flows into the application (instead of main.ts file)
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        // Enable transformation in validation process
+        transform: true,
+        // Check that incoming request don't have unexpected keys (removes them)
+        whitelist: true,
+        // Throw an error on forbidden request
+        forbidNonWhitelisted: true,
+      }),
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}

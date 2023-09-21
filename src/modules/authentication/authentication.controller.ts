@@ -1,0 +1,48 @@
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiForbiddenResponse,
+  ApiConflictResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { AdminGuard } from '../../guards/admin.guard';
+import { Serialize } from '../../interceptors/serialize.interceptor';
+import { AuthenticationService } from './authentication.service';
+import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
+import { TokenDto } from './dtos/token.dto';
+import { RegisterResponseDto } from './dtos/register-response.dto';
+
+@ApiTags('auth')
+@Controller('auth')
+export class AuthenticationController {
+  constructor(private authService: AuthenticationService) {}
+
+  @Post('/register')
+  @Serialize(RegisterResponseDto)
+  @UseGuards(AdminGuard)
+  @ApiBearerAuth('ADMIN_SECRET')
+  @ApiOperation({
+    summary:
+      'Register new user for API access (only possible with secret key for now)',
+  })
+  @ApiOkResponse({ description: 'Registered user', type: RegisterResponseDto })
+  @ApiForbiddenResponse()
+  @ApiConflictResponse()
+  register(@Body() authCredentialsDto: AuthCredentialsDto) {
+    return this.authService.register(authCredentialsDto);
+  }
+
+  @Post('/login')
+  @Serialize(TokenDto)
+  @ApiOperation({
+    summary: 'Log in to get access token for /user and /collection routes',
+  })
+  @ApiOkResponse({ description: 'Auth token for user', type: TokenDto })
+  @ApiUnauthorizedResponse()
+  logIn(@Body() authCredentialsDto: AuthCredentialsDto) {
+    return this.authService.login(authCredentialsDto);
+  }
+}
