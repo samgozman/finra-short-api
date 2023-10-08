@@ -1,4 +1,5 @@
 import { Controller, Get, UseInterceptors } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
 	HealthCheck,
@@ -16,6 +17,7 @@ export class HealthController {
 		private health: HealthCheckService,
 		private http: HttpHealthIndicator,
 		private db: MongooseHealthIndicator,
+		private configService: ConfigService,
 	) {}
 
 	@Get()
@@ -34,6 +36,7 @@ export class HealthController {
 					'https://cdn.finra.org/equity/regsho/daily/CNMSshvol20210901.txt',
 				),
 			() => this.db.pingCheck('mongodb'),
+			() => this.db.pingCheck('go-finra-analyzer', this.configService.get('ANALYZER_URL')),
 		]);
 	}
 }
