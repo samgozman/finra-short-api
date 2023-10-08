@@ -18,10 +18,12 @@ import { VolumesService } from '../volumes/volumes.service';
 import { CollectionController } from './collection.controller';
 import { CollectionService } from './collection.service';
 import { ParseService } from './parse.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
 	controllers: [CollectionController],
 	imports: [
+		ConfigModule,
 		MongooseModule.forFeature([
 			UserModelDefinition,
 			StockModelDefinition,
@@ -32,6 +34,7 @@ import { ParseService } from './parse.service';
 		HttpModule,
 	],
 	providers: [
+		ConfigService,
 		StocksRepository,
 		FiltersRepository,
 		VolumesRepository,

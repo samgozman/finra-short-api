@@ -9,6 +9,7 @@ import { StocksService } from '../stocks/stocks.service';
 import { FinraAssignedReports, Volume } from '../volumes/schemas/volume.schema';
 import { VolumesService } from '../volumes/volumes.service';
 import { ParseService } from './parse.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CollectionService {
@@ -18,6 +19,7 @@ export class CollectionService {
 		private readonly stocksService: StocksService,
 		private readonly volumesService: VolumesService,
 		private httpService: HttpService,
+		private configService: ConfigService,
 	) {}
 
 	// ex processLines
@@ -99,7 +101,7 @@ export class CollectionService {
 		try {
 			this.logger.warn('Updating filters with Go service has started');
 			const observable = this.httpService
-				.get('http://analyzer:3030/run', {
+				.get(this.configService.get('ANALYZER_URL')), {
 					headers: {
 						Accept: 'application/json',
 					},
