@@ -101,7 +101,7 @@ export class CollectionService {
 		try {
 			this.logger.warn('Updating filters with Go service has started');
 			const observable = this.httpService
-				.get(this.configService.get('ANALYZER_URL')), {
+				.get(this.configService.get('ADMIN_SECRET'), {
 					headers: {
 						Accept: 'application/json',
 					},
