@@ -99,7 +99,7 @@ export class CollectionService {
 		try {
 			this.logger.warn('Updating filters with Go service has started');
 			const observable = this.httpService
-				.get(`${process.env.ANALYZER_URL}/run`, {
+				.post(`${process.env.ANALYZER_URL}/run`, {
 					headers: {
 						Accept: 'application/json',
 						Authorization: `Bearer ${process.env.ANALYZER_TOKEN}`,
