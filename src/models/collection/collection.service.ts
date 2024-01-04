@@ -102,6 +102,7 @@ export class CollectionService {
 				.get(`${process.env.ANALYZER_URL}/run`, {
 					headers: {
 						Accept: 'application/json',
+						Authorization: `Bearer ${process.env.ANALYZER_TOKEN}`,
 					},
 				})
 				.pipe(map((response) => response.data));
