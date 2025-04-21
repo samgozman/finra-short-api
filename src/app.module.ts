@@ -41,6 +41,7 @@ import { Integrations } from '@sentry/node';
 					useUnifiedTopology: true,
 					useCreateIndex: true,
 					useFindAndModify: false,
+					ssl: true,
 				};
 			},
 		}),
