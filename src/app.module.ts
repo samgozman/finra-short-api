@@ -36,12 +36,11 @@ import { Integrations } from '@sentry/node';
 						'MONGODB_URL',
 					)}:${config.get('MONGODB_PORT')}/${config.get(
 						'MONGODB_NAME',
-					)}?authSource=admin&readPreference=primary&ssl=false`,
+					)}?authSource=admin&readPreference=primary&ssl=true`,
 					useNewUrlParser: true,
 					useUnifiedTopology: true,
 					useCreateIndex: true,
 					useFindAndModify: false,
-					ssl: true,
 				};
 			},
 		}),
