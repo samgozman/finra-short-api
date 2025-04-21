@@ -36,7 +36,7 @@ import { Integrations } from '@sentry/node';
 						'MONGODB_URL',
 					)}:${config.get('MONGODB_PORT')}/${config.get(
 						'MONGODB_NAME',
-					)}?authSource=admin&readPreference=primary&ssl=true`,
+					)}?authSource=admin&readPreference=primary&ssl=false`,
 					useNewUrlParser: true,
 					useUnifiedTopology: true,
 					useCreateIndex: true,
