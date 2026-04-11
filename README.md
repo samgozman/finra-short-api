@@ -1,5 +1,7 @@
 # finra-short-api
 
+> **⚠️ This project is no longer maintained.** FINRA shut down their public API access, making this project non-functional. The repository is archived for historical reference only.
+
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C1DI4VL)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=samgozman_finra-short-api&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=samgozman_finra-short-api)
